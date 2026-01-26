@@ -43,6 +43,7 @@ function App() {
             <Route path ="/services/IosDevelopment" element={<IosDevelopment/>}/>
             <Route path ="/services/CrossPlatformDevelopment" element={<CrossPlatformDevelopment/>}/>
             <Route path ="/services/WebDevelopment" element={<WebDevelopment/>}/>
+            <Route path ="/services/VulnerabilityAssessment" element={<VulnerabilityAssessment/>}/>
             
           </Routes>
         </main>
