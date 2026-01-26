@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #1a2332;
+  --secondary-color: #0f3a54;
+  --accent-color: #00d4ff;
+  --gold-color: #ffc107;
+  --green-color: #28a745;
+  --purple-color: #9c27b0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  background-color: #1a2332;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a2332;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00d4ff;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00b8d4;
+}
+
+/* Utility classes */
+.section-label {
+  @apply inline-block px-4 py-2 bg-cyan-500/10 border border-cyan-500 rounded-full text-cyan-500 text-xs font-bold uppercase;
+}
+
+.btn-primary {
+  @apply px-6 py-3 bg-cyan-500 text-slate-950 font-bold rounded-lg hover:bg-cyan-400 transition-all;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 border-2 border-cyan-500 text-cyan-500 font-bold rounded-lg hover:bg-cyan-500/10 transition-all;
+}
+
+.btn-success {
+  @apply px-6 py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition-all;
+}
+
+.btn-purple {
+  @apply px-6 py-3 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 transition-all;
+}
+
+.service-card {
+  @apply p-6 bg-slate-900 border border-cyan-500/20 rounded-lg hover:border-cyan-500 hover:shadow-lg hover:shadow-cyan-500/20 transition-all;
+}
+
+.testimonial-card {
+  @apply p-6 bg-slate-900 border border-cyan-500/20 rounded-lg;
+}
