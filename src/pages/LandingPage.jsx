@@ -145,8 +145,8 @@ const LandingPage = () => {
                           <span className="text-amber-400 font-semibold">A</span>
                         </div>
                         <div>
-                          <h5 className="font-semibold text-white">Abhinav</h5>
-                          <p className="text-sm text-slate-400">Co-Founder & Sr SME</p>
+                          <h5 className="font-semibold text-white">Shashank Jaiswal</h5>
+                          <p className="text-sm text-slate-400">Investor / CEO</p>
                         </div>
                       </div>
                     </div>

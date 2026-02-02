@@ -71,7 +71,7 @@ export default function ChatBot() {
         setShowForm(false);
         setFormData({ firstName: "", lastName: "", email: "", phone: "", enquiry: "" });
       } else {
-        alert("❌ Failed to send enquiry");
+        alert("❌ Failed to send enquiry , Missing");
       }
     } catch (err) {
       console.error(err);
