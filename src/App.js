@@ -19,6 +19,12 @@ import AndroidDevelopment from './pages/services/AndroidDevelopment';
 import IosDevelopment from './pages/services/IosDevelopment';
 import CrossPlatformDevelopment from './pages/services/CrossPlatformDevelopment';
 import WebDevelopment from './pages/services/WebDevelopment';
+import BlogDetailPage from './pages/BlogDetailPage';
+import BlogPage from './pages/BlogPage';
+import FAQPage from './pages/FAQPage';
+import AdminDashboard from './pages/AdminDashboard';
+import AboutPage from './pages/AboutPage';
+
 
 function App() {
   return (
@@ -44,6 +50,12 @@ function App() {
             <Route path ="/services/CrossPlatformDevelopment" element={<CrossPlatformDevelopment/>}/>
             <Route path ="/services/WebDevelopment" element={<WebDevelopment/>}/>
             <Route path ="/services/VulnerabilityAssessment" element={<VulnerabilityAssessment/>}/>
+            <Route path ="/admin" element={<AdminDashboard/>}/>
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogDetailPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/about" element={<AboutPage />} />
+
             
           </Routes>
         </main>

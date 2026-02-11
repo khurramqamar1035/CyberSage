@@ -106,6 +106,8 @@ const SecurityPage = () => {
               <button onClick={() => scrollToSection('services')} className="text-gray-300 hover:text-white transition-colors">Services</button>
               <button onClick={() => scrollToSection('testimonials')} className="text-gray-300 hover:text-white transition-colors">Testimonials</button>
               <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">Contact</button>
+              <button onClick={() => navigate('/blog')} className="text-gray-300 hover:text-white transition-colors">Blog</button>
+              <button onClick={() => navigate('/faq')} className="text-gray-300 hover:text-white transition-colors">FAQ</button>
               <div className="flex items-center gap-2">
                 <Button onClick={() => navigate('/development')} variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300">
                   <Code className="w-4 h-4 mr-1" /> Development

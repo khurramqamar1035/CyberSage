@@ -83,6 +83,9 @@ const DevelopmentPage = () => {
               <button onClick={() => scrollToSection('services')} className="text-gray-300 hover:text-white transition-colors">Services</button>
               <button onClick={() => scrollToSection('testimonials')} className="text-gray-300 hover:text-white transition-colors">Testimonials</button>
               <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">Contact</button>
+              <button onClick={() => navigate('/blog')} className="text-gray-300 hover:text-white transition-colors">Blog</button>
+              <button onClick={() => navigate('/faq')} className="text-gray-300 hover:text-white transition-colors">FAQ</button>
+              <button onClick={() => navigate('/about')} className="text-gray-300 hover:text-white transition-colors">About</button>
               <div className="flex items-center gap-2">
                 <Button onClick={() => navigate('/security')} variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
                   <Shield className="w-4 h-4 mr-1" /> Security
