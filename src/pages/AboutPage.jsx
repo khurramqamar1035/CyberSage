@@ -182,7 +182,7 @@ const AboutPage = () => {
       </section>
 
       {/* TEAM SECTION */}
-      <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
+      <div className="flex flex-wrap justify-center gap-6 sm:gap-8 mb-12">
         {teamMembers.map((member) => (
           <div
             key={member._id}
