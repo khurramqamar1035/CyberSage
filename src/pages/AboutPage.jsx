@@ -182,29 +182,36 @@ const AboutPage = () => {
       </section>
 
       {/* TEAM SECTION */}
-      <div className="flex flex-wrap justify-center gap-6 sm:gap-8 mb-12">
-        {teamMembers.map((member) => (
-          <div
-            key={member._id}
-            className="w-[200px] cursor-pointer group text-center"
-          >
-            <div className="rounded-2xl overflow-hidden mb-4">
-              <img
-                src={member.image}
-                alt={member.name}
-                loading="lazy"
-                className="w-full aspect-square object-cover group-hover:scale-110 transition duration-300"
-              />
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-10 sm:mb-12">
+          Leadership Team
+        </h2>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
+          {teamMembers.map((member) => (
+            <div
+              key={member._id}
+              onClick={() => setSelectedMember(member)}
+              className="cursor-pointer group text-center"
+            >
+              <div className="rounded-2xl overflow-hidden mb-4">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  loading="lazy"
+                  className="w-full aspect-square object-cover group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <h3 className="text-white font-semibold text-sm sm:text-base">
+                {member.name}
+              </h3>
+              <p className="text-slate-400 text-xs sm:text-sm">
+                {member.position}
+              </p>
             </div>
-            <h3 className="text-white font-semibold text-sm sm:text-base">
-              {member.name}
-            </h3>
-            <p className="text-slate-400 text-xs sm:text-sm">
-              {member.position}
-            </p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </section>
 
       {/* OFFICES SECTION */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-24">
