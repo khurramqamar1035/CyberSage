@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { Calendar, User, ArrowRight, Menu, X, Shield, GraduationCap, Code, Layers, Monitor } from 'lucide-react';
+import { Calendar, User, ArrowRight, Menu, X, Shield, GraduationCap, Code } from 'lucide-react';
 import axios from 'axios';
 import SageAI from '../components/SageAI';
 
@@ -80,8 +80,8 @@ const BlogPage = () => {
         </div>
 
         {/* Mobile Menu */}
-        {menuOpen && (
-          <div className="md:hidden bg-slate-900 border-t border-slate-800 flex flex-col px-4 py-2">
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${menuOpen ? 'max-h-96 py-2' : 'max-h-0'}`}>
+          <div className="flex flex-col px-4 bg-slate-900 border-t border-slate-800">
             <button onClick={() => { navigate('/security'); setMenuOpen(false); }} className="text-white text-left py-2 flex items-center gap-2">
               <Shield className="w-4 h-4" /> Security
             </button>
@@ -94,7 +94,7 @@ const BlogPage = () => {
             <button onClick={() => { navigate('/faq'); setMenuOpen(false); }} className="text-white text-left py-2">FAQ</button>
             <button onClick={() => { navigate('/blog'); setMenuOpen(false); }} className="text-amber-400 font-semibold text-left py-2">Blog</button>
           </div>
-        )}
+        </div>
       </nav>
 
       {/* Hero Section */}
