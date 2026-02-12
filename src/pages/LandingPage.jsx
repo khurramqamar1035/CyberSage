@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Shield, Code, GraduationCap, Info } from "lucide-react";
 import {
@@ -17,6 +17,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -47,6 +49,14 @@ const LandingPage = () => {
       path: "/training",
     },
   ];
+
+  // 🔹 Prefetch About Page API
+  useEffect(() => {
+    // Prefetch team
+    fetch(`${BACKEND_URL}/api/about/team`).catch(() => {});
+    // Prefetch offices
+    fetch(`${BACKEND_URL}/api/about/offices`).catch(() => {});
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-x-hidden">
@@ -114,7 +124,7 @@ const LandingPage = () => {
           <Button
             variant="outline"
             className="bg-slate-900/50 border-slate-700 text-white hover:bg-slate-800 hover:border-amber-500/50"
-            onClick={() => navigate("/about")} // <-- Redirect to your About Us page
+            onClick={() => navigate("/about")}
           >
             <Info className="w-4 h-4 mr-2" />
             Core Team
