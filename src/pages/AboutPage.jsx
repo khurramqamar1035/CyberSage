@@ -214,12 +214,12 @@ const AboutPage = () => {
         </div>
 
         {/* Second Row - remaining members */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8 justify-center">
+        <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
           {teamMembers.slice(2).map((member) => (
             <div
               key={member._id}
               onClick={() => setSelectedMember(member)}
-              className="cursor-pointer group text-center"
+              className="w-[150px] sm:w-[180px] md:w-[200px] cursor-pointer group text-center"
             >
               <div className="rounded-2xl overflow-hidden mb-4">
                 <img
