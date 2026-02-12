@@ -117,7 +117,7 @@ const LandingPage = () => {
             onClick={() => navigate("/about")} // <-- Redirect to your About Us page
           >
             <Info className="w-4 h-4 mr-2" />
-            About Us
+            Core Team
           </Button>
         </div>
       </div>
