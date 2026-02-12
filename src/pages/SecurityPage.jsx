@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Search, Lock, Zap, Users, FileCheck, Code, GraduationCap, Mail, MessageSquare, Menu, X } from 'lucide-react';
+import { Shield, Search, Lock, Zap, Users, FileCheck, Mail, MessageSquare, Menu, X } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import SageAI from '../components/SageAI';
@@ -31,11 +31,12 @@ const SecurityPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
-      
+
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
+            {/* Logo */}
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <img 
                 src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png" 
@@ -62,18 +63,22 @@ const SecurityPage = () => {
               </button>
             </div>
           </div>
+        </div>
 
-          {/* Mobile Menu */}
-          {menuOpen && (
-            <div className="md:hidden flex flex-col gap-2 py-2 px-2 bg-gray-900 border-t border-gray-800">
-              <button onClick={() => scrollToSection('services')} className="text-gray-300 hover:text-white text-left w-full">Services</button>
-              <button onClick={() => scrollToSection('testimonials')} className="text-gray-300 hover:text-white text-left w-full">Testimonials</button>
-              <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white text-left w-full">Contact</button>
-              <button onClick={() => navigate('/blog')} className="text-gray-300 hover:text-white text-left w-full">Blog</button>
-              <button onClick={() => navigate('/faq')} className="text-gray-300 hover:text-white text-left w-full">FAQ</button>
-              <button onClick={() => navigate('/about')} className="text-gray-300 hover:text-white text-left w-full">About</button>
-            </div>
-          )}
+        {/* Mobile Menu */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            menuOpen ? 'max-h-96 py-2' : 'max-h-0'
+          }`}
+        >
+          <div className="flex flex-col gap-2 px-4 bg-gray-900 border-t border-gray-800">
+            <button onClick={() => scrollToSection('services')} className="text-gray-300 hover:text-white text-left w-full">Services</button>
+            <button onClick={() => scrollToSection('testimonials')} className="text-gray-300 hover:text-white text-left w-full">Testimonials</button>
+            <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white text-left w-full">Contact</button>
+            <button onClick={() => navigate('/blog')} className="text-gray-300 hover:text-white text-left w-full">Blog</button>
+            <button onClick={() => navigate('/faq')} className="text-gray-300 hover:text-white text-left w-full">FAQ</button>
+            <button onClick={() => navigate('/about')} className="text-gray-300 hover:text-white text-left w-full">About</button>
+          </div>
         </div>
       </nav>
 

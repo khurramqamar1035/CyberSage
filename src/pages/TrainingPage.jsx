@@ -33,6 +33,7 @@ const TrainingPage = () => {
       <nav className="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
+            {/* Logo */}
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
               <img 
                 src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png" 
@@ -67,18 +68,30 @@ const TrainingPage = () => {
               </button>
             </div>
           </div>
+        </div>
 
-          {/* Mobile Menu */}
-          {menuOpen && (
-            <div className="md:hidden flex flex-col gap-2 py-2 px-2 bg-gray-900 border-t border-gray-800">
-              <button onClick={() => scrollToSection('services')} className="text-gray-300 hover:text-white text-left w-full">Services</button>
-              <button onClick={() => scrollToSection('testimonials')} className="text-gray-300 hover:text-white text-left w-full">Testimonials</button>
-              <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white text-left w-full">Contact</button>
-              <button onClick={() => navigate('/blog')} className="text-gray-300 hover:text-white text-left w-full">Blog</button>
-              <button onClick={() => navigate('/faq')} className="text-gray-300 hover:text-white text-left w-full">FAQ</button>
-              <button onClick={() => navigate('/about')} className="text-gray-300 hover:text-white text-left w-full">About</button>
+        {/* Mobile Menu */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            menuOpen ? 'max-h-96 py-2' : 'max-h-0'
+          }`}
+        >
+          <div className="flex flex-col gap-2 px-4 bg-gray-900 border-t border-gray-800">
+            <button onClick={() => scrollToSection('services')} className="text-gray-300 hover:text-white text-left w-full">Services</button>
+            <button onClick={() => scrollToSection('testimonials')} className="text-gray-300 hover:text-white text-left w-full">Testimonials</button>
+            <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white text-left w-full">Contact</button>
+            <button onClick={() => navigate('/blog')} className="text-gray-300 hover:text-white text-left w-full">Blog</button>
+            <button onClick={() => navigate('/faq')} className="text-gray-300 hover:text-white text-left w-full">FAQ</button>
+            <button onClick={() => navigate('/about')} className="text-gray-300 hover:text-white text-left w-full">About</button>
+            <div className="flex flex-col gap-2 mt-2">
+              <Button onClick={() => navigate('/security')} variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 justify-start">
+                <Shield className="w-4 h-4 mr-1" /> Security
+              </Button>
+              <Button onClick={() => navigate('/development')} variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300 justify-start">
+                <Code className="w-4 h-4 mr-1" /> Development
+              </Button>
             </div>
-          )}
+          </div>
         </div>
       </nav>
 
