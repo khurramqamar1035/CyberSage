@@ -43,18 +43,15 @@ const LandingPage = () => {
       id: "training",
       icon: GraduationCap,
       title: "Training",
-      description:
-        "Master cybersecurity skills with comprehensive courses",
+      description: "Master cybersecurity skills with comprehensive courses",
       path: "/training",
     },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-x-hidden">
-      
       {/* Container */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <img
@@ -76,7 +73,6 @@ const LandingPage = () => {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
           {services.map((service) => {
             const Icon = service.icon;
 
@@ -115,66 +111,15 @@ const LandingPage = () => {
 
         {/* About Section */}
         <div className="mt-12 flex justify-center">
-          <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                className="bg-slate-900/50 border-slate-700 text-white hover:bg-slate-800 hover:border-amber-500/50"
-              >
-                <Info className="w-4 h-4 mr-2" />
-                About Us
-              </Button>
-            </DialogTrigger>
-
-            <DialogContent className="bg-slate-900 border-slate-700 text-white w-[95%] sm:max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl">
-              <DialogHeader>
-                <DialogTitle className="text-xl sm:text-2xl text-amber-400 mb-4">
-                  About CyberSage
-                </DialogTitle>
-
-                <DialogDescription className="text-slate-300 space-y-6 text-sm sm:text-base">
-                  <p>
-                    CyberSage is your trusted partner in digital security,
-                    development, and training. We help startups and businesses
-                    secure and scale using AI-powered solutions.
-                  </p>
-
-                  <div>
-                    <h4 className="font-semibold text-white mb-4">
-                      Our Founders
-                    </h4>
-
-                    <div className="space-y-4">
-                      {[
-                        { initial: "K", name: "Khurram", role: "Co-Founder & CEO" },
-                        { initial: "P", name: "Peeyush", role: "Co-Founder & CTO" },
-                        { initial: "A", name: "Shashank Jaiswal", role: "Investor / CEO" },
-                      ].map((founder, index) => (
-                        <div key={index} className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
-                            <span className="text-amber-400 font-semibold">
-                              {founder.initial}
-                            </span>
-                          </div>
-
-                          <div>
-                            <h5 className="text-white font-semibold">
-                              {founder.name}
-                            </h5>
-                            <p className="text-slate-400 text-sm">
-                              {founder.role}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+          <Button
+            variant="outline"
+            className="bg-slate-900/50 border-slate-700 text-white hover:bg-slate-800 hover:border-amber-500/50"
+            onClick={() => navigate("/about")} // <-- Redirect to your About Us page
+          >
+            <Info className="w-4 h-4 mr-2" />
+            About Us
+          </Button>
         </div>
-
       </div>
     </div>
   );
