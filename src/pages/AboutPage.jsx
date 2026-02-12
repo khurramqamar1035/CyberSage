@@ -187,8 +187,35 @@ const AboutPage = () => {
           Leadership Team
         </h2>
 
+        {/* First Row - 2 members */}
+        <div className="grid grid-cols-2 gap-6 sm:gap-8 mb-6">
+          {teamMembers.slice(0, 2).map((member) => (
+            <div
+              key={member._id}
+              onClick={() => setSelectedMember(member)}
+              className="cursor-pointer group text-center"
+            >
+              <div className="rounded-2xl overflow-hidden mb-4">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  loading="lazy"
+                  className="w-full aspect-square object-cover group-hover:scale-110 transition duration-300"
+                />
+              </div>
+              <h3 className="text-white font-semibold text-sm sm:text-base">
+                {member.name}
+              </h3>
+              <p className="text-slate-400 text-xs sm:text-sm">
+                {member.position}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Second Row - remaining members */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
-          {teamMembers.map((member) => (
+          {teamMembers.slice(2).map((member) => (
             <div
               key={member._id}
               onClick={() => setSelectedMember(member)}
