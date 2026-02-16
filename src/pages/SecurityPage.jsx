@@ -368,7 +368,7 @@ const SecurityPage = () => {
               }
             >
               <MessageSquare className="w-4 h-4 mr-2" />
-              contact@cybersage.ai
+              cybersageuk@gmail.com
             </Button>
             <Button
               variant="outline"

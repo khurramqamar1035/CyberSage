@@ -352,16 +352,16 @@ const DevelopmentPage = () => {
               }
             >
               <MessageSquare className="w-4 h-4 mr-2" />
-              contact@cybersage.ai
+              cybersageuk@gmail.com
             </Button>
 
-            <Button
+            {/* <Button
               variant="outline"
               className="border-gray-700 text-white hover:bg-gray-800 w-full sm:w-auto"
             >
               <MessageSquare className="w-4 h-4 mr-2" />
               Get a Quote
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

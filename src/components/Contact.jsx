@@ -127,7 +127,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-white mb-1">Email</h3>
-                    <p className="text-sm text-gray-400">contact@cybersage.ai</p>
+                    <p className="text-sm text-gray-400">Contact Cybersage</p>
                   </div>
                 </div>
               </CardContent>

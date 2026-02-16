@@ -36,7 +36,7 @@ const SageAI = () => {
     } else if (input.includes('price') || input.includes('cost')) {
       botResponse = 'Our pricing varies by service. Security audits start at $20, development projects are quoted based on requirements, and training courses have tier-based pricing. Please check individual service pages for details.';
     } else if (input.includes('contact') || input.includes('reach')) {
-      botResponse = 'You can contact us through the contact form available on each service page, or email us at contact@cybersage.ai';
+      botResponse = 'You can contact us through the contact form available on each service page, or email us at cybersageuk@gmail.com';
     } else {
       botResponse = 'I can help you with questions about our Security, Development, and Training services. Feel free to ask about pricing, services, or how to get started!';
     }
@@ -50,7 +50,7 @@ const SageAI = () => {
       setTimeout(() => {
         setMessages([...newMessages, {
           type: 'bot',
-          text: 'You have used all 3 queries. For more detailed assistance, please contact our team via the contact form or email us at contact@cybersage.ai'
+          text: 'You have used all 3 queries. For more detailed assistance, please contact our team via the contact form or email us at cybersageuk@gmail.com'
         }]);
       }, 500);
     }

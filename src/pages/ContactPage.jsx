@@ -70,7 +70,7 @@ const ContactPage = () => {
                       className="border-gray-700 text-white hover:bg-gray-800 w-full sm:w-auto flex items-center justify-center gap-2"
                       onClick={() =>
                         window.open(
-                          "https://mail.google.com/mail/?view=cm&fs=1&to=contact@cybersage.ai",
+                          "https://mail.google.com/mail/?view=cm&fs=1&to=cybersageuk@gmail.com",
                           "_blank"
                         )
                       }
