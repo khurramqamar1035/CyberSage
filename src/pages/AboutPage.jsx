@@ -83,13 +83,13 @@ const AboutPage = () => {
               About
             </button>
             <button
-              onClick={() => navigate("/services")}
+              onClick={() => navigate("/")}
               className="hover:text-white transition-colors"
             >
               Services
             </button>
             <button
-              onClick={() => navigate("/team")}
+              onClick={() => navigate("/about")}
               className="hover:text-white transition-colors"
             >
               Team
