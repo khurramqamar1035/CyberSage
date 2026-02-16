@@ -370,13 +370,13 @@ const SecurityPage = () => {
               <MessageSquare className="w-4 h-4 mr-2" />
               cybersageuk@gmail.com
             </Button>
-            <Button
+            {/* <Button
               variant="outline"
               className="w-full sm:w-auto border-gray-700 text-white hover:bg-gray-800 flex items-center justify-center"
             >
               <MessageSquare className="w-4 h-4 mr-2" />
               Schedule Consultation
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
