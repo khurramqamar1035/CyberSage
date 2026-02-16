@@ -346,7 +346,7 @@ const DevelopmentPage = () => {
               className="border-gray-700 text-white hover:bg-gray-800 w-full sm:w-auto"
               onClick={() =>
                 window.open(
-                  "https://mail.google.com/mail/?view=cm&fs=1&to=peeyushk2198@gmail.com",
+                  "https://mail.google.com/mail/?view=cm&fs=1&to=cybersageuk@gmail.com",
                   "_blank"
                 )
               }

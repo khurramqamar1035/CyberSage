@@ -76,7 +76,7 @@ const ContactPage = () => {
                       }
                     >
                       <MessageSquare className="w-4 h-4" />
-                      contact@cybersage.ai
+                      cybersageuk@gmail.com
                     </Button>
                   </div>
                 </CardContent>
