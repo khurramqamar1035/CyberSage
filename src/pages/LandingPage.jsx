@@ -9,14 +9,6 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -59,9 +51,21 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-x-hidden relative">
+      
+      {/* Top Header Actions */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:right-10 z-50">
+        <Button 
+          onClick={() => navigate('/login')}
+          className="bg-blue-600 hover:bg-blue-500 text-white font-medium border-none shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all flex items-center gap-2"
+        >
+          <Shield className="w-4 h-4" />
+          Client Portal
+        </Button>
+      </div>
+
       {/* Container */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <img
@@ -134,5 +138,4 @@ const LandingPage = () => {
     </div>
   );
 };
-
 export default LandingPage;

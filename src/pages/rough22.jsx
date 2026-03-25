@@ -1,163 +1,141 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../components/ui/dialog";
-import { Badge } from "../components/ui/badge";
-import { MapPin, Users, Building2 } from "lucide-react";
-import SageAI from "../components/SageAI";
-import axios from 'axios';
-
+import { Shield, Code, GraduationCap, Info } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Button } from "../components/ui/button";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
-const AboutPage = () => {
+const LandingPage = () => {
   const navigate = useNavigate();
+  const [aboutOpen, setAboutOpen] = useState(false);
 
-  const [teamMembers, setTeamMembers] = useState([]);
-  const [offices, setOffices] = useState([]);
-  const [selectedMember, setSelectedMember] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const services = [
+    {
+      id: "security",
+      icon: Shield,
+      title: "Cyber Security",
+      description:
+        "Protect your digital assets with AI-powered security solutions",
+      path: "/security",
+    },
+    {
+      id: "development",
+      icon: Code,
+      title: "Development",
+      description:
+        "Build secure and scalable applications with expert guidance",
+      path: "/development",
+    },
+    {
+      id: "training",
+      icon: GraduationCap,
+      title: "Training",
+      description: "Master cybersecurity skills with comprehensive courses",
+      path: "/training",
+    },
+  ];
 
-  
-
-useEffect(() => {
-  const fetchAboutData = async () => {
-    try {
-      const [teamRes, officeRes] = await Promise.all([
-        axios.get(`${BACKEND_URL}/api/about/team`),
-        axios.get(`${BACKEND_URL}/api/about/offices`)
-      ]);
-
-      setTeamMembers(teamRes.data);
-      setOffices(officeRes.data);
-    } catch (err) {
-      console.error("Failed to load about data", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchAboutData();
-}, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-slate-400">
-        Loading About Page...
-      </div>
-    );
-  }
+  // 🔹 Prefetch About Page API
+  useEffect(() => {
+    // Prefetch team
+    fetch(`${BACKEND_URL}/api/about/team`).catch(() => {});
+    // Prefetch offices
+    fetch(`${BACKEND_URL}/api/about/offices`).catch(() => {});
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-x-hidden relative">
       
-      {/* NAV */}
-      <nav className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div onClick={() => navigate("/")} className="flex items-center gap-3 cursor-pointer">
-            <h1 className="text-xl font-bold text-white">CyberSage</h1>
-          </div>
-          <div className="flex gap-6 text-slate-300">
-            <button onClick={() => navigate("/about")} className="text-amber-400">About</button>
-          </div>
+      {/* Top Header Actions */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:right-10 z-50">
+        <Button 
+          onClick={() => navigate('/login')}
+          className="bg-blue-600 hover:bg-blue-500 text-white font-medium border-none shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all flex items-center gap-2"
+        >
+          <Shield className="w-4 h-4" />
+          Client Portal
+        </Button>
+      </div>
+
+      {/* Container */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+        {/* Logo */}
+        <div className="flex justify-center mb-8">
+          <img
+            src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png"
+            alt="CyberSage Logo"
+            className="w-24 h-24 sm:w-28 sm:h-28 object-contain"
+          />
         </div>
-      </nav>
 
-      {/* HERO */}
-      <section className="py-20 text-center">
-        <div className="inline-flex gap-2 items-center px-4 py-2 bg-amber-500/20 border border-amber-500/30 rounded-full mb-6">
-          <Users className="text-amber-400" />
-          <span className="text-amber-300 text-sm">ABOUT CYBERSAGE</span>
-        </div>
-        <h1 className="text-5xl font-bold text-white mb-4">Our Story</h1>
-        <p className="text-slate-400 text-xl">Born from passion, driven by innovation</p>
-      </section>
-
-      {/* TEAM */}
-      <section className="max-w-7xl mx-auto px-6 pb-20">
-        <h2 className="text-4xl font-bold text-white text-center mb-12">Leadership Team</h2>
-
-        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-8">
-          {teamMembers.map((member) => (
-            <div
-              key={member._id}
-              onClick={() => setSelectedMember(member)}
-              className="cursor-pointer group"
-            >
-              <div className="rounded-2xl overflow-hidden mb-4">
-              <img
-                src={`/images/teams/${member.teamid}.jpg`}
-                alt={member.name}
-                className="w-full aspect-square object-cover group-hover:scale-110 transition"
-               />
-              </div>
-              <h3 className="text-white font-semibold">{member.name}</h3>
-              <p className="text-slate-400 text-sm">{member.position}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* OFFICES */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
+        {/* Heading */}
         <div className="text-center mb-10">
-          <div className="inline-flex gap-2 px-4 py-2 bg-amber-500/20 border border-amber-500/30 rounded-full mb-4">
-            <Building2 className="text-amber-400" />
-            <span className="text-amber-300 text-sm">GLOBAL PRESENCE</span>
-          </div>
-          <h2 className="text-4xl font-bold text-white">Our Offices</h2>
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent mb-4">
+            Welcome to CyberSage
+          </h1>
+          <p className="text-slate-400 text-base sm:text-lg">
+            Your Digital Guardian — Choose Your Path
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {offices.map((office) => (
-            <Card key={office._id} className="bg-slate-900 border-slate-700">
-              <CardHeader>
-                <MapPin className="text-amber-400 mb-3" />
-                <Badge className="w-fit bg-amber-500/20 text-amber-400">
-                  {office.type}
-                </Badge>
-                <CardTitle className="text-white">{office.city}</CardTitle>
-                <p className="text-slate-400">{office.country}</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-400 text-sm">{office.address}</p>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {services.map((service) => {
+            const Icon = service.icon;
+
+            return (
+              <Card
+                key={service.id}
+                onClick={() => navigate(service.path)}
+                className="bg-slate-900/60 border border-slate-700 hover:border-amber-500/50 transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer p-2"
+              >
+                <CardHeader>
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-amber-400" />
+                  </div>
+
+                  <CardTitle className="text-white text-lg sm:text-xl">
+                    {service.title}
+                  </CardTitle>
+
+                  <CardDescription className="text-slate-400 text-sm leading-relaxed">
+                    {service.description}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                  <Button
+                    variant="ghost"
+                    className="w-full text-amber-400 hover:bg-white/10"
+                  >
+                    Explore Services
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
-      </section>
 
-      {/* MODAL */}
-      <Dialog open={!!selectedMember} onOpenChange={() => setSelectedMember(null)}>
-        {selectedMember && (
-          <DialogContent className="bg-slate-900 border-slate-700 max-w-2xl text-white">
-            <DialogHeader>
-              <DialogTitle className="text-2xl">{selectedMember.name}</DialogTitle>
-              <p className="text-amber-400">{selectedMember.position}</p>
-            </DialogHeader>
-
-            <p className="text-slate-300 mt-4">{selectedMember.bio}</p>
-
-            <div className="mt-6">
-              <h4 className="font-semibold mb-2">Expertise</h4>
-              <div className="flex flex-wrap gap-2">
-                {selectedMember.expertise.map((skill, i) => (
-                  <Badge key={i} className="bg-amber-500/20 text-amber-400">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-
-            <p className="text-slate-400 mt-4">{selectedMember.education}</p>
-          </DialogContent>
-        )}
-      </Dialog>
-
-      <SageAI />
+        {/* About Section */}
+        <div className="mt-12 flex justify-center">
+          <Button
+            variant="outline"
+            className="bg-slate-900/50 border-slate-700 text-white hover:bg-slate-800 hover:border-amber-500/50"
+            onClick={() => navigate("/about")}
+          >
+            <Info className="w-4 h-4 mr-2" />
+            Core Team
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
-
-export default AboutPage;
+export default LandingPage;

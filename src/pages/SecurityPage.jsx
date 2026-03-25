@@ -7,7 +7,6 @@ import {
   Zap,
   Users,
   FileCheck,
-  Mail,
   MessageSquare,
   Menu,
   X,

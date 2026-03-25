@@ -7,7 +7,6 @@ import {
   Layers,
   Shield,
   GraduationCap,
-  Mail,
   MessageSquare,
   Menu,
   X,

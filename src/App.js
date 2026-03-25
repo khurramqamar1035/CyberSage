@@ -25,6 +25,23 @@ import FAQPage from './pages/FAQPage';
 import AdminDashboard from './pages/AdminDashboard';
 import AboutPage from './pages/AboutPage';
 
+// Import Dashboard Components
+import DashboardLayout from './components/dashboard/DashboardLayout';
+import DashboardHome from './pages/dashboard/DashboardHome';
+import MyServices from './pages/dashboard/MyServices';
+import Reports from './pages/dashboard/Reports';
+import Billing from './pages/dashboard/Billing';
+import Settings from './pages/dashboard/Settings';
+import DemoReport from './pages/dashboard/DemoReport';
+
+// Import Auth Components
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
+import Onboarding from './pages/auth/Onboarding';
+
+// Import Super Admin View
+import SuperAdminDashboard from './pages/superadmin/SuperAdminDashboard';
+
 
 function App() {
   return (
@@ -53,9 +70,28 @@ function App() {
             <Route path ="/admin" element={<AdminDashboard/>}/>
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogDetailPage />} />
-            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/FAQ" element={<FAQPage />} />
             <Route path="/about" element={<AboutPage />} />
 
+            {/* Client Dashboard Routes */}
+            <Route path="/dashboard" element={<DashboardLayout />}>
+              <Route index element={<DashboardHome />} />
+              <Route path="services" element={<MyServices />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="billing" element={<Billing />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+
+            {/* Standalone Fullscreen Report */}
+            <Route path="/demo-report" element={<DemoReport />} />
+
+            {/* Auth Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            
+            {/* Super Admin Route */}
+            <Route path="/superuseruk" element={<SuperAdminDashboard />} />
             
           </Routes>
         </main>

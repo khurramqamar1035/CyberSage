@@ -7,7 +7,6 @@ import {
   Award,
   Shield,
   Code,
-  Mail,
   MessageSquare,
   Menu,
   X,
