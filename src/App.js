@@ -41,6 +41,8 @@ import Onboarding from './pages/auth/Onboarding';
 
 // Import Super Admin View
 import SuperAdminDashboard from './pages/superadmin/SuperAdminDashboard';
+import VerifyEmail from './pages/auth/VerifyEmail';
+
 
 
 function App() {
@@ -89,9 +91,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/verify-email/:token" element={<VerifyEmail />} />
             
             {/* Super Admin Route */}
             <Route path="/superuseruk" element={<SuperAdminDashboard />} />
+
             
           </Routes>
         </main>
