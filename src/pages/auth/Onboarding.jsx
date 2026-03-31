@@ -16,7 +16,7 @@ const Onboarding = () => {
     const fetchServices = async () => {
       try {
         console.log('[ONBOARDING] Fetching services from backend...');
-        const res = await fetch(`${BACKEND_URL}api/services`);
+        const res = await fetch(`${BACKEND_URL}/api/services`);
         if (!res.ok) throw new Error('Failed to fetch services');
         const data = await res.json();
 
