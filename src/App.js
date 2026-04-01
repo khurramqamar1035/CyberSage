@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route , Navigate} from 'react-router-dom';
 import ChatBot from './components/ChatBot';
 import LandingPage from './pages/LandingPage';
 import SecurityPage from './pages/SecurityPage';
@@ -53,7 +53,7 @@ const AdminRoute = ({ children }) => {
   const token = localStorage.getItem('adminToken');
   const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
   if (!token || adminUser.role !== 'admin') {
-    return <Navigate to="/admin" replace />;
+    return <Navigate to="/admink" replace />;
   }
   return children;
 };
@@ -109,8 +109,8 @@ function App() {
             {/* Super Admin Route */}
             <Route path="/superuseruk" element={<SuperAdminDashboard />} />
 
-            <Route path="/adminK" element={<AdminLogin />} />
-<Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+            <Route path="/admink" element={<AdminLogin />} />
+<Route path="/admink/*" element={<AdminRoute><AdminLayout /></AdminRoute>}>
   <Route path="companies" element={<AdminCompanies />} />
   <Route path="companies/:userId" element={<AdminCompanyDetail />} />
 </Route>

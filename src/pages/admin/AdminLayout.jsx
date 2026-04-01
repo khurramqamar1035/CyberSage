@@ -9,7 +9,7 @@ const AdminLayout = () => {
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
-    navigate('/admin');
+    navigate('/admink');
   };
 
   return (
@@ -30,7 +30,7 @@ const AdminLayout = () => {
         {/* Nav */}
         <nav className="flex-1 p-4 space-y-1">
           <NavLink
-            to="/admin/companies"
+            to="/admink/companies"
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                 isActive

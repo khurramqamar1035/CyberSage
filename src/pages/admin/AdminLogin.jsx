@@ -29,7 +29,7 @@ const AdminLogin = () => {
 
       localStorage.setItem('adminToken', data.token);
       localStorage.setItem('adminUser', JSON.stringify(data.user));
-      navigate('/admin/companies');
+      navigate('/admink/companies');
     } catch (err) {
       setError(err.message);
     } finally {
