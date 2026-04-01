@@ -6,7 +6,7 @@ import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
-// ------------------ Payment Form Component ------------------
+// ------------------ Payment Form Component -----------------
 const PaymentForm = ({ clientSecret, serviceName, amount, onSuccess, onCancel }) => {
   const stripe = useStripe();
   const elements = useElements();

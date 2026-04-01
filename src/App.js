@@ -44,6 +44,19 @@ import SuperAdminDashboard from './pages/superadmin/SuperAdminDashboard';
 import VerifyEmail from './pages/auth/VerifyEmail';
 
 
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminCompanies from './pages/admin/AdminCompanies';
+import AdminCompanyDetail from './pages/admin/AdminCompanyDetail';
+
+const AdminRoute = ({ children }) => {
+  const token = localStorage.getItem('adminToken');
+  const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+  if (!token || adminUser.role !== 'admin') {
+    return <Navigate to="/admin" replace />;
+  }
+  return children;
+};
 
 function App() {
   return (
@@ -96,7 +109,11 @@ function App() {
             {/* Super Admin Route */}
             <Route path="/superuseruk" element={<SuperAdminDashboard />} />
 
-            
+            <Route path="/adminK" element={<AdminLogin />} />
+<Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+  <Route path="companies" element={<AdminCompanies />} />
+  <Route path="companies/:userId" element={<AdminCompanyDetail />} />
+</Route>
           </Routes>
         </main>
         <ChatBot />
