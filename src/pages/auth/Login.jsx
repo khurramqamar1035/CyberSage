@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Shield, Lock, Mail, Loader2 } from "lucide-react";
-
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const Login = () => {
 
   const navigate = useNavigate();
