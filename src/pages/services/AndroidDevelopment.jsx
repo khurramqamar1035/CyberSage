@@ -1,216 +1,183 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Smartphone, ArrowLeft, CheckCircle, AlertTriangle, TrendingUp } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import SageAI from '../../components/SageAI';
+import { motion } from 'framer-motion';
 
-const AndroidDevelopment = () => {
-  const navigate = useNavigate();
-
+export default function AndroidDevelopment() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-      <nav className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Button onClick={() => navigate('/development')} variant="ghost" className="text-white">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Development Services
-            </Button>
-            <div className="flex items-center gap-3">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png" 
-                alt="CyberSage" 
-                className="w-10 h-10 object-contain"
-              />
-              <h1 className="text-xl font-bold text-white">CyberSage</h1>
-            </div>
-          </div>
+    <main className="pt-24 pb-20">
+      {/* Hero Section */}
+      <section className="relative px-8 py-24 md:py-32 max-w-screen-2xl mx-auto overflow-hidden">
+        <div className="absolute top-0 right-0 -z-10 w-2/3 h-full opacity-20 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent"></div>
+          <img 
+            className="w-full h-full object-cover" 
+            alt="Technical close-up of high-end smartphone screen displaying complex code and abstract blue geometric patterns in a dark cybernetic setting" 
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxCbDrCnjN3zHu7ZoeinacAGqj3U9mFTUrgWWrRkNkox4_3p_8GChrREN7aP5JPx2TA1nfCMM80zhoHoStpPmpb6mL0Bsw2KfphwSJbgrpMxYq_xsTowa_VzeQWK5P4uHic96lA0p5HUFuV0T066uYKdswNwrIEPMulHiOpW70YunvWW39pjKqPeYm39DiKtpDgilFfBJVT96ScAjWZwJbnf_8orUKLquS2VMF9x9EeYY4Vsss7Dd6fRQvGzKrvDpFBalw6V1sxYI"
+          />
         </div>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/30 mb-6">
-            <Smartphone className="w-5 h-5 text-amber-400" />
-            <span className="text-sm text-amber-300 font-medium">ANDROID DEVELOPMENT</span>
-          </div>
-          <h1 className="text-5xl font-bold text-white mb-4">Android Development</h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Native Android apps built with Kotlin and modern architecture
+        
+        <motion.div 
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7 }}
+          className="max-w-3xl"
+        >
+          <span className="font-label text-xs uppercase tracking-[0.2em] text-tertiary mb-6 block">Service Protocol // 042</span>
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
+            Native Android <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary">Sovereign Mobility</span>
+          </h1>
+          <p className="text-on-surface-variant text-lg md:text-xl max-w-xl mb-12 leading-relaxed">
+            Engineered for the elite. We build high-performance, secure Android applications using Kotlin and modern architectural patterns that redefine mobile authority.
           </p>
-          <div className="mt-6">
-            <span className="text-4xl font-bold text-amber-400">Custom Quote</span>
-            <span className="text-slate-400 ml-2">• Based on project scope</span>
+          <div className="flex flex-wrap gap-4">
+            <button className="bg-gradient-to-r from-primary-container to-blue-700 text-on-primary-container px-8 py-4 font-bold rounded-sm shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+              Contact Us
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+            <button className="border border-outline-variant/30 text-on-surface px-8 py-4 font-label text-sm uppercase tracking-widest hover:bg-surface-container transition-all">
+              View Whitepaper
+            </button>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Bento Grid Features */}
+      <section className="px-8 py-24 max-w-screen-2xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          {/* Large Feature */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="md:col-span-8 glass-card p-12 rounded-lg flex flex-col justify-between min-h-[400px]"
+          >
+            <div>
+              <span className="material-symbols-outlined text-primary text-4xl mb-6" data-icon="terminal">terminal</span>
+              <h3 className="text-3xl font-bold mb-4">Kotlin Native &amp; Modern Architecture</h3>
+              <p className="text-on-surface-variant max-w-lg">We utilize MVVM architecture and Jetpack Compose to build interfaces that aren't just fluid, but fundamentally responsive to the user's intent.</p>
+            </div>
+            <div className="flex gap-4 mt-8 overflow-x-auto no-scrollbar">
+              <span className="bg-surface-container-lowest px-4 py-2 font-label text-[10px] tracking-widest text-primary border border-primary/20">COROUTINES</span>
+              <span className="bg-surface-container-lowest px-4 py-2 font-label text-[10px] tracking-widest text-primary border border-primary/20">DAGGER HILT</span>
+              <span className="bg-surface-container-lowest px-4 py-2 font-label text-[10px] tracking-widest text-primary border border-primary/20">ROOM DB</span>
+            </div>
+          </motion.div>
+
+          {/* Secondary Feature */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="md:col-span-4 bg-primary-container p-12 rounded-lg text-on-primary-container relative overflow-hidden"
+          >
+            <div className="relative z-10">
+              <span className="material-symbols-outlined text-4xl mb-6" data-icon="palette" style={{ fontVariationSettings: "'FILL' 1" }}>palette</span>
+              <h3 className="text-2xl font-bold mb-4">Material <br/>Design 3</h3>
+              <p className="opacity-90">Dynamic color mapping and adaptive layouts that feel native to every pixel of the Android ecosystem.</p>
+            </div>
+            <div className="absolute -right-10 -bottom-10 opacity-20">
+              <span className="material-symbols-outlined text-[200px]" data-icon="android">android</span>
+            </div>
+          </motion.div>
+
+          {/* Small Grid Items */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="md:col-span-4 glass-card p-8 rounded-lg"
+          >
+            <span className="material-symbols-outlined text-secondary text-3xl mb-4" data-icon="rocket_launch">rocket_launch</span>
+            <h4 className="font-bold text-xl mb-2">Play Store Deployment</h4>
+            <p className="text-on-surface-variant text-sm">Full lifecycle management from internal testing to global production release.</p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="md:col-span-4 glass-card p-8 rounded-lg"
+          >
+            <span className="material-symbols-outlined text-tertiary text-3xl mb-4" data-icon="support_agent">support_agent</span>
+            <h4 className="font-bold text-xl mb-2">Ongoing Support</h4>
+            <p className="text-on-surface-variant text-sm">24/7 technical surveillance and iterative updates to ensure zero-day compatibility.</p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="md:col-span-4 bg-surface-container-low p-8 rounded-lg border-l-4 border-secondary flex flex-col justify-center"
+          >
+            <span className="font-label text-[10px] tracking-tighter uppercase text-secondary mb-2">Investment Tier</span>
+            <h4 className="font-bold text-2xl">Custom Quote</h4>
+            <p className="text-on-surface-variant text-xs mt-2 uppercase tracking-widest">Sovereign Protocol Pricing</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="bg-surface-container-low py-32">
+        <div className="px-8 max-w-screen-2xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8"
+          >
+            <div className="max-w-2xl">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">The Development Lifecycle</h2>
+              <p className="text-on-surface-variant">We don't just write code; we architect experiences through a rigorous phase-gate methodology.</p>
+            </div>
+            <div className="font-label text-sm text-primary tracking-[0.3em]">PHASE // 01 - 04</div>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+            {[
+              { id: '01', title: 'Discovery', desc: 'Defining the core utility and technical constraints of the mobile interface.' },
+              { id: '02', title: 'Blueprint', desc: 'Wireframing the digital journey with a focus on Material Design ergonomics.' },
+              { id: '03', title: 'Forging', desc: 'Native Kotlin development with continuous integration and automated testing.' },
+              { id: '04', title: 'Ascension', desc: 'Final optimization, store deployment, and global scaling protocols.' }
+            ].map((phase, i) => (
+              <motion.div 
+                key={phase.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                className="relative"
+              >
+                <span className="text-8xl font-black text-white/5 absolute -top-12 -left-4 pointer-events-none">{phase.id}</span>
+                <h5 className="font-bold text-xl mb-4 relative z-10">{phase.title}</h5>
+                <p className="text-sm text-on-surface-variant leading-relaxed">{phase.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
+      </section>
 
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6 text-amber-400" />
-              What is Android Development?
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-slate-300 space-y-4">
-            <p className="text-lg leading-relaxed">
-              Android Development is the process of creating mobile applications specifically for the Android operating system, which powers over 70% of smartphones worldwide. We build native Android apps using Kotlin (Google's preferred language) and modern Android development tools to create fast, secure, and user-friendly applications.
-            </p>
-            <p className="leading-relaxed">
-              Our Android development follows Material Design guidelines and leverages the latest Android features including Jetpack Compose for modern UI, Room for local database, WorkManager for background tasks, and comprehensive security implementations. We build apps that feel native to Android users while maintaining high performance across different device sizes and Android versions.
-            </p>
-            <p className="leading-relaxed">
-              Whether you're building a consumer app, enterprise solution, or internal tool, we deliver production-ready Android applications with clean architecture, comprehensive testing, and full Play Store deployment support.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-amber-400" />
-              What We Build
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
-              {[
-                {
-                  title: 'Modern UI with Jetpack Compose',
-                  description: 'Beautiful, responsive interfaces using the latest declarative UI toolkit from Google'
-                },
-                {
-                  title: 'Secure Backend Integration',
-                  description: 'RESTful API integration, GraphQL, real-time data sync with proper security'
-                },
-                {
-                  title: 'Offline-First Architecture',
-                  description: 'Apps that work without internet connection, syncing when connectivity returns'
-                },
-                {
-                  title: 'Payment Integration',
-                  description: 'Google Pay, Stripe, PayPal, and other payment gateway implementations'
-                },
-                {
-                  title: 'Push Notifications',
-                  description: 'Firebase Cloud Messaging for engaging user notifications'
-                },
-                {
-                  title: 'Location Services',
-                  description: 'GPS tracking, geofencing, maps integration with Google Maps'
-                },
-                {
-                  title: 'Media Handling',
-                  description: 'Camera, video recording, audio playback, image processing'
-                },
-                {
-                  title: 'Authentication',
-                  description: 'Google Sign-In, biometric auth, OAuth, JWT token management'
-                }
-              ].map((item, index) => (
-                <div key={index} className="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
-                  <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-slate-400">{item.description}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-8 bg-slate-800/50 p-6 rounded-lg border border-slate-700">
-              <h3 className="text-xl font-semibold text-white mb-4">Our Development Process</h3>
-              <div className="grid md:grid-cols-4 gap-4">
-                {[
-                  { step: '1', title: 'Discovery', desc: 'Requirements gathering and technical planning' },
-                  { step: '2', title: 'Design', desc: 'UI/UX mockups following Material Design' },
-                  { step: '3', title: 'Development', desc: 'Agile sprints with weekly progress updates' },
-                  { step: '4', title: 'Launch', desc: 'Play Store submission and deployment' }
-                ].map((item, index) => (
-                  <div key={index} className="text-center">
-                    <div className="w-12 h-12 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center mx-auto mb-3">
-                      <span className="text-amber-400 font-bold text-lg">{item.step}</span>
-                    </div>
-                    <h4 className="font-semibold text-white mb-1">{item.title}</h4>
-                    <p className="text-sm text-slate-400">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <TrendingUp className="w-6 h-6 text-amber-400" />
-              Why Choose Our Android Development
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6 text-slate-300">
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-3">Technical Excellence</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Kotlin-First:</strong> Using Google's recommended language for best performance and safety</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Clean Architecture:</strong> MVVM pattern with proper separation of concerns</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Comprehensive Testing:</strong> Unit tests, integration tests, and UI tests included</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Security Built-In:</strong> Encryption, secure storage, certificate pinning, ProGuard</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-3">Perfect For</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
-                    <p className="text-amber-300 font-semibold mb-2">Startups & MVPs</p>
-                    <p className="text-sm text-slate-400">Launch fast with a solid foundation that scales as you grow</p>
-                  </div>
-                  <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
-                    <p className="text-amber-300 font-semibold mb-2">E-commerce</p>
-                    <p className="text-sm text-slate-400">Secure payment processing and inventory management</p>
-                  </div>
-                  <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
-                    <p className="text-amber-300 font-semibold mb-2">Social Networks</p>
-                    <p className="text-sm text-slate-400">Real-time messaging, feeds, and user interactions</p>
-                  </div>
-                  <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
-                    <p className="text-amber-300 font-semibold mb-2">Enterprise Apps</p>
-                    <p className="text-sm text-slate-400">Internal tools, CRM, field service applications</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-green-300 mb-3">✓ What's Included</h3>
-                <p className="text-slate-300">
-                  Source code • Full documentation • Play Store deployment • 30-day post-launch support • Analytics integration • Crash reporting setup • Performance optimization
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="text-center mt-12">
-          <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-white text-lg px-8 py-6">
-            Get Custom Quote
-          </Button>
-          <p className="text-slate-400 mt-4">Free consultation • Flexible pricing • Transparent development process</p>
-        </div>
-      </div>
-
-      <SageAI />
-    </div>
+      {/* CTA Section */}
+      <section className="px-8 py-32 max-w-screen-2xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="glass-card p-16 md:p-24 rounded-lg relative overflow-hidden border border-primary/10"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+          <div className="max-w-3xl relative z-10 mx-auto text-center">
+            <h2 className="text-4xl md:text-6xl font-bold mb-8">Ready to deploy your <br/>vision on Android?</h2>
+            <p className="text-on-surface-variant text-lg mb-12">Connect with our core team to discuss your project requirements and receive a tactical technical evaluation.</p>
+            <button className="bg-primary text-on-primary px-12 py-5 font-bold rounded-sm shadow-[0_0_24px_rgba(180,197,255,0.2)] hover:scale-105 transition-all text-lg">
+              Initiate Contact
+            </button>
+          </div>
+        </motion.div>
+      </section>
+    </main>
   );
-};
-
-export default AndroidDevelopment;
+}

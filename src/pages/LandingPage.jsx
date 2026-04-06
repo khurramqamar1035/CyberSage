@@ -1,141 +1,192 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Shield, Code, GraduationCap, Info } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Button } from "../components/ui/button";
+import React, { useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { Button } from "../components/Button";
+import { GlassCard } from "../components/GlassCard";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+const SERVICES = [
+  {
+    id: "security",
+    icon: "shield_lock",
+    iconColor: "text-primary",
+    linkColor: "text-primary",
+    linkHover: "hover:text-tertiary",
+    title: "Security Services",
+    description:
+      "Deployment of deep-packet offensive auditing and proactive threat mitigation. Our engineers secure your perimeter against advanced persistent threats with millisecond response precision.",
+    path: "/security-services",
+  },
+  {
+    id: "development",
+    icon: "terminal",
+    iconColor: "text-tertiary",
+    linkColor: "text-tertiary",
+    linkHover: "hover:text-primary",
+    title: "Development Services",
+    description:
+      "Engineering hyper-scalable digital infrastructure with security-first architecture. We build resilient applications that thrive in hostile network environments through rigorous code hardening.",
+    path: "/development-services",
+  },
+  {
+    id: "training",
+    icon: "school",
+    iconColor: "text-secondary",
+    linkColor: "text-secondary",
+    linkHover: "hover:text-primary",
+    title: "Training Academy",
+    description:
+      "Specialized immersion programs for elite cyber-defense personnel. Transform your internal IT teams into a formidable first-line defense through our sovereign sentry curriculum.",
+    path: "/training",
+  },
+];
+
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [aboutOpen, setAboutOpen] = useState(false);
 
-  const services = [
-    {
-      id: "security",
-      icon: Shield,
-      title: "Cyber Security",
-      description:
-        "Protect your digital assets with AI-powered security solutions",
-      path: "/security",
-    },
-    {
-      id: "development",
-      icon: Code,
-      title: "Development",
-      description:
-        "Build secure and scalable applications with expert guidance",
-      path: "/development",
-    },
-    {
-      id: "training",
-      icon: GraduationCap,
-      title: "Training",
-      description: "Master cybersecurity skills with comprehensive courses",
-      path: "/training",
-    },
-  ];
-
-  // 🔹 Prefetch About Page API
   useEffect(() => {
-    // Prefetch team
     fetch(`${BACKEND_URL}/api/about/team`).catch(() => {});
-    // Prefetch offices
     fetch(`${BACKEND_URL}/api/about/offices`).catch(() => {});
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-x-hidden relative">
-      
-      {/* Top Header Actions */}
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:right-10 z-50">
-        <Button 
-          onClick={() => navigate('/login')}
-          className="bg-blue-600 hover:bg-blue-500 text-white font-medium border-none shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all flex items-center gap-2"
-        >
-          <Shield className="w-4 h-4" />
-          Client Portal
-        </Button>
-      </div>
+    <main>
+      {/* ── Hero ── */}
+      <section className="relative min-h-[819px] flex items-center justify-center overflow-hidden px-8">
+        <div className="absolute inset-0 hero-gradient" />
 
-      {/* Container */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-        {/* Logo */}
-        <div className="flex justify-center mb-8">
+        <div className="relative z-10 max-w-5xl text-center flex flex-col items-center">
           <img
-            src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png"
-            alt="CyberSage Logo"
-            className="w-24 h-24 sm:w-28 sm:h-28 object-contain"
+            src="/logo.png"
+            alt="CyberSage Protocol"
+            className="w-56 md:w-80 h-auto mb-10 drop-shadow-[0_0_30px_rgba(255,255,255,0.15)] opacity-95"
           />
-        </div>
 
-        {/* Heading */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent mb-4">
-            Welcome to CyberSage
-          </h1>
-          <p className="text-slate-400 text-base sm:text-lg">
-            Your Digital Guardian — Choose Your Path
+          <p className="font-label uppercase tracking-[0.3em] text-secondary text-xs mb-6">
+            Established Protocol 2024
           </p>
+
+          <h1 className="font-headline font-black text-6xl md:text-8xl tracking-tighter leading-none mb-8 text-on-surface">
+            Unyielding <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary">
+              Digital Authority.
+            </span>
+          </h1>
+
+          <p className="max-w-2xl mx-auto text-on-surface-variant text-lg md:text-xl font-light leading-relaxed mb-12">
+            Architecting sovereign defense perimeters for global enterprises. We
+            transform vulnerability into strategic dominance through elite
+            intelligence and defensive innovation.
+          </p>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+            <Button variant="primary" onClick={() => navigate("/security-services")}>
+              Initiate Protocol
+            </Button>
+            <Button variant="secondary" onClick={() => navigate("/core-team")}>
+              View Intelligence Reports
+            </Button>
+          </div>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => {
-            const Icon = service.icon;
+        {/* Ambient glows */}
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-secondary/5 rounded-full blur-[120px]" />
+      </section>
 
-            return (
-              <Card
-                key={service.id}
-                onClick={() => navigate(service.path)}
-                className="bg-slate-900/60 border border-slate-700 hover:border-amber-500/50 transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer p-2"
-              >
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-amber-400" />
-                  </div>
+      {/* ── Services Grid ── */}
+      <section className="py-24 px-8 max-w-[1440px] mx-auto">
+        <div className="mb-16">
+          <h2 className="font-headline text-4xl font-bold tracking-tight mb-2 text-on-surface">
+            Core Competencies
+          </h2>
+          <div className="h-1 w-20 bg-primary" />
+        </div>
 
-                  <CardTitle className="text-white text-lg sm:text-xl">
-                    {service.title}
-                  </CardTitle>
-
-                  <CardDescription className="text-slate-400 text-sm leading-relaxed">
-                    {service.description}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent>
-                  <Button
-                    variant="ghost"
-                    className="w-full text-amber-400 hover:bg-white/10"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {SERVICES.map((service) => (
+            <Link
+              key={service.id}
+              to={service.path}
+              className="group block no-underline"
+            >
+              <GlassCard className="flex flex-col h-full">
+                <div className="mb-8">
+                  <span
+                    className={`material-symbols-outlined text-4xl ${service.iconColor}`}
+                    style={{ fontVariationSettings: "'FILL' 1" }}
                   >
-                    Explore Services
-                  </Button>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                    {service.icon}
+                  </span>
+                </div>
 
-        {/* About Section */}
-        <div className="mt-12 flex justify-center">
-          <Button
-            variant="outline"
-            className="bg-slate-900/50 border-slate-700 text-white hover:bg-slate-800 hover:border-amber-500/50"
-            onClick={() => navigate("/about")}
-          >
-            <Info className="w-4 h-4 mr-2" />
-            Core Team
-          </Button>
+                <h3 className="font-headline text-2xl font-bold mb-4 text-on-surface">
+                  {service.title}
+                </h3>
+
+                <p className="text-on-surface-variant font-light mb-8 flex-grow leading-relaxed">
+                  {service.description}
+                </p>
+
+                <div
+                  className={`flex items-center gap-2 font-label text-[10px] uppercase tracking-[0.15em] ${service.linkColor} ${service.linkHover} transition-colors`}
+                >
+                  Learn More{" "}
+                  <span className="material-symbols-outlined text-sm">
+                    arrow_forward
+                  </span>
+                </div>
+              </GlassCard>
+            </Link>
+          ))}
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* ── Origin / About Section ── */}
+      <section className="py-32 px-8 bg-surface-container-low overflow-hidden">
+        <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          {/* Image */}
+          <div className="relative">
+            <div className="aspect-square w-full max-w-lg bg-surface-container-highest overflow-hidden rounded-sm relative z-10">
+              <img
+                alt="Minimalist server room with blue ambient lighting"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuChfg-CdjjDpS1V3Svxlir1JeTLMiHW3_hSB04KZupS0bfaHH6j2JbNo6XBqaGQHUBqVJXMxF6HZb_RRAbRntT0LSogZyyQdiDG22jTcr3wHD1Byq5cDcZxAJrwMZ4YQ9fNulESpaFM4210qwWz199Zee8_4IrykD95rJh82mqsl7n5tQICal_O0s_icHMHHvwgip69B-RuotebJYrQDXblW_QnPd7CIzsvYwiWAAXGWtSYSfjvhCNDjUjfNETILm6bM5kBWoMuNuY"
+              />
+            </div>
+            <div className="absolute -bottom-10 -left-10 w-full h-full border border-primary/20 -z-10 translate-x-4 translate-y-4" />
+          </div>
+
+          {/* Text */}
+          <div className="flex flex-col gap-8">
+            <span className="font-label text-secondary uppercase tracking-[0.2em] text-[10px]">
+              The Cybersage Origin
+            </span>
+            <h2 className="font-headline text-5xl font-black tracking-tighter leading-tight text-on-surface">
+              Built From The Void Up.
+            </h2>
+            <p className="text-on-surface-variant text-lg font-light leading-relaxed">
+              Founded by a collective of security researchers and sovereign
+              developers, Cybersage was born from a singular mission: to restore
+              digital autonomy to organizations operating in an era of
+              unprecedented cyber fragility.
+            </p>
+            <p className="text-on-surface-variant text-lg font-light leading-relaxed">
+              We don't just patch systems; we rebuild the philosophy of
+              protection. Our story is written in the code of the world's most
+              secure perimeters, defined by a relentless pursuit of technical
+              perfection and unyielding integrity.
+            </p>
+            <div className="pt-8">
+              <Button variant="secondary" onClick={() => navigate("/core-team")}>
+                Meet The Core Team
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 };
+
 export default LandingPage;

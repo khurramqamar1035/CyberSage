@@ -1,399 +1,175 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  GraduationCap,
-  BookOpen,
-  Target,
-  Award,
-  Shield,
-  Code,
-  MessageSquare,
-  Menu,
-  X,
-} from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import SageAI from "../components/SageAI";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const TrainingPage = () => {
-  const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    setMenuOpen(false); // close mobile menu
-  };
-
-  const trainingPrograms = [
-    {
-      icon: BookOpen,
-      title: "Basic Cybersecurity",
-      description: "Foundation course for beginners in cybersecurity",
-      price: "$199",
-      duration: "4 weeks",
-      level: "Beginner",
-      features: [
-        "Security fundamentals",
-        "Common threats",
-        "Basic protection",
-        "Certificate included",
-      ],
-      link: "/services/BasicTraining",
-    },
-    {
-      icon: Target,
-      title: "Intermediate Cybersecurity",
-      description: "Advanced concepts and practical security implementation",
-      price: "$399",
-      duration: "8 weeks",
-      level: "Intermediate",
-      features: [
-        "Network security",
-        "Penetration testing",
-        "Incident response",
-        "Hands-on labs",
-      ],
-      link: "/services/IntermediateTraining",
-    },
-    {
-      icon: Award,
-      title: "Advanced Cybersecurity",
-      description: "Expert-level training with real-world scenarios",
-      price: "$699",
-      duration: "12 weeks",
-      level: "Advanced",
-      features: [
-        "Advanced threats",
-        "Security architecture",
-        "Compliance",
-        "Capstone project",
-      ],
-      link: "/services/AdvancedTraining",
-    },
-  ];
-
-  const testimonials = [
-    {
-      name: "James Wilson",
-      role: "Security Analyst",
-      text: "The training program transformed my career. I went from zero knowledge to landing a cybersecurity job in 6 months.",
-    },
-    {
-      name: "Maria Garcia",
-      role: "IT Manager",
-      text: "Excellent hands-on training with real-world examples. The instructors are knowledgeable and supportive.",
-    },
-    {
-      name: "Tom Brown",
-      role: "Freelance Consultant",
-      text: "Advanced course gave me the skills to offer security consulting services to my clients confidently.",
-    },
-  ];
-
+export default function TrainingAcademy() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <div
-              className="flex items-center gap-3 cursor-pointer"
-              onClick={() => navigate("/")}
-            >
-              <img
-                src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png"
-                alt="CyberSage"
-                className="w-10 h-10 object-contain"
-              />
-              <h1 className="text-xl font-bold text-white">CyberSage</h1>
-            </div>
+    <main className="pt-32 pb-24">
+      <section className="max-w-[1440px] mx-auto px-8 mb-24 grid md:grid-cols-2 gap-12 items-center">
+        <div className="z-10">
+          <span className="font-label text-secondary tracking-[0.3em] uppercase text-xs mb-4 block">Institutional Grade Excellence</span>
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-6">
+            CYBERSAGE <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-tertiary to-primary">ACADEMY</span>
+          </h1>
+          <p className="text-on-surface-variant text-lg max-w-lg mb-8 leading-relaxed">
+            Forging the next generation of digital sentries. Our curriculum is built on real-world threat vectors, moving beyond theory into surgical precision.
+          </p>
+          <div className="flex gap-4">
+            <button className="bg-primary px-8 py-4 text-on-primary font-bold text-sm uppercase tracking-widest hover:shadow-[0_0_20px_rgba(180,197,255,0.3)] transition-all">Enroll Now</button>
+            <button className="border border-outline-variant px-8 py-4 text-on-surface font-label text-xs uppercase tracking-widest hover:bg-white/5 transition-all">View Syllabus</button>
+          </div>
+        </div>
+        <div className="relative group">
+          <div className="absolute -inset-4 bg-primary/10 blur-3xl rounded-full opacity-50 group-hover:opacity-70 transition-opacity"></div>
+          <img className="relative w-full aspect-square object-cover grayscale brightness-75 group-hover:grayscale-0 transition-all duration-700" alt="Futuristic server room with glowing blue neon lights and complex wiring, digital security aesthetic with motion blur" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV8bfxq4sQjjKPnko_HLrwyvBbT32BYm8Qdb6OODTtpU48w81Tqfek_vgRxR9bm9AjmoO28b1dMsFEnkpohRAZUTsgNUG5y6PeEZWWB2ZMbnHSTYiZrTMxhR9WlH45k_7X9J6CmSaY7uwSqzrDfMv45zMoYTYfg-0lPpCptI6xBO2Ol7d4OqOQVutTxbAQielKnd-L1wKXxxdeoNdNmJTANhRdDgnoA1BfpU_0secRU7aDqr8hvHbKDiBSaf0DKDPeF8HSRClHyyg" />
+        </div>
+      </section>
 
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-4">
-              <button
-                onClick={() => scrollToSection("services")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Services
-              </button>
-              <button
-                onClick={() => scrollToSection("testimonials")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Testimonials
-              </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Contact
-              </button>
-              <button
-                onClick={() => navigate("/blog")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Blog
-              </button>
-              <button
-                onClick={() => navigate("/faq")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                FAQ
-              </button>
-              <button
-                onClick={() => navigate("/about")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                About
-              </button>
-              <div className="flex items-center gap-2">
-                <Button
-                  onClick={() => navigate("/security")}
-                  variant="ghost"
-                  size="sm"
-                  className="text-blue-400 hover:text-blue-300"
-                >
-                  <Shield className="w-4 h-4 mr-1" /> Security
-                </Button>
-                <Button
-                  onClick={() => navigate("/development")}
-                  variant="ghost"
-                  size="sm"
-                  className="text-purple-400 hover:text-purple-300"
-                >
-                  <Code className="w-4 h-4 mr-1" /> Development
-                </Button>
+      <section className="max-w-[1440px] mx-auto px-8 mb-32">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+          <div>
+            <h2 className="font-label text-sm text-tertiary uppercase tracking-widest mb-2">Training Tiers</h2>
+            <h3 className="text-4xl font-bold tracking-tight text-on-background">Choose Your Path of Mastery</h3>
+          </div>
+          <div className="h-px flex-grow bg-outline-variant/30 mx-8 hidden md:block mb-4"></div>
+          <p className="text-on-surface-variant text-sm max-w-xs text-right">Progressive modules designed for total domain immersion and operational readiness.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-outline-variant/20">
+          <div className="p-10 flex flex-col border-r border-outline-variant/20 hover:bg-surface-container-low transition-colors group">
+            <div className="flex justify-between items-start mb-12">
+              <span className="font-label text-[10px] tracking-[0.2em] text-on-surface-variant uppercase bg-surface-container px-3 py-1">Tier 01</span>
+              <span className="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform" data-icon="verified_user">verified_user</span>
+            </div>
+            <h4 className="text-2xl font-bold mb-2">Basic Cybersecurity</h4>
+            <p className="text-on-surface-variant text-sm mb-8">Foundational defense strategies and digital hygiene for the modern operative.</p>
+            <div className="mt-auto space-y-4 mb-10">
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-xs text-primary" data-icon="schedule">schedule</span>
+                <span className="font-label text-[10px] uppercase tracking-widest">4 Weeks Duration</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-xs text-primary" data-icon="layers">layers</span>
+                <span className="font-label text-[10px] uppercase tracking-widest">Core Infrastructure 101</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-xs text-primary" data-icon="encrypted">encrypted</span>
+                <span className="font-label text-[10px] uppercase tracking-widest">Encryption Standards</span>
               </div>
             </div>
+            <div className="flex items-baseline gap-2 mb-8">
+              <span className="text-4xl font-black text-on-background">$199</span>
+              <span className="font-label text-[10px] text-on-surface-variant uppercase">Full Access</span>
+            </div>
+            <Link to="/training/beginner" className="w-full py-4 border border-primary/30 text-primary font-label text-[10px] uppercase tracking-[0.2em] hover:bg-primary hover:text-on-primary transition-all flex justify-center items-center text-center">Begin Initiation</Link>
+          </div>
 
-            {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center">
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="text-gray-300 hover:text-white"
-              >
-                {menuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
-              </button>
+          <div className="p-10 flex flex-col border-r border-outline-variant/20 bg-surface-container-low/40 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4">
+              <span className="font-label text-[8px] tracking-[0.3em] text-secondary-container uppercase border border-secondary-container/30 px-2 py-1">Most Popular</span>
+            </div>
+            <div className="flex justify-between items-start mb-12">
+              <span className="font-label text-[10px] tracking-[0.2em] text-on-surface-variant uppercase bg-surface-container px-3 py-1">Tier 02</span>
+              <span className="material-symbols-outlined text-secondary text-3xl group-hover:scale-110 transition-transform" data-icon="security">security</span>
+            </div>
+            <h4 className="text-2xl font-bold mb-2">Practical Implementation</h4>
+            <p className="text-on-surface-variant text-sm mb-8">Active threat hunting and network architecture reinforcement protocols.</p>
+            <div className="mt-auto space-y-4 mb-10">
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-xs text-secondary" data-icon="schedule">schedule</span>
+                <span className="font-label text-[10px] uppercase tracking-widest">8 Weeks Duration</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-xs text-secondary" data-icon="terminal">terminal</span>
+                <span className="font-label text-[10px] uppercase tracking-widest">Red Team Simulations</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-xs text-secondary" data-icon="hub">hub</span>
+                <span className="font-label text-[10px] uppercase tracking-widest">Cloud Security Mesh</span>
+              </div>
+            </div>
+            <div className="flex items-baseline gap-2 mb-8">
+              <span className="text-4xl font-black text-on-background">$399</span>
+              <span className="font-label text-[10px] text-on-surface-variant uppercase">Full Access</span>
+            </div>
+            <Link to="/training/intermediate" className="w-full py-4 bg-secondary-container text-on-secondary-container font-label text-[10px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-[0_0_20px_rgba(238,152,0,0.2)] flex justify-center items-center text-center">Expand Domain</Link>
+          </div>
+
+          <div className="p-10 flex flex-col hover:bg-surface-container-low transition-colors group">
+            <div className="flex justify-between items-start mb-12">
+              <span className="font-label text-[10px] tracking-[0.2em] text-on-surface-variant uppercase bg-surface-container px-3 py-1">Tier 03</span>
+              <span className="material-symbols-outlined text-tertiary text-3xl group-hover:scale-110 transition-transform" data-icon="rocket_launch">rocket_launch</span>
+            </div>
+            <h4 className="text-2xl font-bold mb-2">Expert-Level Mastery</h4>
+            <p className="text-on-surface-variant text-sm mb-8">Advanced zero-day exploitation prevention and sovereign AI defense systems.</p>
+            <div className="mt-auto space-y-4 mb-10">
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-xs text-tertiary" data-icon="schedule">schedule</span>
+                <span className="font-label text-[10px] uppercase tracking-widest">12 Weeks Duration</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-xs text-tertiary" data-icon="biometrics">fingerprint</span>
+                <span className="font-label text-[10px] uppercase tracking-widest">Quantum Cryptography</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-xs text-tertiary" data-icon="crisis_alert">crisis_alert</span>
+                <span className="font-label text-[10px] uppercase tracking-widest">Global Incident Response</span>
+              </div>
+            </div>
+            <div className="flex items-baseline gap-2 mb-8">
+              <span className="text-4xl font-black text-on-background">$699</span>
+              <span className="font-label text-[10px] text-on-surface-variant uppercase">Full Access</span>
+            </div>
+            <Link to="/training/advanced" className="w-full py-4 border border-tertiary/30 text-tertiary font-label text-[10px] uppercase tracking-[0.2em] hover:bg-tertiary hover:text-on-tertiary transition-all flex justify-center items-center text-center">Ascend to Expert</Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-[1440px] mx-auto px-8">
+        <div className="glass-card relative p-12 overflow-hidden flex flex-col md:flex-row items-center gap-16">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+          <div className="md:w-1/2 relative z-10">
+            <h2 className="font-label text-secondary text-xs tracking-[0.5em] uppercase mb-4">Proprietary Tech</h2>
+            <h3 className="text-5xl font-black tracking-tighter mb-6 uppercase">The Crucible</h3>
+            <p className="text-on-surface-variant text-lg mb-8 leading-relaxed">
+              Beyond the classroom lies the simulation. The Crucible is our dynamic battle environment that adapts to your skill level, throwing evolving AI-driven threat vectors at your defense infrastructure in real-time.
+            </p>
+            <ul className="space-y-4 mb-10">
+              <li className="flex gap-4">
+                <span className="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+                <span className="text-sm font-medium">Real-time latency-based stress testing</span>
+              </li>
+              <li className="flex gap-4">
+                <span className="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+                <span className="text-sm font-medium">Adaptive Adversary AI integration</span>
+              </li>
+              <li className="flex gap-4">
+                <span className="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+                <span className="text-sm font-medium">Frame-by-frame performance analytics</span>
+              </li>
+            </ul>
+            <button className="flex items-center gap-4 group">
+              <span className="bg-surface-bright p-4 rounded-full group-hover:bg-primary transition-colors">
+                <span className="material-symbols-outlined text-white" data-icon="play_arrow" data-weight="fill" style={{ fontVariationSettings: "'FILL' 1" }}>play_arrow</span>
+              </span>
+              <span className="font-label text-xs uppercase tracking-widest">Preview Simulation</span>
+            </button>
+          </div>
+          <div className="md:w-1/2 relative">
+            <div className="absolute -inset-10 bg-tertiary/20 blur-[100px] opacity-30 rounded-full"></div>
+            <div className="relative bg-surface border border-outline-variant/30 p-2 overflow-hidden shadow-2xl">
+              <img className="w-full aspect-video object-cover opacity-80 brightness-110 hover:scale-105 transition-transform duration-1000" alt="Digital glitch art representing a cyber battle simulation, vibrant blue and amber interference patterns over a dark grid" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtWPYSBZNPxiMe8a7vBPnatcxTevxV-Lhpc3z7XDaLT95WLv7UzZYltBbE954spYCYTU36TViiL3tava_AER0887vuz1926j3a7KeTVR-X_Od9O6v0ucw26TGLDlwzSJDYadFQR0Pmf9dRDysits99JgMI05XhQlfsw9vbm9UPdjZix0S7xo414OvOzu-cqssmzeLIsiYgrHNF0e7uSNjj4oNTlZTQM0kAiSBq_55YLCRFSSaA1lZCmqhj7wreilyuGf2XPY1FmYc" />
+              <div className="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-60"></div>
+              <div className="absolute bottom-6 left-6 right-6 flex justify-between items-center">
+                <div className="flex gap-2">
+                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                  <span className="font-label text-[8px] uppercase tracking-widest text-white">LIVE SIMULATION ACTIVE</span>
+                </div>
+                <span className="font-label text-[10px] text-primary">SYSTEM: NOMINAL</span>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            menuOpen ? "max-h-96 py-2" : "max-h-0"
-          }`}
-        >
-          <div className="flex flex-col gap-2 px-4 bg-gray-900 border-t border-gray-800">
-            <button
-              onClick={() => scrollToSection("services")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              Services
-            </button>
-            <button
-              onClick={() => scrollToSection("testimonials")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              Testimonials
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              Contact
-            </button>
-            <button
-              onClick={() => navigate("/blog")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              Blog
-            </button>
-            <button
-              onClick={() => navigate("/faq")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              FAQ
-            </button>
-            <button
-              onClick={() => navigate("/about")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              About
-            </button>
-            <div className="flex flex-col gap-2 mt-2">
-              <Button
-                onClick={() => navigate("/security")}
-                variant="ghost"
-                size="sm"
-                className="text-blue-400 hover:text-blue-300 justify-start"
-              >
-                <Shield className="w-4 h-4 mr-1" /> Security
-              </Button>
-              <Button
-                onClick={() => navigate("/development")}
-                variant="ghost"
-                size="sm"
-                className="text-purple-400 hover:text-purple-300 justify-start"
-              >
-                <Code className="w-4 h-4 mr-1" /> Development
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero */}
-      <div className="py-20 px-4 text-center">
-        <div className="max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-green-500/10 border border-green-500/20 mb-6 mx-auto">
-            <GraduationCap className="w-4 h-4 text-green-400" />
-            <span className="text-sm text-green-400 font-medium">
-              TRAINING PROGRAMS
-            </span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            Master Cybersecurity Skills
-          </h1>
-          <p className="text-base sm:text-lg text-gray-400 mx-auto">
-            Comprehensive training programs to advance your cybersecurity
-            career. From beginner to expert level.
-          </p>
-        </div>
-      </div>
-
-      {/* Training Programs */}
-      <div id="services" className="py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white text-center mb-8">
-            Our Training Programs
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trainingPrograms.map((program, index) => {
-              const IconComponent = program.icon;
-              return (
-                <Card
-                  key={index}
-                  className="bg-slate-900/60 border-slate-700 hover:border-amber-500/50 transition-all duration-300 cursor-pointer"
-                  onClick={() => navigate(program.link)}
-                >
-                  <CardHeader>
-                    <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4">
-                      <IconComponent className="w-6 h-6 text-amber-400" />
-                    </div>
-                    <div className="mb-2">
-                      <div className="inline-block px-2 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 mb-3">
-                        <span className="text-xs text-amber-400 font-medium">
-                          {program.level}
-                        </span>
-                      </div>
-                    </div>
-                    <CardTitle className="text-lg sm:text-xl text-white mb-2">
-                      {program.title}
-                    </CardTitle>
-                    <CardDescription className="text-slate-400 text-sm">
-                      {program.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-1 mb-3">
-                      {program.features.map((feature, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center gap-2 text-xs sm:text-sm text-slate-300"
-                        >
-                          <div className="w-1.5 h-1.5 rounded-full bg-amber-400"></div>
-                          <span>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t border-slate-700 text-sm sm:text-base">
-                      <span className="text-amber-400 font-bold">
-                        {program.price}
-                      </span>
-                      <span className="text-slate-500">{program.duration}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* Testimonials */}
-      <div id="testimonials" className="py-12 px-4 bg-gray-900/30">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white text-center mb-8">
-            Student Success Stories
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <Card key={i} className="bg-gray-900/50 border-gray-800">
-                <CardContent className="pt-6">
-                  <p className="text-gray-300 mb-4 italic text-sm sm:text-base">
-                    "{t.text}"
-                  </p>
-                  <div>
-                    <p className="font-semibold text-white text-sm sm:text-base">
-                      {t.name}
-                    </p>
-                    <p className="text-gray-400 text-xs sm:text-sm">{t.role}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Contact */}
-      <div id="contact" className="py-12 px-4">
-        <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Ready to Start Learning?
-          </h2>
-          <p className="text-base sm:text-lg text-gray-400 mb-6">
-            Enroll today and take the first step in your cybersecurity journey
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              className="border-gray-700 text-white hover:bg-gray-800 w-full sm:w-auto"
-              onClick={() =>
-                window.open(
-                  "https://mail.google.com/mail/?view=cm&fs=1&to=cybersageuk@gmail.com",
-                  "_blank"
-                )
-              }
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              cybersageuk@gmail.com
-            </Button>
-            {/* <Button
-              variant="outline"
-              className="w-full sm:w-auto border-gray-700 text-white hover:bg-gray-800 flex items-center justify-center"
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Enroll Now
-            </Button> */}
-          </div>
-        </div>
-      </div>
-
-      <SageAI />
-    </div>
+      </section>
+    </main>
   );
-};
-
-export default TrainingPage;
+}

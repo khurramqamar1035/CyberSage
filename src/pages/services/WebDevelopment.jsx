@@ -1,238 +1,249 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Monitor, ArrowLeft, CheckCircle, AlertTriangle, TrendingUp } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import SageAI from '../../components/SageAI';
+import { motion } from 'framer-motion';
 
-const WebDevelopment = () => {
-  const navigate = useNavigate();
-
+export default function WebDevelopment() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-      <nav className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Button onClick={() => navigate('/development')} variant="ghost" className="text-white">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Development Services
-            </Button>
-            <div className="flex items-center gap-3">
+    <main className="pt-24 pb-20">
+      {/* Hero Section */}
+      <section className="relative px-8 py-24 overflow-hidden">
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full"></div>
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-tertiary/10 blur-[100px] rounded-full"></div>
+        
+        <div className="max-w-screen-2xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            className="relative z-10"
+          >
+            <div className="font-label text-xs tracking-[0.2em] text-tertiary mb-4 flex items-center gap-2">
+              <span className="w-8 h-px bg-tertiary/30"></span> 
+              ELITE WEB ARCHITECTURE
+            </div>
+            <h1 className="font-headline font-extrabold text-5xl md:text-7xl leading-tight tracking-tighter mb-8">
+              Precision <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary">Development</span><br/>
+              for Global Scale.
+            </h1>
+            <p className="text-on-surface-variant text-lg max-w-xl mb-12 leading-relaxed">
+              We engineer resilient, sovereign web platforms using the most advanced reactive frameworks and cloud-native infrastructure. Built to withstand, designed to excel.
+            </p>
+            <div className="flex flex-wrap gap-6">
+              <button className="px-8 py-4 bg-gradient-to-r from-primary-container to-primary font-headline font-bold text-sm uppercase tracking-widest text-white shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:scale-105 transition-transform">
+                Contact Us
+              </button>
+              <div className="flex flex-col justify-center">
+                <span className="font-label text-[0.65rem] text-slate-500 uppercase tracking-widest mb-1">Service Model</span>
+                <span className="font-headline font-bold text-secondary">Custom Quote</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="relative aspect-square md:aspect-video lg:aspect-square group"
+          >
+            <div className="absolute inset-0 bg-surface-container-high outline-variant/20 outline rounded-sm overflow-hidden">
               <img 
-                src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png" 
-                alt="CyberSage" 
-                className="w-10 h-10 object-contain"
+                alt="Cybersecurity digital interface" 
+                className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdzZl5R31RIN7iD1lVLQBhay3cSxoo4vTfPd8x66OgH7TcSdh8zRLBA30T63qpBuoFy3IKSns-fQeKYIdCOI_Y7ob_HTTOAn5mYPyEGjAOzMS4BT2LE6u4J88-Nd5dm1LPVQzuAWbCxQdMrlbQ7NAOzen64FxzPQ8x3lIhYp4ByETnMoKDUEBSNL2qcJiCDIjKNnzwbns-BhykZ-JEv4WDcJMJt8BOlPFuUmi7NpPbEgooCPQlg_H7DCTfz3FHVR7Cj3YbImWO2Ic" 
               />
-              <h1 className="text-xl font-bold text-white">CyberSage</h1>
             </div>
-          </div>
+            <div className="absolute -bottom-6 -left-6 glass-card p-6 border border-white/5 shadow-2xl">
+              <div className="flex gap-4 items-center mb-4">
+                <span className="material-symbols-outlined text-tertiary" data-icon="terminal">terminal</span>
+                <span className="font-label text-xs tracking-widest">SENTRY_LOG_ACTIVE</span>
+              </div>
+              <div className="space-y-2">
+                <div className="h-1 w-40 bg-primary/20 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: "66%" }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                    className="h-full bg-primary"
+                  ></motion.div>
+                </div>
+                <div class="h-1 w-32 bg-primary/20 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: "50%" }}
+                    transition={{ duration: 1, delay: 0.7 }}
+                    className="h-full bg-tertiary"
+                  ></motion.div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
-      </nav>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/30 mb-6">
-            <Monitor className="w-5 h-5 text-amber-400" />
-            <span className="text-sm text-amber-300 font-medium">WEB DEVELOPMENT</span>
-          </div>
-          <h1 className="text-5xl font-bold text-white mb-4">Web Development</h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Modern web applications with responsive design and scalability
-          </p>
-          <div className="mt-6">
-            <span className="text-4xl font-bold text-amber-400">Custom Quote</span>
-            <span className="text-slate-400 ml-2">• Based on project scope</span>
-          </div>
-        </div>
-
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6 text-amber-400" />
-              What is Modern Web Development?
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-slate-300 space-y-4">
-            <p className="text-lg leading-relaxed">
-              Modern Web Development is creating responsive, performant, and scalable web applications using cutting-edge technologies and frameworks. We build everything from simple landing pages to complex SaaS platforms, e-commerce stores, and progressive web apps (PWAs) that work seamlessly across all devices and browsers.
-            </p>
-            <p className="leading-relaxed">
-              Our development stack includes React, Next.js, Vue.js, and Node.js for building lightning-fast, SEO-friendly applications with excellent user experiences. We implement responsive design (mobile-first), progressive enhancement, and accessibility standards to ensure your web app works for everyone, everywhere.
-            </p>
-            <p className="leading-relaxed">
-              From concept to deployment, we handle everything: UI/UX design, frontend development, backend APIs, database architecture, cloud hosting, CDN setup, SSL certificates, and ongoing maintenance. Your web app will be secure, scalable, and ready to handle growth.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-amber-400" />
-              What We Build
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
-              {[
-                {
-                  title: 'SaaS Platforms',
-                  description: 'Multi-tenant applications with subscription billing, user management, and analytics'
-                },
-                {
-                  title: 'E-commerce Stores',
-                  description: 'Online stores with shopping carts, payment processing, inventory management'
-                },
-                {
-                  title: 'Progressive Web Apps',
-                  description: 'Web apps that work offline, can be installed, and send push notifications'
-                },
-                {
-                  title: 'Admin Dashboards',
-                  description: 'Data visualization, reporting, user management, and business intelligence tools'
-                },
-                {
-                  title: 'Content Management',
-                  description: 'Custom CMS, blogs, news sites, and content publishing platforms'
-                },
-                {
-                  title: 'Social Networks',
-                  description: 'Community platforms with profiles, feeds, messaging, and user interactions'
-                },
-                {
-                  title: 'Booking Systems',
-                  description: 'Appointment scheduling, reservation systems, calendar management'
-                },
-                {
-                  title: 'Real-time Applications',
-                  description: 'Chat apps, collaboration tools, live updates with WebSockets'
-                }
-              ].map((item, index) => (
-                <div key={index} className="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
-                  <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-slate-400">{item.description}</p>
+      {/* Bento Grid Features */}
+      <section className="px-8 py-24 bg-surface-container-low">
+        <div className="max-w-screen-2xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h2 className="font-headline font-extrabold text-3xl mb-4">Tactical Capabilities</h2>
+            <p className="text-on-surface-variant font-label text-sm">REDACTED_CAPABILITIES_MANIFEST.JSON</p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {/* Modern Frameworks */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="md:col-span-2 glass-card p-8 group hover:bg-surface-container-high transition-all"
+            >
+              <div className="flex justify-between items-start mb-12">
+                <div className="p-3 bg-primary/10 text-primary">
+                  <span className="material-symbols-outlined text-3xl" data-icon="layers">layers</span>
                 </div>
-              ))}
-            </div>
-
-            <div className="mt-8 bg-slate-800/50 p-6 rounded-lg border border-slate-700">
-              <h3 className="text-xl font-semibold text-white mb-4">Our Tech Stack</h3>
-              <div className="grid md:grid-cols-4 gap-4">
-                <div>
-                  <h4 className="font-semibold text-white mb-2 text-sm">Frontend</h4>
-                  <ul className="space-y-1 text-sm text-slate-400">
-                    <li>• React / Next.js</li>
-                    <li>• TypeScript</li>
-                    <li>• Tailwind CSS</li>
-                    <li>• Redux / Zustand</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-2 text-sm">Backend</h4>
-                  <ul className="space-y-1 text-sm text-slate-400">
-                    <li>• Node.js / Express</li>
-                    <li>• Python / FastAPI</li>
-                    <li>• GraphQL / REST</li>
-                    <li>• WebSockets</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-2 text-sm">Database</h4>
-                  <ul className="space-y-1 text-sm text-slate-400">
-                    <li>• PostgreSQL</li>
-                    <li>• MongoDB</li>
-                    <li>• Redis</li>
-                    <li>• Elasticsearch</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-2 text-sm">Deployment</h4>
-                  <ul className="space-y-1 text-sm text-slate-400">
-                    <li>• AWS / Vercel</li>
-                    <li>• Docker</li>
-                    <li>• CI/CD Pipelines</li>
-                    <li>• CloudFlare CDN</li>
-                  </ul>
-                </div>
+                <span className="font-label text-xs text-slate-500">01</span>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+              <h3 className="font-headline font-bold text-2xl mb-4 group-hover:text-primary transition-colors">Modern Frameworks</h3>
+              <p className="text-on-surface-variant leading-relaxed">
+                Utilizing React, Next.js, and specialized reactive stacks for ultra-fast, high-performance user experiences that never stall.
+              </p>
+            </motion.div>
 
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <TrendingUp className="w-6 h-6 text-amber-400" />
-              Why Choose Our Web Development
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6 text-slate-300">
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-3">Performance & SEO</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
-                    <p className="text-amber-300 font-semibold mb-2">Lightning Fast</p>
-                    <p className="text-sm text-slate-400">Sub-second load times with code splitting and lazy loading</p>
-                  </div>
-                  <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
-                    <p className="text-amber-300 font-semibold mb-2">SEO Optimized</p>
-                    <p className="text-sm text-slate-400">Server-side rendering, meta tags, structured data for Google</p>
-                  </div>
-                  <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
-                    <p className="text-amber-300 font-semibold mb-2">Mobile-First</p>
-                    <p className="text-sm text-slate-400">Responsive design that works perfectly on all screen sizes</p>
-                  </div>
-                  <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
-                    <p className="text-amber-300 font-semibold mb-2">Accessibility</p>
-                    <p className="text-sm text-slate-400">WCAG compliant, screen reader friendly, keyboard navigation</p>
-                  </div>
+            {/* Cloud Deployment */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="glass-card p-8 group hover:bg-surface-container-high transition-all"
+            >
+              <div className="flex justify-between items-start mb-12">
+                <div className="p-3 bg-tertiary/10 text-tertiary">
+                  <span className="material-symbols-outlined text-3xl" data-icon="cloud_done">cloud_done</span>
                 </div>
+                <span className="font-label text-xs text-slate-500">02</span>
               </div>
+              <h3 className="font-headline font-bold text-xl mb-4 group-hover:text-tertiary transition-colors">Cloud Native</h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed">
+                AWS, Azure, and Google Cloud infrastructure engineered for 99.9% uptime and auto-scaling capacity.
+              </p>
+            </motion.div>
 
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-3">Enterprise Features</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Scalability:</strong> Architecture that grows from 100 to 1M+ users</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Security:</strong> SSL, XSS protection, CSRF tokens, rate limiting, data encryption</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Monitoring:</strong> Error tracking, performance monitoring, user analytics</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">API-First:</strong> Build once, use everywhere (web, mobile, integrations)</span>
-                  </li>
-                </ul>
+            {/* SEO Optimized */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="glass-card p-8 group hover:bg-surface-container-high transition-all"
+            >
+              <div className="flex justify-between items-start mb-12">
+                <div className="p-3 bg-secondary/10 text-secondary">
+                  <span className="material-symbols-outlined text-3xl" data-icon="query_stats">query_stats</span>
+                </div>
+                <span className="font-label text-xs text-slate-500">03</span>
               </div>
+              <h3 className="font-headline font-bold text-xl mb-4 group-hover:text-secondary transition-colors">SEO Precision</h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed">
+                Strategic metadata architecture and Core Web Vitals optimization to dominate search engine algorithms.
+              </p>
+            </motion.div>
 
-              <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-green-300 mb-3">✓ Complete Package</h3>
-                <p className="text-slate-300">
-                  Custom design • Frontend + Backend • Database setup • Cloud hosting • SSL certificates • Domain setup • Email configuration • Analytics • 90-day support
+            {/* Responsive Design */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="lg:col-span-2 glass-card p-8 group hover:bg-surface-container-high transition-all flex flex-col md:flex-row gap-8 items-center"
+            >
+              <div className="flex-1">
+                <div className="p-3 bg-primary/10 text-primary w-fit mb-8">
+                  <span className="material-symbols-outlined text-3xl" data-icon="devices">devices</span>
+                </div>
+                <h3 className="font-headline font-bold text-2xl mb-4">Responsive Resilience</h3>
+                <p className="text-on-surface-variant leading-relaxed">
+                  Universal fluidity across every device. Our interfaces adapt with surgical precision from mobile handhelds to ultra-wide displays.
                 </p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="w-full md:w-1/2 aspect-video bg-surface-container-lowest outline outline-white/5 rounded-sm overflow-hidden">
+                <img 
+                  alt="Code on a monitor" 
+                  className="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-700" 
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuACG0Xv9zg5fkvOlzyA5qMeW_107_nHPislSx2536YFIOJ_-Ek-PpXQaULjtbL8-GsFWwEt1dGmTJuX_wHIm_o0cYab_lGc4ofVEplUaT8n4XyQe_k_J8plNmyBrednAJolBxkGQrReZUNrQsb-1vX4HktrXe7k9PzFytQcZPcBxk1zypEmq5iDq-PAe-KhhJ0eXjp0wn3I3K_Qj7cFDbmpLXmNhB44S1tjx0sCzwRFUcWlqH0bHMemMY1kAlbJoTZzX1NDPz8WhdY" 
+                />
+              </div>
+            </motion.div>
 
-        <div className="text-center mt-12">
-          <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-white text-lg px-8 py-6">
-            Get Custom Quote
-          </Button>
-          <p className="text-slate-400 mt-4">Free consultation • Detailed proposal • Flexible engagement models</p>
+            {/* Scalability */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="md:col-span-2 glass-card p-8 group hover:bg-surface-container-high transition-all border-l-2 border-primary"
+            >
+              <div className="flex items-center gap-4 mb-8">
+                <span className="material-symbols-outlined text-primary" data-icon="speed">speed</span>
+                <span className="font-label text-xs tracking-widest text-primary uppercase">Mission Critical</span>
+              </div>
+              <h3 className="font-headline font-bold text-2xl mb-4">Exponential Scalability</h3>
+              <p className="text-on-surface-variant leading-relaxed">
+                Infrastructure designed to grow from MVP to millions of concurrent users without code rewrites. Our architectures are future-proof by design.
+              </p>
+            </motion.div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <SageAI />
-    </div>
+      {/* CTA Section */}
+      <section className="px-8 py-32 relative overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto text-center relative z-10"
+        >
+          <h2 className="font-headline font-extrabold text-4xl md:text-6xl mb-8 leading-tight">
+            Ready to deploy your <br/>
+            <span className="italic text-secondary">digital fortress?</span>
+          </h2>
+          <p className="text-on-surface-variant text-lg mb-12 max-w-2xl mx-auto">
+            Initiate protocol for a custom assessment. Our engineers are standing by to architect your sovereign web presence.
+          </p>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-8">
+            <button className="w-full md:w-auto px-12 py-5 bg-primary-container text-white font-headline font-black uppercase tracking-widest text-sm hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all">
+              Contact Us
+            </button>
+            <div className="h-px w-12 bg-outline-variant hidden md:block"></div>
+            <div className="text-left">
+              <div className="font-label text-[10px] text-slate-500 uppercase tracking-widest">Average Response Time</div>
+              <div className="font-headline font-bold text-tertiary">04:00:00 HOURS</div>
+            </div>
+          </div>
+        </motion.div>
+        
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          <div className="grid grid-cols-12 h-full">
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+            <div className="border-r border-on-surface/20"></div>
+          </div>
+        </div>
+      </section>
+    </main>
   );
-};
-
-export default WebDevelopment;
+}

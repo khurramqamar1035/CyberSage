@@ -1,197 +1,144 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Shield, ArrowLeft, CheckCircle, AlertTriangle, TrendingUp } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import SageAI from '../../components/SageAI';
 
-const AiSecurityAudit = () => {
-  const navigate = useNavigate();
-
+export default function AISecurityAudit() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-      <nav className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Button onClick={() => navigate('/security')} variant="ghost" className="text-white">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Security Services
-            </Button>
-            <div className="flex items-center gap-3">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png" 
-                alt="CyberSage" 
-                className="w-10 h-10 object-contain"
-              />
-              <h1 className="text-xl font-bold text-white">CyberSage</h1>
+    <main className="pt-24 pb-20">
+      {/* Hero Section */}
+      <section className="relative px-8 pt-16 pb-24 overflow-hidden">
+        <div className="absolute top-0 right-0 -z-10 w-2/3 h-full opacity-20 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent"></div>
+          <img className="w-full h-full object-cover" alt="Abstract digital grid with glowing blue particles and high-tech security architecture visualization in a dark cyber environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBghdZ6IeM7VITXpj8vqqRteJCestuQci0XJ-9fPkg_eCKAN69inAohvkci8XWPeE4kVr3jROAJDnGt8lRZ9FkRa4vj_2xXbfWCj0z3rb3PlC7wapBJEbyMqmdYH7TK8TvyJeHDdV-Z2aCDz-3Sm_dPwTg5FEQxGgeqBUrKs8b-4lOAAk179SiYmSp2vF5vLwEsidQpq0HIx24FoqPxb5srbQorzHoKXp4GMBVcTo2qpFSo-ipr2s7cLYnY2IeQKdsL3a2-g_F7OuE" />
+        </div>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            <span className="font-label text-tertiary tracking-[0.2em] text-xs uppercase mb-4">Service Protocol: SENTRY-AI</span>
+            <h1 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter text-white mb-6 leading-none">
+              AI SECURITY <br/> <span className="text-primary-fixed-dim">AUDIT</span>
+            </h1>
+            <p className="text-on-surface-variant text-lg md:text-xl max-w-xl mb-10 leading-relaxed font-light">
+              Deploy an autonomous intelligence layer to dismantle vulnerabilities. Our Sovereign Sentry protocol executes a full-spectrum defensive scan of your digital perimeter within a single cycle.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <button className="bg-gradient-to-r from-primary-container to-primary px-8 py-4 font-label font-bold text-on-primary-container uppercase tracking-widest shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all">
+                Initiate Protocol
+              </button>
+              <div className="flex items-center px-6 py-4 glass-panel border border-outline-variant/20">
+                <span className="font-label text-secondary font-bold text-xl mr-3">$20</span>
+                <span className="font-label text-on-surface-variant text-[0.65rem] uppercase tracking-widest leading-none">Single Node <br/>Deployment</span>
+              </div>
             </div>
           </div>
         </div>
-      </nav>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600/20 border border-blue-500/30 mb-6">
-            <Shield className="w-5 h-5 text-blue-400" />
-            <span className="text-sm text-blue-300 font-medium">AI SECURITY AUDIT</span>
+      {/* Bento Features Grid */}
+      <section className="px-8 py-24 bg-surface-container-low">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[240px]">
+            {/* Large Feature Card */}
+            <div className="md:col-span-2 lg:row-span-2 glass-panel p-8 flex flex-col justify-between group hover:outline hover:outline-1 hover:outline-primary/40 transition-all">
+              <div>
+                <span className="material-symbols-outlined text-primary text-4xl mb-6">shield_lock</span>
+                <h3 className="font-headline text-2xl font-bold text-white mb-4">Comprehensive Assessment</h3>
+                <p className="text-on-surface-variant leading-relaxed">A deep-tissue analysis of digital infrastructure using neural networks to identify non-linear entry points and structural weaknesses that legacy scanners overlook.</p>
+              </div>
+              <div className="flex items-center gap-2 mt-4">
+                <div className="h-[2px] w-8 bg-primary"></div>
+                <span className="font-label text-[0.65rem] uppercase tracking-widest text-primary">Priority Alpha</span>
+              </div>
+            </div>
+
+            {/* Medium Feature Card */}
+            <div className="md:col-span-1 glass-panel p-8 flex flex-col justify-between">
+              <span className="material-symbols-outlined text-tertiary text-3xl mb-4">radar</span>
+              <div>
+                <h4 className="font-headline text-lg font-bold text-white mb-2">Threat Detection</h4>
+                <p className="text-on-surface-variant text-sm">Real-time pattern matching for emerging zero-day exploits.</p>
+              </div>
+            </div>
+
+            {/* Square Card */}
+            <div className="glass-panel p-8 flex flex-col items-center justify-center text-center">
+              <span className="font-label text-secondary text-3xl font-black mb-2">24H</span>
+              <span className="font-label text-[0.65rem] uppercase tracking-widest text-on-surface-variant">Rapid Delivery Cycle</span>
+            </div>
+
+            {/* Small Feature Card */}
+            <div className="glass-panel p-8 flex flex-col justify-between">
+              <span className="material-symbols-outlined text-primary text-3xl mb-4">bolt</span>
+              <div>
+                <h4 className="font-headline text-lg font-bold text-white mb-2">Auto-Scan</h4>
+                <p className="text-on-surface-variant text-sm">Automated vulnerability discovery at machine speed.</p>
+              </div>
+            </div>
+
+            {/* Vertical Card */}
+            <div className="md:col-span-1 lg:row-span-1 glass-panel p-8 flex flex-col justify-between">
+              <span className="material-symbols-outlined text-secondary text-3xl">terminal</span>
+              <div>
+                <h4 className="font-headline text-lg font-bold text-white mb-2">Detailed Reports</h4>
+                <p className="text-on-surface-variant text-sm">Sovereign-grade documentation for C-suite and engineering teams.</p>
+              </div>
+            </div>
           </div>
-          <h1 className="text-5xl font-bold text-white mb-4">AI Security Audit</h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Comprehensive AI-powered security assessment of your digital infrastructure
+        </div>
+      </section>
+
+      {/* Technical Specification Section */}
+      <section className="px-8 py-24">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
+          <div className="w-full lg:w-1/2">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-tertiary/20 rounded-lg blur opacity-25"></div>
+              <img className="relative w-full aspect-video object-cover" alt="Rows of illuminated blue server racks in a high-security data center with shallow depth of field and futuristic lens flare" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDym8EL01Gfk474Jn65AFwcNbbbWI6eviCXOxRrrfM0nZ2MWRoUy3n2_tuyEZxkW5rtZyQMTR7PkCOwO9dAhW4rKEf6mboI3ZJHXB20bnIMtaNdBkwHMPZzzxCPL99Cho4_UXsrg9kbfctuFe66-4xm6omLQvYX_1OHv1W9I9jYk2Jan5kmk1YIQQZNCZA5yeXH1fPSWADcRyhC-GyadPHDl8qNTxKtBIgU2AcDYwnIK5mPSqIJ_17y0MGyR6XIybEUWcBnWZdwX3k" />
+            </div>
+          </div>
+
+          <div className="w-full lg:w-1/2 space-y-8">
+            <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight text-white uppercase">Operational <span className="text-primary">Intelligence</span></h2>
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <span className="font-label text-primary font-bold">01</span>
+                <div>
+                  <h5 className="font-headline font-bold text-on-surface mb-1">Infrastructure Crawling</h5>
+                  <p className="text-on-surface-variant text-sm">We map every exposed endpoint, sub-domain, and API gateway with neural precision.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <span className="font-label text-primary font-bold">02</span>
+                <div>
+                  <h5 className="font-headline font-bold text-on-surface mb-1">Heuristic Exploitation</h5>
+                  <p className="text-on-surface-variant text-sm">Simulation of adversary behavior using predictive AI models to test defense thresholds.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <span className="font-label text-primary font-bold">03</span>
+                <div>
+                  <h5 className="font-headline font-bold text-on-surface mb-1">Remediation Roadmap</h5>
+                  <p className="text-on-surface-variant text-sm">Strategic patching priorities ranked by systemic impact and threat likelihood.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="px-8 py-24 bg-surface-container-lowest">
+        <div className="max-w-4xl mx-auto text-center glass-panel p-16 border border-primary/10 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"></div>
+          <h2 className="font-headline text-4xl font-black text-white mb-6 tracking-tighter uppercase">Activate Sentry Protocol</h2>
+          <p className="text-on-surface-variant mb-10 max-w-xl mx-auto font-light">
+            The audit cycle begins the moment the handshake is completed. Secure your perimeter within the next 24 hours.
           </p>
-          <div className="mt-6">
-            <span className="text-4xl font-bold text-blue-400">$20</span>
-            <span className="text-slate-400 ml-2">• 24 hour delivery</span>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-6">
+            <button className="w-full md:w-auto bg-primary-container text-on-primary-container font-label font-bold px-12 py-5 uppercase tracking-widest shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+              Initiate Protocol
+            </button>
+            <a className="font-label text-on-surface-variant hover:text-white transition-colors uppercase tracking-[0.2em] text-xs" href="#">Download Sample Report</a>
           </div>
         </div>
-
-        {/* What is it */}
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6 text-blue-400" />
-              What is an AI Security Audit?
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-slate-300 space-y-4">
-            <p className="text-lg leading-relaxed">
-              An AI Security Audit is an automated, comprehensive assessment of your digital infrastructure using cutting-edge artificial intelligence and machine learning algorithms. Our AI systems scan, analyze, and identify potential security vulnerabilities across your entire digital ecosystem in hours, not weeks.
-            </p>
-            <p className="leading-relaxed">
-              Unlike traditional manual audits that can take days or weeks, our AI-powered solution leverages advanced pattern recognition, threat intelligence databases, and behavioral analysis to provide rapid, accurate security assessments. The system continuously learns from millions of security incidents worldwide, making it smarter and more effective with each scan.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* What We Do */}
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-blue-400" />
-              What We Do
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
-              {[
-                {
-                  title: 'Automated Vulnerability Scanning',
-                  description: 'Our AI scans all entry points, APIs, databases, and applications for known and zero-day vulnerabilities'
-                },
-                {
-                  title: 'AI-Powered Threat Detection',
-                  description: 'Machine learning algorithms identify suspicious patterns, anomalies, and potential security breaches'
-                },
-                {
-                  title: 'Code Analysis',
-                  description: 'Deep analysis of your codebase to identify security flaws, insecure practices, and potential backdoors'
-                },
-                {
-                  title: 'Network Assessment',
-                  description: 'Comprehensive review of network architecture, firewall rules, and access controls'
-                },
-                {
-                  title: 'Compliance Checking',
-                  description: 'Verification against industry standards like OWASP Top 10, PCI DSS, and GDPR requirements'
-                },
-                {
-                  title: 'Detailed Security Report',
-                  description: 'Easy-to-understand report with risk ratings, vulnerability details, and step-by-step remediation guidance'
-                }
-              ].map((item, index) => (
-                <div key={index} className="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
-                  <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-slate-400">{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Why You Need It */}
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <TrendingUp className="w-6 h-6 text-blue-400" />
-              Why You Need This Service
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6 text-slate-300">
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-3">For Startups & Small Businesses</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2"></div>
-                    <span><strong className="text-white">Budget-Friendly:</strong> Get enterprise-grade security at a fraction of traditional audit costs</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2"></div>
-                    <span><strong className="text-white">Fast Results:</strong> Don't wait weeks - get your security assessment in 24 hours</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2"></div>
-                    <span><strong className="text-white">Build Trust:</strong> Show customers and investors you take security seriously</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-3">For Freelancers & Solo Developers</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2"></div>
-                    <span><strong className="text-white">Peace of Mind:</strong> Know your applications are secure before deployment</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2"></div>
-                    <span><strong className="text-white">Competitive Advantage:</strong> Offer security-audited projects to clients</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2"></div>
-                    <span><strong className="text-white">Learn & Improve:</strong> Understand security best practices through detailed reports</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-3">Critical Protection Against</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                    <p className="text-red-300 font-semibold">Data Breaches</p>
-                    <p className="text-sm text-slate-400 mt-1">Average cost: $4.45M per breach</p>
-                  </div>
-                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                    <p className="text-red-300 font-semibold">Ransomware Attacks</p>
-                    <p className="text-sm text-slate-400 mt-1">Growing threat to all businesses</p>
-                  </div>
-                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                    <p className="text-red-300 font-semibold">Regulatory Fines</p>
-                    <p className="text-sm text-slate-400 mt-1">GDPR fines up to €20M or 4% revenue</p>
-                  </div>
-                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                    <p className="text-red-300 font-semibold">Reputation Damage</p>
-                    <p className="text-sm text-slate-400 mt-1">Lost customer trust is priceless</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* CTA */}
-        <div className="text-center mt-12">
-          <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6">
-            Get Your AI Security Audit - $20
-          </Button>
-          <p className="text-slate-400 mt-4">24-hour delivery • Detailed report • Actionable recommendations</p>
-        </div>
-      </div>
-
-      <SageAI />
-    </div>
+      </section>
+    </main>
   );
-};
-
-export default AiSecurityAudit;
+}

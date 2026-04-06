@@ -1,388 +1,164 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Shield,
-  Search,
-  Lock,
-  Zap,
-  Users,
-  FileCheck,
-  MessageSquare,
-  Menu,
-  X,
-} from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import SageAI from "../components/SageAI";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const SecurityPage = () => {
-  const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    setMenuOpen(false); // close menu on click
-  };
-
-  const securityServices = [
-    {
-      icon: Search,
-      title: "AI Security Audit",
-      description:
-        "Comprehensive AI-powered security assessment of your digital infrastructure",
-      price: "$20",
-      delivery: "24 hours",
-      features: [
-        "Automated vulnerability scanning",
-        "AI-powered threat detection",
-        "Detailed security report",
-      ],
-      link: "/services/AiSecurityAudit",
-    },
-    {
-      icon: Shield,
-      title: "Vulnerability Assessment",
-      description:
-        "Deep dive analysis to identify security weaknesses in your systems",
-      price: "$50",
-      delivery: "48 hours",
-      features: ["Manual security testing", "Code review", "Network analysis"],
-      link: "/services/VulnerabilityAssessment",
-    },
-    {
-      icon: Lock,
-      title: "Penetration Testing",
-      description:
-        "Ethical hacking to identify and exploit security vulnerabilities",
-      price: "$150",
-      delivery: "5 days",
-      features: [
-        "Full penetration testing",
-        "Exploit demonstration",
-        "Remediation guidance",
-      ],
-      link: "/services/PenetrationTesting",
-    },
-    {
-      icon: Zap,
-      title: "Real-time Monitoring",
-      description:
-        "24/7 threat detection and alerting system for your infrastructure",
-      price: "$99/mo",
-      delivery: "Instant setup",
-      features: ["24/7 monitoring", "Instant alerts", "Monthly reports"],
-      link: "/services/RealtimeMonitoring",
-    },
-    {
-      icon: Users,
-      title: "Security Consultation",
-      description: "Expert guidance tailored to your specific security needs",
-      price: "$75",
-      delivery: "Flexible",
-      features: [
-        "One-on-one consultation",
-        "Custom security strategy",
-        "Implementation support",
-      ],
-      link: "/services/SecurityConsultation",
-    },
-    {
-      icon: FileCheck,
-      title: "Compliance Audit",
-      description: "Ensure your systems meet industry regulatory requirements",
-      price: "$200",
-      delivery: "7 days",
-      features: [
-        "GDPR/HIPAA compliance",
-        "Documentation review",
-        "Compliance roadmap",
-      ],
-      link: "/services/ComplianceAudit",
-    },
-  ];
-
-  const testimonials = [
-    {
-      name: "Sarah Chen",
-      role: "CTO, TechStart Inc",
-      text: "CyberSage identified critical vulnerabilities we never knew existed. Their AI-powered approach saved us weeks of manual testing.",
-    },
-    {
-      name: "Michael Roberts",
-      role: "Founder, SecureApp",
-      text: "The threat report was incredibly detailed yet easy to understand. Implementation was straightforward with their clear recommendations.",
-    },
-    {
-      name: "Emily Watson",
-      role: "Product Manager, CloudSafe",
-      text: "Enterprise-grade security at a fraction of the cost. CyberSage gave us peace of mind without breaking our budget.",
-    },
-  ];
-
+export default function SecurityServices() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <div
-              className="flex items-center gap-3 cursor-pointer"
-              onClick={() => navigate("/")}
-            >
-              <img
-                src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png"
-                alt="CyberSage"
-                className="w-10 h-10 object-contain"
-              />
-              <h1 className="text-xl font-bold text-white">CyberSage</h1>
-            </div>
-
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-4">
-              <button
-                onClick={() => scrollToSection("services")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Services
-              </button>
-              <button
-                onClick={() => scrollToSection("testimonials")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Testimonials
-              </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Contact
-              </button>
-              <button
-                onClick={() => navigate("/blog")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Blog
-              </button>
-              <button
-                onClick={() => navigate("/faq")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                FAQ
-              </button>
-              <button
-                onClick={() => navigate("/about")}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                About
-              </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center">
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="text-gray-300 hover:text-white"
-              >
-                {menuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
-              </button>
-            </div>
-          </div>
+    <main className="pt-32 pb-24 px-6 md:px-12 max-w-[1440px] mx-auto">
+      <header className="mb-20 max-w-4xl">
+        <div className="font-label text-secondary text-[10px] tracking-[0.3em] uppercase mb-4 flex items-center gap-2">
+          <span className="w-8 h-[1px] bg-secondary"></span>
+          Sovereign Sentry Protocols
         </div>
+        <h1 className="font-headline font-black text-5xl md:text-7xl tracking-tighter mb-6 leading-none italic">
+          TACTICAL <span className="text-primary not-italic">INTELLIGENCE</span>
+        </h1>
+        <p className="text-on-surface-variant text-lg leading-relaxed max-w-2xl">
+          Advanced defensive frameworks engineered for the modern threat landscape. From AI-driven audits to elite penetration testing, we deploy surgical precision to secure your digital sovereignty.
+        </p>
+      </header>
 
-        {/* Mobile Menu */}
-        <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            menuOpen ? "max-h-96 py-2" : "max-h-0"
-          }`}
-        >
-          <div className="flex flex-col gap-2 px-4 bg-gray-900 border-t border-gray-800">
-            <button
-              onClick={() => scrollToSection("services")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              Services
-            </button>
-            <button
-              onClick={() => scrollToSection("testimonials")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              Testimonials
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              Contact
-            </button>
-            <button
-              onClick={() => navigate("/blog")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              Blog
-            </button>
-            <button
-              onClick={() => navigate("/faq")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              FAQ
-            </button>
-            <button
-              onClick={() => navigate("/about")}
-              className="text-gray-300 hover:text-white text-left w-full"
-            >
-              About
-            </button>
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-primary/20">
+          <div className="flex justify-between items-start mb-8">
+            <div className="p-3 bg-primary-container/10 rounded-sm">
+              <span className="material-symbols-outlined text-primary text-3xl" data-icon="psychology">psychology</span>
+            </div>
+            <div className="text-right">
+              <div className="font-label text-on-surface-variant text-[10px] tracking-widest uppercase">Response</div>
+              <div className="font-bold text-primary">24H</div>
+            </div>
           </div>
-        </div>
-      </nav>
-
-      {/* Hero */}
-      <div className="py-20 px-4 text-center">
-        <div className="max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6 mx-auto">
-            <Shield className="w-4 h-4 text-blue-400" />
-            <span className="text-sm text-blue-400 font-medium">
-              CYBER SECURITY SERVICES
-            </span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            Protecting Your Digital Assets
-          </h1>
-          <p className="text-base sm:text-lg text-gray-400 mx-auto">
-            AI-powered cybersecurity solutions for startups, small businesses,
-            and freelancers. Fast, actionable, and accessible.
+          <h3 className="font-headline font-extrabold text-2xl mb-2 group-hover:text-primary transition-colors">AI Security Audit</h3>
+          <p className="text-on-surface-variant text-sm mb-10 leading-relaxed min-h-[4.5rem]">
+            Comprehensive evaluation of neural networks and automated decision systems for bias, leakage, and adversarial vulnerabilities.
           </p>
-        </div>
-      </div>
-
-      {/* Services */}
-      <div id="services" className="py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white text-center mb-8">
-            Our Security Services
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {securityServices.map((service, index) => {
-              const IconComponent = service.icon;
-              return (
-                <Card
-                  key={index}
-                  className="bg-slate-900/60 border-slate-700 hover:border-blue-500/50 cursor-pointer"
-                  onClick={() => navigate(service.link)}
-                >
-                  <CardHeader>
-                    <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center mb-4">
-                      <IconComponent className="w-6 h-6 text-blue-400" />
-                    </div>
-                    <div className="flex items-start justify-between mb-2 flex-wrap">
-                      <CardTitle className="text-lg sm:text-xl text-white">
-                        {service.title}
-                      </CardTitle>
-                      <span className="text-blue-400 font-bold">
-                        {service.price}
-                      </span>
-                    </div>
-                    <CardDescription className="text-slate-400 text-sm">
-                      {service.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-1 mb-3">
-                      {service.features.map((feature, idx) => (
-                        <div
-                          key={idx}
-                          className="flex items-center gap-2 text-xs sm:text-sm text-slate-300"
-                        >
-                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                          <span>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-500">
-                      <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                      <span>Delivery: {service.delivery}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <div className="flex items-center justify-between mt-auto">
+            <span className="font-headline font-black text-3xl">$20</span>
+            <Link to="/security-services/ai-audit" className="font-label text-[10px] tracking-widest uppercase text-secondary font-bold hover:underline">Deploy Unit</Link>
           </div>
         </div>
-      </div>
 
-      {/* Testimonials */}
-      <div id="testimonials" className="py-12 px-4 bg-gray-900/30">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white text-center mb-8">
-            What Our Clients Say
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <Card key={i} className="bg-gray-900/50 border-gray-800">
-                <CardContent className="pt-6">
-                  <p className="text-gray-300 mb-4 italic text-sm sm:text-base">
-                    "{t.text}"
-                  </p>
-                  <div>
-                    <p className="font-semibold text-white text-sm sm:text-base">
-                      {t.name}
-                    </p>
-                    <p className="text-gray-400 text-xs sm:text-sm">{t.role}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-tertiary/20">
+          <div className="flex justify-between items-start mb-8">
+            <div className="p-3 bg-tertiary-container/10 rounded-sm">
+              <span className="material-symbols-outlined text-tertiary text-3xl" data-icon="policy">policy</span>
+            </div>
+            <div className="text-right">
+              <div className="font-label text-on-surface-variant text-[10px] tracking-widest uppercase">Response</div>
+              <div className="font-bold text-tertiary">48H</div>
+            </div>
           </div>
-        </div>
-      </div>
-
-      {/* Contact */}
-      <div id="contact" className="py-12 px-4">
-        <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Ready to Secure Your Assets?
-          </h2>
-          <p className="text-base sm:text-lg text-gray-400 mb-6">
-            Get in touch with our security experts today
+          <h3 className="font-headline font-extrabold text-2xl mb-2 group-hover:text-tertiary transition-colors">Vulnerability Assessment</h3>
+          <p className="text-on-surface-variant text-sm mb-10 leading-relaxed min-h-[4.5rem]">
+            Automated and manual perimeter scanning to identify exploitable entry points across your entire infrastructure stack.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              className="border-gray-700 text-white hover:bg-gray-800 w-full sm:w-auto"
-              onClick={() =>
-                window.open(
-                  "https://mail.google.com/mail/?view=cm&fs=1&to=cybersageuk@gmail.com",
-                  "_blank"
-                )
-              }
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              cybersageuk@gmail.com
-            </Button>
-            {/* <Button
-              variant="outline"
-              className="w-full sm:w-auto border-gray-700 text-white hover:bg-gray-800 flex items-center justify-center"
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Schedule Consultation
-            </Button> */}
+          <div className="flex items-center justify-between mt-auto">
+            <span className="font-headline font-black text-3xl">$50</span>
+            <Link to="/security-services/vulnerability-assessment" className="font-label text-[10px] tracking-widest uppercase text-secondary font-bold hover:underline">Deploy Unit</Link>
           </div>
         </div>
-      </div>
 
-      <SageAI />
-    </div>
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-secondary/20">
+          <div className="flex justify-between items-start mb-8">
+            <div className="p-3 bg-secondary-container/10 rounded-sm">
+              <span className="material-symbols-outlined text-secondary text-3xl" data-icon="shield_person">shield_person</span>
+            </div>
+            <div className="text-right">
+              <div className="font-label text-on-surface-variant text-[10px] tracking-widest uppercase">Duration</div>
+              <div className="font-bold text-secondary">5D</div>
+            </div>
+          </div>
+          <h3 className="font-headline font-extrabold text-2xl mb-2 group-hover:text-secondary transition-colors">Penetration Testing</h3>
+          <p className="text-on-surface-variant text-sm mb-10 leading-relaxed min-h-[4.5rem]">
+            Simulated high-tier cyber offensive using Red Team protocols to pressure-test your real-world response and mitigation capabilities.
+          </p>
+          <div className="flex items-center justify-between mt-auto">
+            <span className="font-headline font-black text-3xl">$150</span>
+            <Link to="/security-services/penetration-testing" className="font-label text-[10px] tracking-widest uppercase text-secondary font-bold hover:underline">Deploy Unit</Link>
+          </div>
+        </div>
+
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-primary/20">
+          <div className="flex justify-between items-start mb-8">
+            <div className="p-3 bg-primary-container/10 rounded-sm">
+              <span className="material-symbols-outlined text-primary text-3xl" data-icon="monitoring">monitoring</span>
+            </div>
+            <div className="text-right">
+              <div className="font-label text-on-surface-variant text-[10px] tracking-widest uppercase">Cycle</div>
+              <div className="font-bold text-primary">PER/MO</div>
+            </div>
+          </div>
+          <h3 className="font-headline font-extrabold text-2xl mb-2 group-hover:text-primary transition-colors">Real-time Monitoring</h3>
+          <p className="text-on-surface-variant text-sm mb-10 leading-relaxed min-h-[4.5rem]">
+            Continuous 24/7 observation of network traffic and system logs with instant notification of anomalous pattern detection.
+          </p>
+          <div className="flex items-center justify-between mt-auto">
+            <div className="flex items-baseline">
+              <span className="font-headline font-black text-3xl">$99</span>
+              <span className="text-[10px] font-label text-on-surface-variant ml-1">/MO</span>
+            </div>
+            <Link to="/security-services/real-time-monitoring" className="font-label text-[10px] tracking-widest uppercase text-secondary font-bold hover:underline">Deploy Unit</Link>
+          </div>
+        </div>
+
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-tertiary/20">
+          <div className="flex justify-between items-start mb-8">
+            <div className="p-3 bg-tertiary-container/10 rounded-sm">
+              <span className="material-symbols-outlined text-tertiary text-3xl" data-icon="support_agent">support_agent</span>
+            </div>
+            <div className="text-right">
+              <div className="font-label text-on-surface-variant text-[10px] tracking-widest uppercase">Unit</div>
+              <div className="font-bold text-tertiary">PER/HR</div>
+            </div>
+          </div>
+          <h3 className="font-headline font-extrabold text-2xl mb-2 group-hover:text-tertiary transition-colors">Security Consultation</h3>
+          <p className="text-on-surface-variant text-sm mb-10 leading-relaxed min-h-[4.5rem]">
+            Expert advisory sessions focusing on architecture hardening, risk mitigation strategies, and high-level defense planning.
+          </p>
+          <div className="flex items-center justify-between mt-auto">
+            <span className="font-headline font-black text-3xl">$75</span>
+            <Link to="/security-services/security-consultation" className="font-label text-[10px] tracking-widest uppercase text-secondary font-bold hover:underline">Deploy Unit</Link>
+          </div>
+        </div>
+
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-secondary/20">
+          <div className="flex justify-between items-start mb-8">
+            <div className="p-3 bg-secondary-container/10 rounded-sm">
+              <span className="material-symbols-outlined text-secondary text-3xl" data-icon="fact_check">fact_check</span>
+            </div>
+            <div className="text-right">
+              <div className="font-label text-on-surface-variant text-[10px] tracking-widest uppercase">Duration</div>
+              <div className="font-bold text-secondary">7D</div>
+            </div>
+          </div>
+          <h3 className="font-headline font-extrabold text-2xl mb-2 group-hover:text-secondary transition-colors">Compliance Audit</h3>
+          <p className="text-on-surface-variant text-sm mb-10 leading-relaxed min-h-[4.5rem]">
+            Rigorous alignment verification with SOC2, GDPR, and HIPAA frameworks to ensure your operational legality and data integrity.
+          </p>
+          <div className="flex items-center justify-between mt-auto">
+            <span className="font-headline font-black text-3xl">$200</span>
+            <Link to="/security-services/compliance-audit" className="font-label text-[10px] tracking-widest uppercase text-secondary font-bold hover:underline">Deploy Unit</Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-32 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative overflow-hidden aspect-video rounded-sm">
+          <img className="w-full h-full object-cover grayscale brightness-50 opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0ft1g-1KZAFm0sRTGHfEDhJwnnLKjOplYKUe-7ppH6L0nffwfLRw3oUZQLd4T7eDm8srK9b3OG3CfPnmZqhYL8ECyFa1yEgZdtN2PJFkEyCnl59ePgKb6fhdvOzSbxmlyfLhlf_cg014Yp5lNG6mPWoW44h3qTe_8cW41VhvhdrRWKt8nNP-nF5xifcciz6fYlX0S0cJ5TbgcYh8H_7no-Z3Fqatlv2fzTVJ6Xisfd1uktREUBmYpNR1M9ChGUg85rFpktovOVTw" alt="abstract high-tech circuit board with glowing blue lines and neon data pulses in a dark futuristic server room" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+        </div>
+        <div className="lg:pl-12">
+          <div className="font-label text-primary text-[10px] tracking-[0.3em] uppercase mb-4">Operation Lockdown</div>
+          <h2 className="font-headline font-bold text-4xl mb-6 tracking-tight">Need a Bespoke Defense Strategy?</h2>
+          <p className="text-on-surface-variant mb-8 leading-relaxed">
+            For enterprise-scale operations or specialized mission profiles, our Core Team designs custom defensive meshes that evolve with your threat vector. Contact our tactical advisors for a sensitive briefing.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button className="bg-primary text-on-primary px-8 py-4 font-label text-[11px] tracking-widest uppercase font-bold hover:brightness-110 transition-all">Secure Consultation</button>
+            <button className="border border-outline-variant px-8 py-4 font-label text-[11px] tracking-widest uppercase font-bold text-on-surface hover:bg-surface-container-highest transition-all">Download Protocol PDF</button>
+          </div>
+        </div>
+      </section>
+    </main>
   );
-};
-
-export default SecurityPage;
+}

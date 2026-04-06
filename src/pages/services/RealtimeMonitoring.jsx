@@ -1,215 +1,144 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Zap, ArrowLeft, CheckCircle, AlertTriangle, TrendingUp, Clock } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import SageAI from '../../components/SageAI';
 
-const RealtimeMonitoring = () => {
-  const navigate = useNavigate();
-
+export default function RealTimeMonitoring() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-      <nav className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Button onClick={() => navigate('/security')} variant="ghost" className="text-white">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Security Services
-            </Button>
-            <div className="flex items-center gap-3">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_83508210-49e2-4693-89fb-e881ef07bca3/artifacts/0n25qd68_Gemini_Generated_Image_jkwstijkwstijkws-removebg-preview.png" 
-                alt="CyberSage" 
-                className="w-10 h-10 object-contain"
-              />
-              <h1 className="text-xl font-bold text-white">CyberSage</h1>
-            </div>
+    <main className="pt-24 min-h-screen cyber-grid">
+      {/* Hero Section */}
+      <section className="max-w-screen-2xl mx-auto px-8 pt-16 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="lg:col-span-7 space-y-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-high border border-outline-variant/30 text-tertiary font-label text-[0.75rem] uppercase tracking-widest">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+            </span>
+            Sovereign Sentry Protocol Active
           </div>
-        </div>
-      </nav>
-
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/30 mb-6">
-            <Zap className="w-5 h-5 text-amber-400" />
-            <span className="text-sm text-amber-300 font-medium">REAL-TIME MONITORING</span>
-          </div>
-          <h1 className="text-5xl font-bold text-white mb-4">24/7 Real-time Monitoring</h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Continuous threat detection and alerting system for your infrastructure
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-none text-on-surface">
+            Real-time <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary">Monitoring</span>
+          </h1>
+          <p className="text-on-surface-variant text-lg md:text-xl max-w-2xl leading-relaxed">
+            A comprehensive 24/7 threat detection and alerting system engineered for sovereign infrastructure. We maintain constant vigilance over your digital perimeter.
           </p>
-          <div className="mt-6">
-            <span className="text-4xl font-bold text-amber-400">$99/mo</span>
-            <span className="text-slate-400 ml-2">• Instant setup</span>
+          <div className="flex flex-wrap gap-4 pt-4">
+            <button className="bg-gradient-to-r from-primary-container to-primary/80 text-on-primary-container px-10 py-4 rounded-sm font-bold text-lg hover:shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all">
+              Initiate Protocol
+            </button>
+            <div className="flex flex-col justify-center px-6">
+              <span className="font-label text-[0.7rem] text-slate-500 tracking-widest uppercase">Subscription Fee</span>
+              <span className="text-2xl font-bold text-secondary-fixed-dim">$99/mo</span>
+            </div>
           </div>
         </div>
-
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6 text-amber-400" />
-              What is Real-time Security Monitoring?
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-slate-300 space-y-4">
-            <p className="text-lg leading-relaxed">
-              Real-time Security Monitoring is a 24/7 surveillance system that continuously watches your digital infrastructure for suspicious activities, security threats, and anomalous behavior. Our AI-powered monitoring platform analyzes millions of events per day to detect and alert you about potential security incidents in real-time.
-            </p>
-            <p className="leading-relaxed">
-              Think of it as having a dedicated security team watching your systems around the clock. The moment something suspicious happens—unusual login attempts, malware activity, data exfiltration attempts, or system compromises—you're immediately notified so you can respond before damage occurs.
-            </p>
-            <p className="leading-relaxed">
-              Our monitoring system integrates with your existing infrastructure (servers, applications, databases, firewalls) and uses machine learning to establish baseline behavior, making it increasingly effective at detecting anomalies specific to your environment.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-amber-400" />
-              What We Monitor
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              <div className="grid md:grid-cols-3 gap-4">
-                {[
-                  'Intrusion Attempts',
-                  'Malware & Ransomware',
-                  'DDoS Attacks',
-                  'Unauthorized Access',
-                  'Data Exfiltration',
-                  'Configuration Changes',
-                  'Failed Login Attempts',
-                  'Network Anomalies',
-                  'Application Errors',
-                  'Database Queries',
-                  'API Abuse',
-                  'Privilege Escalation'
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-2 bg-slate-800/50 p-3 rounded-lg border border-slate-700">
-                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                    <span className="text-slate-300">{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="bg-slate-800/50 p-6 rounded-lg border border-slate-700">
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-                  <Clock className="w-6 h-6 text-amber-400" />
-                  Monitoring Features
-                </h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {[
-                    {
-                      title: 'Instant Alerts',
-                      description: 'Get notified immediately via email, SMS, or Slack when threats are detected'
-                    },
-                    {
-                      title: 'AI-Powered Detection',
-                      description: 'Machine learning identifies anomalies and zero-day threats automatically'
-                    },
-                    {
-                      title: 'Detailed Logs',
-                      description: 'Complete activity logs for forensic analysis and compliance audits'
-                    },
-                    {
-                      title: 'Custom Dashboards',
-                      description: 'Real-time visualization of your security posture and threat landscape'
-                    },
-                    {
-                      title: 'Monthly Reports',
-                      description: 'Comprehensive security reports with trends, incidents, and recommendations'
-                    },
-                    {
-                      title: 'Integration Ready',
-                      description: 'Works with existing SIEM, logging, and security tools'
-                    }
-                  ].map((item, index) => (
-                    <div key={index}>
-                      <h4 className="font-semibold text-white mb-1">{item.title}</h4>
-                      <p className="text-sm text-slate-400">{item.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        <div className="lg:col-span-5 relative">
+          <div className="glass-panel p-1 aspect-square rounded-sm overflow-hidden relative group">
+            <img className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" alt="Futuristic server room with blue neon fiber optic lights glowing in a dark data center, high-tech security atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuBVjZkMbrL0HN6JUJCJ_urezyzRlkwSHFtPIiYUrczj0jsyIE7CdVHZJr5DJfejqtbs16niP1E9wB1P-TCWHymLZXFDRPIeLvEpLjtT6sA-E26Rw2CoNDUe9ra7DwHC0wqZKzj6I7EceOahCkv_xKiNLPdNLSOrH_teDmPrbFBZBzgZfuSHCZwRPEJf-dx_zihi8ko6WN1J-7PTeULql9EoP3svhpEHBv6M5Fp2p9IZtTIyvGIIGcFav8VyHYwypT8lkGHLCU5EE" />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+            {/* HUD Overlays */}
+            <div className="absolute top-8 left-8 space-y-2">
+              <div className="w-32 h-[1px] bg-primary/40"></div>
+              <div className="font-label text-[0.6rem] text-primary tracking-widest">SYSTEM_SCANNING_V.4.2</div>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-slate-900/50 border-slate-700 mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white flex items-center gap-2">
-              <TrendingUp className="w-6 h-6 text-amber-400" />
-              Why You Need 24/7 Monitoring
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6 text-slate-300">
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-3">The Reality of Cyber Threats</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                    <p className="text-red-300 font-semibold mb-2">Attacks Happen 24/7</p>
-                    <p className="text-sm text-slate-400">Cybercriminals don't work 9-5. Most attacks happen outside business hours when nobody's watching.</p>
-                  </div>
-                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                    <p className="text-red-300 font-semibold mb-2">Speed is Critical</p>
-                    <p className="text-sm text-slate-400">The faster you detect a breach, the less damage occurs. Minutes matter in incident response.</p>
-                  </div>
-                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                    <p className="text-red-300 font-semibold mb-2">Average Detection: 287 Days</p>
-                    <p className="text-sm text-slate-400">Without monitoring, breaches go undetected for months while attackers steal data.</p>
-                  </div>
-                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
-                    <p className="text-red-300 font-semibold mb-2">Compliance Required</p>
-                    <p className="text-sm text-slate-400">PCI DSS, HIPAA, and SOC 2 all mandate continuous security monitoring.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-3">Perfect For</h3>
-                <ul className="space-y-2">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">E-commerce Sites:</strong> Protect customer data and payment information 24/7</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">SaaS Companies:</strong> Ensure uptime and protect user data continuously</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Healthcare Providers:</strong> Meet HIPAA requirements with continuous monitoring</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Financial Services:</strong> Detect fraud and unauthorized access in real-time</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-2"></div>
-                    <span><strong className="text-white">Growing Startups:</strong> Enterprise-grade security without hiring a full security team</span>
-                  </li>
-                </ul>
-              </div>
+            <div className="absolute bottom-8 right-8 text-right">
+              <div className="font-label text-[2rem] font-bold text-on-surface/20 leading-none">00:00:00</div>
+              <div className="font-label text-[0.6rem] text-slate-500 tracking-widest">UPTIME_CONTINUITY</div>
             </div>
-          </CardContent>
-        </Card>
-
-        <div className="text-center mt-12">
-          <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-white text-lg px-8 py-6">
-            Start Monitoring Today - $99/month
-          </Button>
-          <p className="text-slate-400 mt-4">Instant setup • 24/7 monitoring • Real-time alerts • Cancel anytime</p>
+          </div>
+          {/* Ambient Glow behind image */}
+          <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-primary/10 blur-[120px] rounded-full"></div>
         </div>
-      </div>
+      </section>
 
-      <SageAI />
-    </div>
+      {/* Bento Features Grid */}
+      <section className="max-w-screen-2xl mx-auto px-8 py-24 space-y-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h2 className="font-label text-[0.75rem] text-secondary tracking-[0.2em] uppercase mb-2">Core Capabilities</h2>
+            <h3 className="text-3xl font-bold text-on-surface">Uncompromising Oversight</h3>
+          </div>
+          <div className="h-[1px] flex-grow bg-outline-variant/20 hidden md:block mx-12 mb-4"></div>
+          <div className="font-label text-[0.75rem] text-slate-500 uppercase tracking-widest">Delivery: Instant Setup</div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          {/* 24/7 Monitoring */}
+          <div className="md:col-span-2 lg:col-span-2 glass-panel p-8 space-y-6 group hover:bg-surface-container-highest transition-colors duration-300">
+            <span className="material-symbols-outlined text-4xl text-primary">visibility</span>
+            <div className="space-y-3">
+              <h4 className="text-xl font-bold text-on-surface">24/7 Monitoring</h4>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Continuous algorithmic surveillance of your entire infrastructure stack, identifying anomalies before they escalate.</p>
+            </div>
+          </div>
+
+          {/* Instant Alerts */}
+          <div className="md:col-span-2 lg:col-span-2 glass-panel p-8 space-y-6 border-l-2 border-l-secondary-container bg-surface-container-low group hover:bg-surface-container-highest transition-colors duration-300">
+            <span className="material-symbols-outlined text-4xl text-secondary">notification_important</span>
+            <div className="space-y-3">
+              <h4 className="text-xl font-bold text-on-surface">Instant Alerts</h4>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Real-time notification via secure channels (Slack, PagerDuty, SMS) the millisecond a threat is validated.</p>
+            </div>
+          </div>
+
+          {/* Monthly Reports */}
+          <div className="md:col-span-2 lg:col-span-2 glass-panel p-8 space-y-6 group hover:bg-surface-container-highest transition-colors duration-300">
+            <span className="material-symbols-outlined text-4xl text-tertiary">assessment</span>
+            <div className="space-y-3">
+              <h4 className="text-xl font-bold text-on-surface">Monthly Reports</h4>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Deep-dive intelligence briefings summarizing all neutralized threats and infrastructure health trends.</p>
+            </div>
+          </div>
+
+          {/* Large Bento Visual Component */}
+          <div className="md:col-span-4 lg:col-span-4 glass-panel min-h-[320px] relative overflow-hidden flex flex-col justify-end p-10 bg-surface-container-low">
+            <div className="absolute inset-0 z-0">
+              <img className="w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-[2000ms]" alt="Abstract data visualization with flowing cyan and blue lines representing network traffic on a dark professional background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA95T4zf_dkZjcdd9BOMXH6MsnWnD2mVrxxOkkymSrbBXfud2AFusjI5bvBI5GAqxRAn8W731zTTE9K-Xg2mzEs9drOYqRvn-a9S_vGVNH2Ddd1GfoYB8G5byEJ_BGn0slifsZTKxShNkhtiPkyu9-yVnGLxFrNoMwcnRp4DfaZrECUcaljtwygqOv2NZj7Mz41FzRrp3nS3EYvZVywCofWIPnjZwBHhxFchyqw2_GqJtsxolVi49pvQ9padpM7g18FvKwCPuWiHl0" />
+            </div>
+            <div className="relative z-10 max-w-xl space-y-4">
+              <div className="font-label text-[0.65rem] text-primary-fixed tracking-[0.3em] uppercase">The Sentry Advantage</div>
+              <h4 className="text-2xl font-bold text-on-surface">Threat Detection that Evolves with the Adversary</h4>
+              <p className="text-on-surface-variant">Our system doesn't just watch; it learns. Using neural network behavioral analysis, we isolate zero-day patterns before they compromise your data integrity.</p>
+            </div>
+          </div>
+
+          {/* Setup Info */}
+          <div className="md:col-span-2 lg:col-span-2 glass-panel p-8 bg-primary-container/10 flex flex-col justify-between group">
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
+                <span className="material-symbols-outlined text-on-primary-container">bolt</span>
+              </div>
+              <h4 className="text-xl font-bold text-on-surface">Instant Setup</h4>
+            </div>
+            <div className="space-y-4">
+              <p className="text-sm text-on-surface-variant">Automated deployment via our CLI or cloud provider integrations. Be operational in under 3 minutes.</p>
+              <a className="inline-flex items-center gap-2 text-primary font-label text-xs uppercase tracking-widest hover:gap-4 transition-all" href="#">
+                View Documentation <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="max-w-screen-2xl mx-auto px-8 py-32">
+        <div className="relative glass-panel bg-[#0c1324] border border-primary/20 p-16 text-center space-y-8 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter text-on-surface max-w-2xl mx-auto">
+            Secure Your Perimeter Today
+          </h2>
+          <p className="text-on-surface-variant text-lg max-w-xl mx-auto">
+            Join the network of protected infrastructure. Deploy the Sentry Protocol for $99/mo and gain total visibility.
+          </p>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 pt-4">
+            <button className="w-full md:w-auto bg-primary-container text-on-primary-container px-12 py-5 rounded-sm font-bold text-lg hover:brightness-110 shadow-[0_0_30px_rgba(37,99,235,0.4)]">
+              Initiate Protocol
+            </button>
+            <button className="w-full md:w-auto px-12 py-5 rounded-sm font-label text-sm uppercase tracking-widest border border-outline-variant/30 hover:bg-surface-container-highest transition-colors">
+              View Demo Interface
+            </button>
+          </div>
+          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-tertiary/5 blur-[100px] rounded-full"></div>
+          <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/5 blur-[100px] rounded-full"></div>
+        </div>
+      </section>
+    </main>
   );
-};
-
-export default RealtimeMonitoring;
+}
