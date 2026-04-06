@@ -87,7 +87,7 @@ const AdminCompanyDetail = () => {
     const handleSave = async () => {
       setSaving(true);
       try {
-        await apiCall('PUT', `/api/admin/dashboard/${userId}`, form);
+        await apiCall('PUT', `/api/admink/dashboard/${userId}`, form);
         await fetchData();
         alert('Dashboard stats updated!');
       } catch (err) {
@@ -155,7 +155,7 @@ const AdminCompanyDetail = () => {
     const handleAdd = async () => {
       setSaving(true);
       try {
-        await apiCall('POST', `/api/admin/users/${userId}/services`, addForm);
+        await apiCall('POST', `/api/admink/users/${userId}/services`, addForm);
         await fetchData();
         setModal(null);
       } catch (err) {
@@ -168,7 +168,7 @@ const AdminCompanyDetail = () => {
     const handleUpdate = async (userServiceId, updatedData) => {
       setSaving(true);
       try {
-        await apiCall('PUT', `/api/admin/services/${userServiceId}`, updatedData);
+        await apiCall('PUT', `/api/admink/services/${userServiceId}`, updatedData);
         await fetchData();
         setModal(null);
       } catch (err) {
@@ -181,7 +181,7 @@ const AdminCompanyDetail = () => {
     const handleRemove = async (userServiceId) => {
       if (!window.confirm('Remove this service?')) return;
       try {
-        await apiCall('DELETE', `/api/admin/services/${userServiceId}`);
+        await apiCall('DELETE', `/api/admink/services/${userServiceId}`);
         await fetchData();
       } catch (err) {
         alert(err.message);
@@ -323,7 +323,7 @@ const AdminCompanyDetail = () => {
     const handleCreate = async () => {
       setSaving(true);
       try {
-        await apiCall('POST', `/api/admin/users/${userId}/reports`, {
+        await apiCall('POST', `/api/admink/users/${userId}/reports`, {
           ...form,
           details: form.details.split('\n').filter(Boolean),
         });
@@ -339,7 +339,7 @@ const AdminCompanyDetail = () => {
     const handleDelete = async (reportId) => {
       if (!window.confirm('Delete this report?')) return;
       try {
-        await apiCall('DELETE', `/api/admin/reports/${reportId}`);
+        await apiCall('DELETE', `/api/admink/reports/${reportId}`);
         await fetchData();
       } catch (err) {
         alert(err.message);
@@ -470,7 +470,7 @@ const AdminCompanyDetail = () => {
             onSave={async (reportId, updatedData) => {
               setSaving(true);
               try {
-                await apiCall('PUT', `/api/admin/reports/${reportId}`, updatedData);
+                await apiCall('PUT', `/api/admink/reports/${reportId}`, updatedData);
                 await fetchData();
                 setModal(null);
               } catch (err) {
@@ -491,7 +491,7 @@ const AdminCompanyDetail = () => {
   const BillingTab = () => {
     const handleUpdatePayment = async (userServiceId, paymentStatus) => {
       try {
-        await apiCall('PUT', `/api/admin/payments/${userServiceId}`, {
+        await apiCall('PUT', `/api/admink/payments/${userServiceId}`, {
           paymentStatus,
           invoiceDate: new Date(),
         });
