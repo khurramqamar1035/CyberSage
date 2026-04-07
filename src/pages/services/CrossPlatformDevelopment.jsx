@@ -54,7 +54,7 @@ export default function CrossPlatform() {
               <p className="pl-8 text-primary">&lt;/OmniLayer&gt;</p>
               <p className="pl-4">);</p>
               <p className="text-tertiary">{'}'};</p>
-              <p className="pt-4 text-slate-500">// Deploying to 2 clusters...</p>
+              <p className="pt-4 text-slate-500">&#47;&#47; Deploying to 2 clusters...</p>
               <p className="text-tertiary-fixed">Status: ACTIVE</p>
             </code>
           </div>

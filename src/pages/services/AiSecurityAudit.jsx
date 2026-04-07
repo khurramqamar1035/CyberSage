@@ -135,7 +135,7 @@ export default function AISecurityAudit() {
             <button className="w-full md:w-auto bg-primary-container text-on-primary-container font-label font-bold px-12 py-5 uppercase tracking-widest shadow-[0_0_20px_rgba(37,99,235,0.4)]">
               Initiate Protocol
             </button>
-            <a className="font-label text-on-surface-variant hover:text-white transition-colors uppercase tracking-[0.2em] text-xs" href="#">Download Sample Report</a>
+            <button className="font-label text-on-surface-variant hover:text-white transition-colors uppercase tracking-[0.2em] text-xs">Download Sample Report</button>
           </div>
         </div>
       </section>

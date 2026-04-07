@@ -25,7 +25,7 @@ export default function DevelopmentServices() {
           <img className="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUey_V1dSXt4K87wWDIcAZoSuGVSezoVsqsmo4uQakJSf4HxVPfxI7Cz3zp26d7-jfcGlDtv1xOzaKom3ni5j_5hAV9vFugvQ5o5M4B3m224gu07pOlvO2fQKzlftga5F_9tFbLoj7_x_rW4QDf6e7E3jbhVsp_w3IMhflOLsCO7K2GjEICQx9TiZ627xzCKMynEsXaj-t7ZAN5GeqcrLO-10nb-X4QTn0X9hhR0thN0H_o7zLhVOLcqM6fravrY3nWgOGZQjdJoI" alt="Close up of high-tech computer code on a dark screen with vibrant blue and cyan glowing accents and bokeh light effects" />
           <div className="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-80"></div>
           <div className="absolute bottom-6 left-6 p-4">
-            <span className="font-label text-xs uppercase tracking-widest text-secondary block mb-2">// ENGINE_REDACTED</span>
+            <span className="font-label text-xs uppercase tracking-widest text-secondary block mb-2">&#47;&#47; ENGINE_REDACTED</span>
             <div className="h-1 w-24 bg-primary"></div>
           </div>
         </div>
@@ -156,7 +156,7 @@ export default function DevelopmentServices() {
                   <div className="w-full h-40 bg-primary/40"></div>
                   <div className="w-full h-20 bg-primary/20"></div>
                 </div>
-                <div className="text-[8px] font-label text-outline-variant">// MONITORING_LATENCY_FEED_ACTIVE</div>
+                <div className="text-[8px] font-label text-outline-variant">&#47;&#47; MONITORING_LATENCY_FEED_ACTIVE</div>
               </div>
             </div>
           </div>

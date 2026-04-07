@@ -42,8 +42,27 @@ export default function CoreTeamPage() {
 
       {loading ? (
         /* ── Loading state ── */
-        <div className="flex items-center justify-center h-64">
-          <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        <div className="space-y-12 animate-pulse">
+          {/* detail panel skeleton */}
+          <div className="bg-surface-container-lowest/50 border border-outline-variant/20 rounded-sm p-8 flex gap-8">
+            <div className="w-52 h-52 bg-surface-container flex-shrink-0" />
+            <div className="flex-1 space-y-4">
+              <div className="h-8 bg-surface-container rounded w-1/2" />
+              <div className="h-4 bg-surface-container rounded w-1/4" />
+              <div className="h-4 bg-surface-container rounded w-full" />
+              <div className="h-4 bg-surface-container rounded w-5/6" />
+            </div>
+          </div>
+          {/* grid skeleton */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="bg-surface-container-lowest/50 p-6">
+                <div className="aspect-square bg-surface-container mb-4" />
+                <div className="h-5 bg-surface-container rounded w-3/4 mb-2" />
+                <div className="h-3 bg-surface-container rounded w-1/2" />
+              </div>
+            ))}
+          </div>
         </div>
       ) : members.length === 0 ? (
         /* ── Empty state ── */

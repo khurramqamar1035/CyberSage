@@ -30,6 +30,7 @@ const AdminFAQs = () => {
 
   useEffect(() => {
     fetchFAQs();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchFAQs = async () => {

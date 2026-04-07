@@ -79,9 +79,17 @@ const FAQPage = () => {
         )}
 
         {loading ? (
-          <div className="text-center py-20">
-            <div className="inline-block w-8 h-8 border-4 border-amber-400 border-t-transparent rounded-full animate-spin" />
-            <p className="text-slate-400 mt-4">Loading FAQs...</p>
+          <div className="space-y-6">
+            {[...Array(2)].map((_, i) => (
+              <div key={i} className="bg-slate-900/50 border border-slate-700 rounded-lg p-6 animate-pulse">
+                <div className="h-6 bg-slate-700 rounded w-1/3 mb-6" />
+                {[...Array(4)].map((_, j) => (
+                  <div key={j} className="py-4 border-t border-slate-800">
+                    <div className="h-4 bg-slate-700 rounded w-3/4" />
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         ) : filtered.length === 0 ? (
           <Card className="bg-slate-900/50 border-slate-700">

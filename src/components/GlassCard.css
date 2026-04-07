@@ -3,15 +3,18 @@
   background: rgba(35, 41, 60, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  
+
+  /* visible card border */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
   /* 1px top edge glow */
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  
+
   /* general styles */
-  border-radius: var(--radius-sm);
-  padding: var(--spacing-24);
-  color: var(--color-on-surface);
-  
+  border-radius: 0.125rem;
+  padding: 2.5rem;
+  color: #dce1fb;
+
   /* depth via ambient shadow */
-  filter: drop-shadow(var(--shadow-ambient));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 24px rgba(0, 0, 0, 0.3);
 }

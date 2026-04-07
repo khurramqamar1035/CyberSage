@@ -58,6 +58,8 @@ import AdminCompanies from './pages/admin/AdminCompanies';
 import AdminCompanyDetail from './pages/admin/AdminCompanyDetail';
 import AdminBlogs from './pages/admin/AdminBlogs';
 import AdminFAQs from './pages/admin/AdminFAQs';
+import AdminTestimonials from './pages/admin/AdminTestimonials';
+import AdminClients from './pages/admin/AdminClients';
 import SuperAdminDashboard from './pages/superadmin/SuperAdminDashboard';
 
 import ChatBot from './components/ChatBot';
@@ -152,6 +154,8 @@ function App() {
           <Route path="companies/:userId" element={<AdminCompanyDetail />} />
           <Route path="blogs" element={<AdminBlogs />} />
           <Route path="faqs" element={<AdminFAQs />} />
+          <Route path="testimonials" element={<AdminTestimonials />} />
+          <Route path="clients" element={<AdminClients />} />
         </Route>
       </Routes>
 

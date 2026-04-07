@@ -218,15 +218,15 @@ export default function PublicLayout() {
 
           <div className="flex flex-col gap-4">
             <h4 className="text-slate-100 font-bold mb-2">Legal</h4>
-            <a className="text-slate-500 hover:text-[#44d8f1] transition-colors" href="#">Privacy Policy</a>
-            <a className="text-slate-500 hover:text-[#44d8f1] transition-colors" href="#">Terms of Service</a>
-            <a className="text-slate-500 hover:text-[#44d8f1] transition-colors" href="#">Ethics Protocol</a>
+            <button className="text-slate-500 hover:text-[#44d8f1] transition-colors text-left">Privacy Policy</button>
+            <button className="text-slate-500 hover:text-[#44d8f1] transition-colors text-left">Terms of Service</button>
+            <button className="text-slate-500 hover:text-[#44d8f1] transition-colors text-left">Ethics Protocol</button>
           </div>
 
           <div className="flex flex-col gap-4">
             <h4 className="text-slate-100 font-bold mb-2">Contact</h4>
             <Link className="text-slate-500 hover:text-[#44d8f1] transition-colors" to="/contact">Contact Support</Link>
-            <a className="text-slate-500 hover:text-[#44d8f1] transition-colors" href="#">Global Offices</a>
+            <button className="text-slate-500 hover:text-[#44d8f1] transition-colors text-left">Global Offices</button>
             <div className="mt-4 flex gap-4">
               <span className="material-symbols-outlined text-slate-500 hover:text-primary cursor-pointer transition-colors">share</span>
               <span className="material-symbols-outlined text-slate-500 hover:text-primary cursor-pointer transition-colors">public</span>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
-import { Shield, Building2, LogOut, FileText, HelpCircle } from 'lucide-react';
+import { Building2, LogOut, FileText, HelpCircle, MessageSquare, Users } from 'lucide-react';
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const AdminLayout = () => {
         {/* Logo */}
         <div className="p-6 border-b border-[#1C212E]">
           <div className="flex items-center gap-3">
-            <Shield className="w-8 h-8 text-red-500" strokeWidth={1.5} />
+            <img src="/logo.png" alt="CyberSage" className="w-8 h-8 object-contain" />
             <div>
               <h1 className="text-white font-bold text-lg leading-none">CyberSage</h1>
               <p className="text-red-400 text-xs font-medium mt-0.5">Admin Portal</p>
@@ -67,6 +67,32 @@ const AdminLayout = () => {
           >
             <HelpCircle className="w-5 h-5" />
             FAQs
+          </NavLink>
+          <NavLink
+            to="/admink/testimonials"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                isActive
+                  ? 'bg-red-500/10 text-red-400 border border-red-500/20'
+                  : 'text-slate-400 hover:bg-[#13192B] hover:text-slate-200'
+              }`
+            }
+          >
+            <MessageSquare className="w-5 h-5" />
+            Testimonials
+          </NavLink>
+          <NavLink
+            to="/admink/clients"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                isActive
+                  ? 'bg-red-500/10 text-red-400 border border-red-500/20'
+                  : 'text-slate-400 hover:bg-[#13192B] hover:text-slate-200'
+              }`
+            }
+          >
+            <Users className="w-5 h-5" />
+            Clients
           </NavLink>
         </nav>
 

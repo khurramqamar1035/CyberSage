@@ -109,9 +109,9 @@ export default function RealTimeMonitoring() {
             </div>
             <div className="space-y-4">
               <p className="text-sm text-on-surface-variant">Automated deployment via our CLI or cloud provider integrations. Be operational in under 3 minutes.</p>
-              <a className="inline-flex items-center gap-2 text-primary font-label text-xs uppercase tracking-widest hover:gap-4 transition-all" href="#">
+              <button className="inline-flex items-center gap-2 text-primary font-label text-xs uppercase tracking-widest hover:gap-4 transition-all">
                 View Documentation <span className="material-symbols-outlined text-sm">arrow_forward</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>

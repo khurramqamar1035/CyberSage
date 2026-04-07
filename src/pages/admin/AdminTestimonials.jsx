@@ -1,36 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import {
-  FileText, Plus, Pencil, Trash2, Loader2, X, Check, ChevronDown, Eye, EyeOff,
+  Users, Plus, Pencil, Trash2, Loader2, X, Check, ChevronDown, Star,
 } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
-const CATEGORIES = ['Security', 'Development', 'Training', 'News', 'General'];
-
 const emptyForm = {
-  title: '',
-  slug: '',
+  name: '',
+  role: '',
+  company: '',
   content: '',
-  excerpt: '',
-  author: '',
-  category: '',
-  tags: '',
-  published: true,
+  rating: 5,
+  avatar: '',
+  featured: false,
 };
 
-const slugify = (str) =>
-  str
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
-
-const AdminBlogs = () => {
-  const [blogs, setBlogs] = useState([]);
+const AdminTestimonials = () => {
+  const [testimonials, setTestimonials] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [editingBlog, setEditingBlog] = useState(null);
+  const [editingTestimonial, setEditingTestimonial] = useState(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
@@ -40,93 +29,81 @@ const AdminBlogs = () => {
   const token = localStorage.getItem('adminToken');
 
   useEffect(() => {
-    fetchBlogs();
+    fetchTestimonials();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchBlogs = async () => {
+  const fetchTestimonials = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`${API_URL}/api/blogs`, {
+      const res = await fetch(`${API_URL}/api/testimonials`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      setBlogs(Array.isArray(data) ? data : []);
+      setTestimonials(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.error('[ADMIN BLOGS] Error:', err.message);
+      console.error('[ADMIN TESTIMONIALS] Error:', err.message);
     } finally {
       setIsLoading(false);
     }
   };
 
   const openCreate = () => {
-    setEditingBlog(null);
+    setEditingTestimonial(null);
     setForm(emptyForm);
     setError('');
     setShowModal(true);
   };
 
-  const openEdit = (blog) => {
-    setEditingBlog(blog);
+  const openEdit = (testimonial) => {
+    setEditingTestimonial(testimonial);
     setForm({
-      title: blog.title || '',
-      slug: blog.slug || '',
-      content: blog.content || '',
-      excerpt: blog.excerpt || '',
-      author: blog.author || '',
-      category: blog.category || '',
-      tags: Array.isArray(blog.tags) ? blog.tags.join(', ') : '',
-      published: blog.published ?? true,
+      name: testimonial.name || '',
+      role: testimonial.role || '',
+      company: testimonial.company || '',
+      content: testimonial.content || '',
+      rating: testimonial.rating || 5,
+      avatar: testimonial.avatar || '',
+      featured: testimonial.featured ?? false,
     });
     setError('');
     setShowModal(true);
   };
 
-  const handleTitleChange = (e) => {
-    const title = e.target.value;
-    setForm((prev) => ({
-      ...prev,
-      title,
-      slug: editingBlog ? prev.slug : slugify(title),
-    }));
-  };
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : (name === 'rating' ? parseInt(value, 10) : value),
+    }));
   };
 
   const handleSave = async () => {
     setError('');
-    if (!form.title || !form.slug || !form.content || !form.excerpt || !form.author || !form.category) {
+    if (!form.name || !form.role || !form.company || !form.content) {
       setError('Please fill in all required fields.');
       return;
     }
     setSaving(true);
     try {
-      const payload = {
-        ...form,
-        tags: form.tags ? form.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
-      };
-
       let res;
-      if (editingBlog) {
-        res = await fetch(`${API_URL}/api/blogs/${editingBlog.id}`, {
+      if (editingTestimonial) {
+        res = await fetch(`${API_URL}/api/testimonials/${editingTestimonial.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(form),
         });
       } else {
-        res = await fetch(`${API_URL}/api/blogs`, {
+        res = await fetch(`${API_URL}/api/testimonials`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(form),
         });
       }
 
@@ -134,9 +111,9 @@ const AdminBlogs = () => {
       if (!res.ok) throw new Error(data.error || 'Failed to save');
 
       setShowModal(false);
-      setSuccess(editingBlog ? 'Blog updated successfully!' : 'Blog created successfully!');
+      setSuccess(editingTestimonial ? 'Testimonial updated successfully!' : 'Testimonial created successfully!');
       setTimeout(() => setSuccess(''), 3000);
-      fetchBlogs();
+      fetchTestimonials();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -144,17 +121,17 @@ const AdminBlogs = () => {
     }
   };
 
-  const handleDelete = async (blog) => {
-    if (!window.confirm(`Delete "${blog.title}"? This cannot be undone.`)) return;
-    setDeletingId(blog.id);
+  const handleDelete = async (testimonial) => {
+    if (!window.confirm(`Delete testimonial from "${testimonial.name}"? This cannot be undone.`)) return;
+    setDeletingId(testimonial.id);
     try {
-      const res = await fetch(`${API_URL}/api/blogs/${blog.id}`, {
+      const res = await fetch(`${API_URL}/api/testimonials/${testimonial.id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to delete');
-      setBlogs((prev) => prev.filter((b) => b.id !== blog.id));
-      setSuccess('Blog deleted.');
+      setTestimonials((prev) => prev.filter((t) => t.id !== testimonial.id));
+      setSuccess('Testimonial deleted.');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
       alert(err.message);
@@ -168,10 +145,10 @@ const AdminBlogs = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <FileText className="w-6 h-6 text-red-400" />
-          <h1 className="text-2xl font-bold text-white">Blog Posts</h1>
+          <Users className="w-6 h-6 text-red-400" />
+          <h1 className="text-2xl font-bold text-white">Testimonials</h1>
           <span className="bg-red-500/10 text-red-400 border border-red-500/20 text-xs px-2 py-0.5 rounded-full font-medium">
-            {blogs.length}
+            {testimonials.length}
           </span>
         </div>
         <button
@@ -179,7 +156,7 @@ const AdminBlogs = () => {
           className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-all"
         >
           <Plus className="w-4 h-4" />
-          New Post
+          New Testimonial
         </button>
       </div>
 
@@ -191,21 +168,21 @@ const AdminBlogs = () => {
         </div>
       )}
 
-      {/* Blog list */}
+      {/* Testimonials list */}
       {isLoading ? (
         <div className="flex items-center justify-center h-64">
           <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
         </div>
-      ) : blogs.length === 0 ? (
+      ) : testimonials.length === 0 ? (
         <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
-          <FileText className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-          <p className="text-slate-400 text-lg font-medium">No blog posts yet</p>
-          <p className="text-slate-600 text-sm mt-1">Create your first post to get started.</p>
+          <Users className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+          <p className="text-slate-400 text-lg font-medium">No testimonials yet</p>
+          <p className="text-slate-600 text-sm mt-1">Create your first testimonial to get started.</p>
           <button
             onClick={openCreate}
             className="mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-all"
           >
-            Create Post
+            Create Testimonial
           </button>
         </div>
       ) : (
@@ -213,40 +190,42 @@ const AdminBlogs = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-[#1C212E]">
-                <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Title</th>
-                <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Author</th>
-                <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Category</th>
-                <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Status</th>
+                <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Name</th>
+                <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Role</th>
+                <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Company</th>
+                <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Rating</th>
+                <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Featured</th>
                 <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Date</th>
                 <th className="text-right px-6 py-4 text-slate-400 text-sm font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1C212E]">
-              {blogs.map((blog) => (
-                <tr key={blog.id || blog._id} className="hover:bg-[#13192B] transition-colors group">
+              {testimonials.map((testimonial) => (
+                <tr key={testimonial.id || testimonial._id} className="hover:bg-[#13192B] transition-colors group">
                   <td className="px-6 py-4">
-                    <div>
-                      <p className="text-white text-sm font-medium line-clamp-1">{blog.title}</p>
-                      <p className="text-slate-500 text-xs mt-0.5">/{blog.slug}</p>
+                    <p className="text-white text-sm font-medium">{testimonial.name}</p>
+                  </td>
+                  <td className="px-6 py-4 text-slate-300 text-sm">{testimonial.role}</td>
+                  <td className="px-6 py-4 text-slate-300 text-sm">{testimonial.company}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-0.5">
+                      {[...Array(testimonial.rating || 5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
+                      ))}
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-slate-300 text-sm">{blog.author}</td>
                   <td className="px-6 py-4">
-                    <span className="bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded-lg">{blog.category}</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    {blog.published ? (
-                      <span className="flex items-center gap-1.5 text-green-400 text-xs font-medium">
-                        <Eye className="w-3.5 h-3.5" /> Published
+                    {testimonial.featured ? (
+                      <span className="inline-flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 text-red-400 text-xs px-2.5 py-1 rounded-lg font-medium">
+                        <Star className="w-3 h-3 fill-current" />
+                        Featured
                       </span>
                     ) : (
-                      <span className="flex items-center gap-1.5 text-slate-500 text-xs font-medium">
-                        <EyeOff className="w-3.5 h-3.5" /> Draft
-                      </span>
+                      <span className="text-slate-500 text-xs">—</span>
                     )}
                   </td>
                   <td className="px-6 py-4 text-slate-400 text-xs">
-                    {new Date(blog.created_at).toLocaleDateString('en-US', {
+                    {new Date(testimonial.created_at).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',
@@ -255,19 +234,19 @@ const AdminBlogs = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-2">
                       <button
-                        onClick={() => openEdit(blog)}
+                        onClick={() => openEdit(testimonial)}
                         className="p-2 text-slate-500 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
                         title="Edit"
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() => handleDelete(blog)}
-                        disabled={deletingId === blog.id}
+                        onClick={() => handleDelete(testimonial)}
+                        disabled={deletingId === testimonial.id}
                         className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50"
                         title="Delete"
                       >
-                        {deletingId === blog.id ? (
+                        {deletingId === testimonial.id ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
                           <Trash2 className="w-4 h-4" />
@@ -289,7 +268,7 @@ const AdminBlogs = () => {
             {/* Modal header */}
             <div className="flex items-center justify-between p-6 border-b border-[#1C212E]">
               <h2 className="text-white font-bold text-lg">
-                {editingBlog ? 'Edit Blog Post' : 'Create Blog Post'}
+                {editingTestimonial ? 'Edit Testimonial' : 'Create Testimonial'}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
@@ -307,128 +286,112 @@ const AdminBlogs = () => {
                 </div>
               )}
 
-              {/* Title */}
+              {/* Name */}
               <div>
                 <label className="block text-slate-400 text-sm font-medium mb-1.5">
-                  Title <span className="text-red-400">*</span>
+                  Name <span className="text-red-400">*</span>
                 </label>
                 <input
-                  name="title"
-                  value={form.title}
-                  onChange={handleTitleChange}
-                  placeholder="Blog post title"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Full name"
                   className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                 />
               </div>
 
-              {/* Slug */}
-              <div>
-                <label className="block text-slate-400 text-sm font-medium mb-1.5">
-                  Slug <span className="text-red-400">*</span>
-                </label>
-                <input
-                  name="slug"
-                  value={form.slug}
-                  onChange={handleChange}
-                  placeholder="url-friendly-slug"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 font-mono"
-                />
-              </div>
-
-              {/* Author + Category */}
+              {/* Role + Company */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-slate-400 text-sm font-medium mb-1.5">
-                    Author <span className="text-red-400">*</span>
+                    Role <span className="text-red-400">*</span>
                   </label>
                   <input
-                    name="author"
-                    value={form.author}
+                    name="role"
+                    value={form.role}
                     onChange={handleChange}
-                    placeholder="Author name"
+                    placeholder="Job title"
                     className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                   />
                 </div>
                 <div>
                   <label className="block text-slate-400 text-sm font-medium mb-1.5">
-                    Category <span className="text-red-400">*</span>
+                    Company <span className="text-red-400">*</span>
                   </label>
-                  <div className="relative">
-                    <select
-                      name="category"
-                      value={form.category}
-                      onChange={handleChange}
-                      className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 appearance-none"
-                    >
-                      <option value="" disabled>Select category</option>
-                      {CATEGORIES.map((c) => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
-                  </div>
+                  <input
+                    name="company"
+                    value={form.company}
+                    onChange={handleChange}
+                    placeholder="Company name"
+                    className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                  />
                 </div>
-              </div>
-
-              {/* Excerpt */}
-              <div>
-                <label className="block text-slate-400 text-sm font-medium mb-1.5">
-                  Excerpt <span className="text-red-400">*</span>
-                </label>
-                <textarea
-                  name="excerpt"
-                  value={form.excerpt}
-                  onChange={handleChange}
-                  placeholder="Short summary of the post..."
-                  rows={2}
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 resize-none"
-                />
               </div>
 
               {/* Content */}
               <div>
                 <label className="block text-slate-400 text-sm font-medium mb-1.5">
-                  Content <span className="text-red-400">*</span>
+                  Testimonial <span className="text-red-400">*</span>
                 </label>
                 <textarea
                   name="content"
                   value={form.content}
                   onChange={handleChange}
-                  placeholder="Full blog post content..."
-                  rows={8}
+                  placeholder="What did the customer say..."
+                  rows={5}
                   className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 resize-y"
                 />
               </div>
 
-              {/* Tags */}
-              <div>
-                <label className="block text-slate-400 text-sm font-medium mb-1.5">
-                  Tags <span className="text-slate-600 font-normal">(comma-separated)</span>
-                </label>
-                <input
-                  name="tags"
-                  value={form.tags}
-                  onChange={handleChange}
-                  placeholder="cybersecurity, AI, training"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
-                />
+              {/* Rating + Featured */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-400 text-sm font-medium mb-1.5">
+                    Rating
+                  </label>
+                  <div className="relative">
+                    <select
+                      name="rating"
+                      value={form.rating}
+                      onChange={handleChange}
+                      className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 appearance-none"
+                    >
+                      <option value={1}>1 Star</option>
+                      <option value={2}>2 Stars</option>
+                      <option value={3}>3 Stars</option>
+                      <option value={4}>4 Stars</option>
+                      <option value={5}>5 Stars</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+                  </div>
+                </div>
+                <div className="flex items-end">
+                  <label className="relative inline-flex items-center cursor-pointer w-full">
+                    <input
+                      type="checkbox"
+                      name="featured"
+                      checked={form.featured}
+                      onChange={handleChange}
+                      className="sr-only peer"
+                    />
+                    <div className="w-10 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-500"></div>
+                    <span className="text-slate-300 text-sm ml-3">Featured</span>
+                  </label>
+                </div>
               </div>
 
-              {/* Published toggle */}
-              <div className="flex items-center gap-3">
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="published"
-                    checked={form.published}
-                    onChange={handleChange}
-                    className="sr-only peer"
-                  />
-                  <div className="w-10 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-500"></div>
+              {/* Avatar URL */}
+              <div>
+                <label className="block text-slate-400 text-sm font-medium mb-1.5">
+                  Avatar URL
                 </label>
-                <span className="text-slate-300 text-sm">
-                  {form.published ? 'Published' : 'Draft (hidden from website)'}
-                </span>
+                <input
+                  name="avatar"
+                  value={form.avatar}
+                  onChange={handleChange}
+                  placeholder="https://example.com/avatar.jpg"
+                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                />
               </div>
             </div>
 
@@ -446,7 +409,7 @@ const AdminBlogs = () => {
                 className="flex items-center gap-2 px-5 py-2 bg-red-500 hover:bg-red-600 disabled:opacity-50 text-white rounded-xl text-sm font-medium transition-all"
               >
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
-                {editingBlog ? 'Save Changes' : 'Create Post'}
+                {editingTestimonial ? 'Save Changes' : 'Create Testimonial'}
               </button>
             </div>
           </div>
@@ -456,4 +419,4 @@ const AdminBlogs = () => {
   );
 };
 
-export default AdminBlogs;
+export default AdminTestimonials;

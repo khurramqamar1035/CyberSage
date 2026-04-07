@@ -56,6 +56,7 @@ const VerifyEmail = () => {
       setStatus('error');
       setMessage('No verification token found in the URL.');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   return (

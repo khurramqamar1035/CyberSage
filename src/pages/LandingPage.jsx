@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "../components/Button";
 import { GlassCard } from "../components/GlassCard";
@@ -43,10 +43,27 @@ const SERVICES = [
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [testimonials, setTestimonials] = useState([]);
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
+    // Prefetch all endpoints
     fetch(`${BACKEND_URL}/api/about/team`).catch(() => {});
     fetch(`${BACKEND_URL}/api/about/offices`).catch(() => {});
+    fetch(`${BACKEND_URL}/api/testimonials`).catch(() => {});
+    fetch(`${BACKEND_URL}/api/clients`).catch(() => {});
+
+    // Fetch and set testimonials
+    fetch(`${BACKEND_URL}/api/testimonials`)
+      .then((res) => res.json())
+      .then((data) => setTestimonials(Array.isArray(data) ? data : []))
+      .catch(() => {});
+
+    // Fetch and set clients
+    fetch(`${BACKEND_URL}/api/clients`)
+      .then((res) => res.json())
+      .then((data) => setClients(Array.isArray(data) ? data : []))
+      .catch(() => {});
   }, []);
 
   return (
@@ -185,6 +202,102 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* ── Clients & Partners Section ── */}
+      {clients.length > 0 && (
+        <section className="py-24 px-8 max-w-[1440px] mx-auto">
+          <div className="mb-16">
+            <span className="font-label text-secondary uppercase tracking-[0.2em] text-[10px] block mb-2">
+              Trusted By
+            </span>
+            <h2 className="font-headline text-4xl font-bold tracking-tight text-on-surface">
+              Our Clients & Partners
+            </h2>
+            <div className="h-1 w-20 bg-secondary mt-4" />
+          </div>
+
+          <div className="overflow-x-auto pb-4">
+            <div className="flex gap-6 min-w-min">
+              {clients.map((client, idx) => (
+                <div
+                  key={idx}
+                  className="flex-shrink-0 w-56 h-32 bg-surface-container-low border border-primary/10 rounded-md p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300 flex items-center justify-center"
+                >
+                  {client.logo ? (
+                    <img
+                      src={client.logo}
+                      alt={client.name}
+                      className="max-w-full max-h-full object-contain"
+                    />
+                  ) : (
+                    <p className="text-on-surface font-headline text-xl font-bold text-center">
+                      {client.name}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Testimonials Section ── */}
+      {testimonials.length > 0 && (
+        <section className="py-24 px-8 bg-surface-container-low">
+          <div className="max-w-[1440px] mx-auto">
+            <div className="mb-16">
+              <span className="font-label text-secondary uppercase tracking-[0.2em] text-[10px] block mb-2">
+                Client Testimonials
+              </span>
+              <h2 className="font-headline text-4xl font-bold tracking-tight text-on-surface">
+                What Our Clients Say
+              </h2>
+              <div className="h-1 w-20 bg-tertiary mt-4" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {testimonials.map((testimonial, idx) => (
+                <GlassCard key={idx} className="flex flex-col h-full">
+                  {/* Star Rating */}
+                  {testimonial.rating && (
+                    <div className="flex gap-1 mb-6">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className={`material-symbols-outlined text-lg ${
+                            i < testimonial.rating
+                              ? "text-primary"
+                              : "text-on-surface-variant/30"
+                          }`}
+                          style={{ fontVariationSettings: "'FILL' 1" }}
+                        >
+                          star
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Quote */}
+                  <p className="text-on-surface-variant font-light text-lg leading-relaxed mb-8 flex-grow">
+                    "{testimonial.content}"
+                  </p>
+
+                  {/* Author Info */}
+                  <div className="border-t border-primary/10 pt-6">
+                    <p className="font-headline font-bold text-on-surface mb-1">
+                      {testimonial.name}
+                    </p>
+                    <p className="text-on-surface-variant text-sm font-light">
+                      {testimonial.role}
+                      {testimonial.company && `, ${testimonial.company}`}
+                    </p>
+                  </div>
+                </GlassCard>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 };

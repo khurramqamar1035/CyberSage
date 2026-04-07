@@ -17,8 +17,8 @@ export default function SecurityServices() {
         </p>
       </header>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-primary/20">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l-2 border-l-primary/50">
           <div className="flex justify-between items-start mb-8">
             <div className="p-3 bg-primary-container/10 rounded-sm">
               <span className="material-symbols-outlined text-primary text-3xl" data-icon="psychology">psychology</span>
@@ -38,7 +38,7 @@ export default function SecurityServices() {
           </div>
         </div>
 
-        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-tertiary/20">
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l-2 border-l-tertiary/50">
           <div className="flex justify-between items-start mb-8">
             <div className="p-3 bg-tertiary-container/10 rounded-sm">
               <span className="material-symbols-outlined text-tertiary text-3xl" data-icon="policy">policy</span>
@@ -58,7 +58,7 @@ export default function SecurityServices() {
           </div>
         </div>
 
-        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-secondary/20">
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l-2 border-l-secondary/50">
           <div className="flex justify-between items-start mb-8">
             <div className="p-3 bg-secondary-container/10 rounded-sm">
               <span className="material-symbols-outlined text-secondary text-3xl" data-icon="shield_person">shield_person</span>
@@ -78,7 +78,7 @@ export default function SecurityServices() {
           </div>
         </div>
 
-        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-primary/20">
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l-2 border-l-primary/50">
           <div className="flex justify-between items-start mb-8">
             <div className="p-3 bg-primary-container/10 rounded-sm">
               <span className="material-symbols-outlined text-primary text-3xl" data-icon="monitoring">monitoring</span>
@@ -101,7 +101,7 @@ export default function SecurityServices() {
           </div>
         </div>
 
-        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-tertiary/20">
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l-2 border-l-tertiary/50">
           <div className="flex justify-between items-start mb-8">
             <div className="p-3 bg-tertiary-container/10 rounded-sm">
               <span className="material-symbols-outlined text-tertiary text-3xl" data-icon="support_agent">support_agent</span>
@@ -121,7 +121,7 @@ export default function SecurityServices() {
           </div>
         </div>
 
-        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l border-secondary/20">
+        <div className="glass-card p-8 group transition-all duration-500 tactical-glow border-l-2 border-l-secondary/50">
           <div className="flex justify-between items-start mb-8">
             <div className="p-3 bg-secondary-container/10 rounded-sm">
               <span className="material-symbols-outlined text-secondary text-3xl" data-icon="fact_check">fact_check</span>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft, Building2, Shield, Activity, FileText, CreditCard,
-  Plus, Pencil, Trash2, Loader2, Check, X, ChevronDown, ChevronUp
+  ArrowLeft, Shield, Activity, FileText, CreditCard,
+  Plus, Pencil, Trash2, Loader2, Check, X
 } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
@@ -37,6 +37,7 @@ const AdminCompanyDetail = () => {
   useEffect(() => {
     fetchData();
     fetchAllServices();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchData = async () => {

@@ -57,9 +57,18 @@ const BlogPage = () => {
       {/* Posts grid */}
       <div className="max-w-7xl mx-auto px-4 pb-20">
         {loading ? (
-          <div className="text-center py-20">
-            <div className="inline-block w-8 h-8 border-4 border-amber-400 border-t-transparent rounded-full animate-spin" />
-            <p className="text-slate-400 mt-4">Loading posts...</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-slate-900/60 border border-slate-700 rounded-lg overflow-hidden animate-pulse">
+                <div className="aspect-video bg-slate-800" />
+                <div className="p-6 space-y-3">
+                  <div className="h-4 bg-slate-700 rounded w-1/4" />
+                  <div className="h-5 bg-slate-700 rounded w-3/4" />
+                  <div className="h-4 bg-slate-700 rounded w-full" />
+                  <div className="h-4 bg-slate-700 rounded w-2/3" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : posts.length === 0 ? (
           <Card className="bg-slate-900/50 border-slate-700">
