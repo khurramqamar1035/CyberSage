@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export default function AndroidDevelopment() {
+  const navigate = useNavigate();
   return (
     <main className="pt-24 pb-20">
       {/* Hero Section */}
@@ -30,7 +32,7 @@ export default function AndroidDevelopment() {
             Engineered for the elite. We build high-performance, secure Android applications using Kotlin and modern architectural patterns that redefine mobile authority.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="bg-gradient-to-r from-primary-container to-blue-700 text-on-primary-container px-8 py-4 font-bold rounded-sm shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+            <button onClick={() => navigate('/contact')} className="bg-gradient-to-r from-primary-container to-blue-700 text-on-primary-container px-8 py-4 font-bold rounded-sm shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
               Contact Us
               <span className="material-symbols-outlined text-sm">arrow_forward</span>
             </button>

@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export default function WebDevelopment() {
+  const navigate = useNavigate();
   return (
     <main className="pt-24 pb-20">
       {/* Hero Section */}
@@ -28,7 +30,7 @@ export default function WebDevelopment() {
               We engineer resilient, sovereign web platforms using the most advanced reactive frameworks and cloud-native infrastructure. Built to withstand, designed to excel.
             </p>
             <div className="flex flex-wrap gap-6">
-              <button className="px-8 py-4 bg-gradient-to-r from-primary-container to-primary font-headline font-bold text-sm uppercase tracking-widest text-white shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:scale-105 transition-transform">
+              <button onClick={() => navigate('/contact')} className="px-8 py-4 bg-gradient-to-r from-primary-container to-primary font-headline font-bold text-sm uppercase tracking-widest text-white shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:scale-105 transition-transform">
                 Contact Us
               </button>
               <div className="flex flex-col justify-center">
@@ -216,7 +218,7 @@ export default function WebDevelopment() {
             Initiate protocol for a custom assessment. Our engineers are standing by to architect your sovereign web presence.
           </p>
           <div className="flex flex-col md:flex-row justify-center items-center gap-8">
-            <button className="w-full md:w-auto px-12 py-5 bg-primary-container text-white font-headline font-black uppercase tracking-widest text-sm hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all">
+            <button onClick={() => navigate('/contact')} className="w-full md:w-auto px-12 py-5 bg-primary-container text-white font-headline font-black uppercase tracking-widest text-sm hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-all">
               Contact Us
             </button>
             <div className="h-px w-12 bg-outline-variant hidden md:block"></div>

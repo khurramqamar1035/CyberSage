@@ -34,6 +34,7 @@ import CrossPlatformDevelopment from './pages/services/CrossPlatformDevelopment'
 import BasicTraining from './pages/services/BasicTraining';
 import IntermediateTraining from './pages/services/IntermediateTraining';
 import AdvancedTraining from './pages/services/AdvancedTraining';
+import InternshipPage from './pages/InternshipPage';
 
 // Dashboard
 import DashboardLayout from './components/dashboard/DashboardLayout';
@@ -102,6 +103,7 @@ function App() {
           <Route path="training/beginner" element={<BasicTraining />} />
           <Route path="training/intermediate" element={<IntermediateTraining />} />
           <Route path="training/advanced" element={<AdvancedTraining />} />
+          <Route path="training/internship" element={<InternshipPage />} />
 
           {/* Other public pages */}
           <Route path="core-team" element={<CoreTeamPage />} />

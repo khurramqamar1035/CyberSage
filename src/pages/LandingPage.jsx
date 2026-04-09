@@ -41,29 +41,57 @@ const SERVICES = [
   },
 ];
 
+// ── Simple localStorage cache helpers ─────────────────────────────────────
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+function readCache(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const { data, ts } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL) { localStorage.removeItem(key); return null; }
+    return data;
+  } catch { return null; }
+}
+
+function writeCache(key, data) {
+  try { localStorage.setItem(key, JSON.stringify({ data, ts: Date.now() })); } catch {}
+}
+
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [testimonials, setTestimonials] = useState([]);
-  const [clients, setClients] = useState([]);
+
+  // Seed from cache immediately so data shows on first paint
+  const [testimonials, setTestimonials] = useState(() => readCache('cs_testimonials') || []);
+  const [clients, setClients]           = useState(() => readCache('cs_clients') || []);
 
   useEffect(() => {
-    // Prefetch all endpoints
-    fetch(`${BACKEND_URL}/api/about/team`).catch(() => {});
-    fetch(`${BACKEND_URL}/api/about/offices`).catch(() => {});
-    fetch(`${BACKEND_URL}/api/testimonials`).catch(() => {});
-    fetch(`${BACKEND_URL}/api/clients`).catch(() => {});
-
-    // Fetch and set testimonials
+    // Fetch testimonials — update state + cache
     fetch(`${BACKEND_URL}/api/testimonials`)
       .then((res) => res.json())
-      .then((data) => setTestimonials(Array.isArray(data) ? data : []))
+      .then((data) => {
+        const list = Array.isArray(data) ? data : [];
+        setTestimonials(list);
+        writeCache('cs_testimonials', list);
+      })
       .catch(() => {});
 
-    // Fetch and set clients
+    // Fetch clients — update state + cache
     fetch(`${BACKEND_URL}/api/clients`)
       .then((res) => res.json())
-      .then((data) => setClients(Array.isArray(data) ? data : []))
+      .then((data) => {
+        const list = Array.isArray(data) ? data : [];
+        setClients(list);
+        writeCache('cs_clients', list);
+      })
       .catch(() => {});
+
+    // Warm up core team in background so CoreTeamPage loads instantly
+    fetch(`${BACKEND_URL}/api/about/team`)
+      .then((res) => res.json())
+      .then((data) => { if (Array.isArray(data)) writeCache('cs_team', data); })
+      .catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Mail, Lock, Loader2 } from 'lucide-react';
+import { Mail, Lock, Loader2 } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
@@ -40,7 +40,7 @@ const AdminLogin = () => {
   return (
     <div className="min-h-screen bg-[#06080A] flex flex-col justify-center items-center p-4">
       <div className="mb-8 flex flex-col items-center">
-        <Shield className="w-12 h-12 text-red-500 mb-4" strokeWidth={1.5} />
+        <img src="/logo.png" alt="CyberSage" className="w-14 h-14 object-contain mb-4" />
         <h1 className="text-3xl font-bold text-white tracking-tight">Admin Portal</h1>
         <p className="text-slate-400 mt-2 text-sm">CyberSage Administration</p>
       </div>

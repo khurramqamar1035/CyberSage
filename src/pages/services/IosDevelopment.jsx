@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export default function IOSDevelopment() {
+  const navigate = useNavigate();
   return (
     <main className="pt-0 pb-20 overflow-x-hidden">
       {/* Hero Section */}
@@ -24,7 +26,7 @@ export default function IOSDevelopment() {
               Engineered for the Apple ecosystem. We forge native Swift applications that integrate seamlessly with the silicon, delivering high-performance, secure, and tactically fluid experiences.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="bg-primary-container text-on-primary-container px-8 py-4 rounded-sm font-label uppercase tracking-widest text-sm font-bold shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:brightness-110 transition-all">
+              <button onClick={() => navigate('/contact')} className="bg-primary-container text-on-primary-container px-8 py-4 rounded-sm font-label uppercase tracking-widest text-sm font-bold shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:brightness-110 transition-all">
                 Contact Us
               </button>
               <button className="border border-outline-variant text-on-surface px-8 py-4 rounded-sm font-label uppercase tracking-widest text-sm font-bold hover:bg-surface-container-high transition-all">

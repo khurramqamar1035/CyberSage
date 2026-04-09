@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export default function CrossPlatform() {
+  const navigate = useNavigate();
   return (
     <main className="pt-0 pb-20">
       {/* Hero Section */}
@@ -22,7 +24,7 @@ export default function CrossPlatform() {
             Sovereign engineering for global reach. Build once, deploy everywhere with industrial-grade React Native and Flutter frameworks.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="bg-gradient-to-r from-primary-container to-primary px-8 py-4 font-label text-[0.85rem] uppercase tracking-widest font-bold shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+            <button onClick={() => navigate('/contact')} className="bg-gradient-to-r from-primary-container to-primary px-8 py-4 font-label text-[0.85rem] uppercase tracking-widest font-bold shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
               Contact Us
             </button>
             <button className="border border-outline-variant/30 hover:border-primary/50 px-8 py-4 font-label text-[0.85rem] uppercase tracking-widest font-bold transition-all text-on-surface">
