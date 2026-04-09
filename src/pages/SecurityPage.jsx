@@ -121,6 +121,64 @@ export default function SecurityServices() {
           </Link>
         ))}
       </section>
+      {/* ── CINEMATIC VIDEO SECTION ── */}
+{/* ── CINEMATIC VIDEO SECTION (CTA ALIGNED) ── */}
+<section className="mt-32 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+  {/* LEFT: VIDEO (same style as CTA image) */}
+  <div className="relative overflow-hidden aspect-video rounded-sm">
+    <video
+      className="w-full h-full object-cover"
+      src="https://res.cloudinary.com/dnwxa1jvf/video/upload/v1775703611/sage-sentinel_tnkzg3.mp4"
+      autoPlay
+      loop
+      muted
+      playsInline
+    />
+
+    {/* Same overlay style as CTA */}
+    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+
+    {/* Subtle tactical touch (kept minimal to match CTA) */}
+    <div className="absolute bottom-3 left-3 text-[10px] font-label tracking-widest uppercase text-primary">
+      Live Feed
+    </div>
+  </div>
+
+  {/* RIGHT: CONTENT (same spacing as CTA) */}
+  <div className="lg:pl-12">
+    <div className="font-label text-primary text-[10px] tracking-[0.3em] uppercase mb-4">
+      Sage Sentinel
+    </div>
+
+    <h2 className="font-headline font-bold text-4xl mb-6 tracking-tight">
+      Defense in Motion
+    </h2>
+
+    <p className="text-on-surface-variant mb-8 leading-relaxed">
+      Real-time cyber defense, precision surveillance, and rapid threat response engineered
+      for high-risk digital environments. Every layer is designed to detect, isolate, and
+      neutralize hostile activity before it escalates.
+    </p>
+
+    <div className="flex flex-wrap gap-4">
+      <button
+        onClick={() => navigate('/contact')}
+        className="bg-primary text-on-primary px-8 py-4 font-label text-[11px] tracking-widest uppercase font-bold hover:brightness-110 transition-all"
+      >
+        Request Tactical Briefing
+      </button>
+
+      <button
+        onClick={() => navigate('/security-services/real-time-monitoring')}
+        className="border border-outline-variant px-8 py-4 font-label text-[11px] tracking-widest uppercase font-bold text-on-surface hover:bg-surface-container-highest transition-all"
+      >
+        Explore Monitoring
+      </button>
+    </div>
+  </div>
+
+</section>
 
       {/* ── CTA Section ── */}
       <section className="mt-32 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
