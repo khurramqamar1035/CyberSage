@@ -21,8 +21,7 @@ const BlogPage = () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/api/blogs`);
       setPosts(Array.isArray(response.data) ? response.data : []);
-    } catch (error) {
-      console.error('Error fetching blog posts:', error);
+    } catch {
       setPosts([]);
     } finally {
       setLoading(false);

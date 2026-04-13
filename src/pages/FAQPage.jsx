@@ -20,8 +20,7 @@ const FAQPage = () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/api/faq`);
       setFaqs(Array.isArray(response.data) ? response.data : []);
-    } catch (error) {
-      console.error('Error fetching FAQs:', error);
+    } catch {
       setFaqs([]);
     } finally {
       setLoading(false);

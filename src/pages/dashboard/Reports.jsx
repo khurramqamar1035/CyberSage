@@ -18,11 +18,9 @@ const Reports = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
-        console.log('[REPORTS] Data:', data);
         if (!res.ok) throw new Error(data.message || 'Failed to fetch reports');
         setReports(data);
       } catch (err) {
-        console.error('[REPORTS] Error:', err.message);
         setError(err.message);
       } finally {
         setIsLoading(false);
@@ -35,8 +33,6 @@ const Reports = () => {
   const handleDownload = async (pdfUrl, title, reportId) => {
     try {
       setDownloadingId(reportId);
-      console.log('[DOWNLOAD] Starting download for:', title);
-
       const response = await fetch(pdfUrl);
       if (!response.ok) throw new Error('Failed to fetch PDF');
 
@@ -49,10 +45,7 @@ const Reports = () => {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
-
-      console.log('[DOWNLOAD] Download complete:', title);
-    } catch (err) {
-      console.error('[DOWNLOAD] Failed, opening in new tab:', err.message);
+    } catch {
       // Fallback — open in new tab
       window.open(pdfUrl, '_blank');
     } finally {

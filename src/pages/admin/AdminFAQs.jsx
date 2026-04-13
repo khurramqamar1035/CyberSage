@@ -41,8 +41,8 @@ const AdminFAQs = () => {
       });
       const data = await res.json();
       setFaqs(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error('[ADMIN FAQs] Error:', err.message);
+    } catch {
+      // silently fail
     } finally {
       setIsLoading(false);
     }

@@ -13,9 +13,8 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // ✅ Clear stale localStorage on every signup page load
+  // Clear stale localStorage on every signup page load
   useEffect(() => {
-    console.log('[SIGNUP] Clearing any stale localStorage data...');
     localStorage.removeItem('signupData');
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
@@ -30,20 +29,8 @@ const Signup = () => {
     e.preventDefault();
     setError('');
 
-    console.log('[SIGNUP] Form submitted with:', {
-      name: formData.name,
-      companyName: formData.companyName,
-      email: formData.email,
-      password: formData.password ? `[PROVIDED - ${formData.password.length} chars]` : '[MISSING]',
-    });
-
     // Validation
     if (!formData.name || !formData.email || !formData.password) {
-      console.warn('[SIGNUP] Validation failed:', {
-        name: !!formData.name,
-        email: !!formData.email,
-        password: !!formData.password,
-      });
       setError('Please fill in all required fields.');
       return;
     }
@@ -63,20 +50,6 @@ const Signup = () => {
     // Save fresh data to localStorage
     localStorage.setItem('signupData', JSON.stringify(formData));
     localStorage.setItem('userName', formData.name);
-
-    console.log('[SIGNUP] Saved to localStorage:', {
-      signupData: formData,
-      userName: formData.name,
-    });
-
-    // Verify it was saved correctly
-    const saved = JSON.parse(localStorage.getItem('signupData'));
-    console.log('[SIGNUP] Verified localStorage after save:', {
-      name: saved?.name,
-      companyName: saved?.companyName,
-      email: saved?.email,
-      password: saved?.password ? `[PROVIDED - ${saved.password.length} chars]` : '[MISSING]',
-    });
 
     setTimeout(() => {
       setIsLoading(false);

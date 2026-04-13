@@ -52,8 +52,8 @@ const AdminBlogs = () => {
       });
       const data = await res.json();
       setBlogs(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error('[ADMIN BLOGS] Error:', err.message);
+    } catch {
+      // silently fail
     } finally {
       setIsLoading(false);
     }

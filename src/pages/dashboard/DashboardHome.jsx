@@ -12,8 +12,6 @@ const DashboardHome = () => {
     const fetchDashboard = async () => {
       try {
         const token = localStorage.getItem('token');
-        console.log('[DASHBOARD] Fetching dashboard data...');
-
         const res = await fetch(`${API_URL}/api/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -21,13 +19,10 @@ const DashboardHome = () => {
         });
 
         const json = await res.json();
-        console.log('[DASHBOARD] Data received:', json);
-
         if (!res.ok) throw new Error(json.message || 'Failed to fetch dashboard');
 
         setData(json);
       } catch (err) {
-        console.error('[DASHBOARD] Error:', err.message);
         setError(err.message);
       } finally {
         setIsLoading(false);

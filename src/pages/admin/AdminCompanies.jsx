@@ -26,8 +26,8 @@ const AdminCompanies = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
       setCompanies(data);
-    } catch (err) {
-      console.error('[ADMIN] Error:', err.message);
+    } catch {
+      // silently fail
     } finally {
       setIsLoading(false);
     }

@@ -9,33 +9,18 @@ const VerifyEmail = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    // ✅ Debug — log token and full URL
-    console.log('[VERIFY] Token from URL params:', token);
-    console.log('[VERIFY] Full URL:', window.location.href);
-
     const verifyEmail = async () => {
       try {
         const url = `${BACKEND_URL}/api/auth/verify-email/${token}`;
-        console.log('[VERIFY] Calling backend URL:', url);
-
         const res = await fetch(url);
-        
-        console.log('[VERIFY] Response status:', res.status);
-        console.log('[VERIFY] Response ok:', res.ok);
 
-        // ✅ Check if response is JSON before parsing
         const contentType = res.headers.get('content-type');
-        console.log('[VERIFY] Content type:', contentType);
-
         if (!contentType || !contentType.includes('application/json')) {
-          const text = await res.text();
-          console.error('[VERIFY] Non-JSON response:', text);
+          await res.text();
           throw new Error('Unexpected server response');
         }
 
         const data = await res.json();
-        console.log('[VERIFY] Response data:', data);
-
         if (!res.ok) throw new Error(data.message || 'Verification failed');
 
         setStatus('success');
@@ -43,7 +28,6 @@ const VerifyEmail = () => {
 
         setTimeout(() => navigate('/login'), 3000);
       } catch (err) {
-        console.error('[VERIFY] Error:', err.message);
         setStatus('error');
         setMessage(err.message || 'Verification failed. Link may have expired.');
       }
@@ -52,7 +36,6 @@ const VerifyEmail = () => {
     if (token) {
       verifyEmail();
     } else {
-      console.error('[VERIFY] No token found in URL params');
       setStatus('error');
       setMessage('No verification token found in the URL.');
     }

@@ -28,7 +28,6 @@ const PaymentForm = ({ clientSecret, serviceName, amount, onSuccess, onCancel })
     });
 
     if (error) {
-      console.error('[PAYMENT] Error:', error.message);
       setErrorMessage(error.message);
       setIsProcessing(false);
     } else {
@@ -107,11 +106,9 @@ const Billing = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      console.log('[BILLING] Data:', data);
       if (!res.ok) throw new Error(data.message || 'Failed to fetch billing');
       setBillingData(data);
     } catch (err) {
-      console.error('[BILLING] Error:', err.message);
       setError(err.message);
     } finally {
       setIsLoading(false);
@@ -137,7 +134,6 @@ const Billing = () => {
       });
 
       const data = await res.json();
-      console.log('[BILLING] Payment session:', data);
       if (!res.ok) throw new Error(data.message);
 
       setPaymentSession({
@@ -146,7 +142,6 @@ const Billing = () => {
         amount: data.amount,
       });
     } catch (err) {
-      console.error('[BILLING] Pay error:', err.message);
       alert(err.message);
     } finally {
       setPayingId(null);

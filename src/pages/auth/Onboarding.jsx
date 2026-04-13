@@ -15,12 +15,10 @@ const Onboarding = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        console.log('[ONBOARDING] Fetching services from backend...');
         const res = await fetch(`${BACKEND_URL}/api/services`);
         if (!res.ok) throw new Error('Failed to fetch services');
         const data = await res.json();
 
-        console.log('[ONBOARDING] Services fetched:', data);
         setAvailableServices(data);
 
         // Auto-select default services
@@ -28,10 +26,9 @@ const Onboarding = () => {
           .filter(service => service.defaultSelected)
           .map(service => service._id);
 
-        console.log('[ONBOARDING] Default selected IDs:', defaults);
         setSelected(defaults);
-      } catch (err) {
-        console.error('[ONBOARDING] Error fetching services:', err);
+      } catch {
+        // silently fail — services grid stays empty
       }
     };
 
@@ -40,21 +37,14 @@ const Onboarding = () => {
 
   // Toggle service selection
   const toggleService = (id) => {
-    setSelected(prev => {
-      const updated = prev.includes(id)
-        ? prev.filter(item => item !== id)
-        : [...prev, id];
-      console.log('[ONBOARDING] Selected services updated:', updated);
-      return updated;
-    });
+    setSelected(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
   };
 
   // Handle final account creation
   const handleCreateAccount = async () => {
     const signupData = JSON.parse(localStorage.getItem('signupData'));
-
-    console.log('[ONBOARDING] signupData from localStorage:', signupData);
-    console.log('[ONBOARDING] Selected service IDs:', selected);
 
     if (!signupData) {
       alert('Signup data missing. Please fill the signup form again.');
@@ -72,11 +62,6 @@ const Onboarding = () => {
       services: selected,
     };
 
-    console.log('[ONBOARDING] Final payload being sent to backend:', {
-      ...payload,
-      password: payload.password ? `[PROVIDED - ${payload.password.length} chars]` : '[MISSING]',
-    });
-
     setIsLoading(true);
 
     try {
@@ -87,9 +72,6 @@ const Onboarding = () => {
       });
 
       const data = await response.json();
-      console.log('[ONBOARDING] Backend response status:', response.status);
-      console.log('[ONBOARDING] Backend response data:', data);
-
       if (!response.ok) throw new Error(data.message || 'Failed to create account');
 
       alert('Account created successfully! Please check your email to verify.');
@@ -100,10 +82,8 @@ const Onboarding = () => {
       localStorage.removeItem('userEmail');
       localStorage.removeItem('companyName');
 
-      console.log('[ONBOARDING] localStorage cleared, redirecting to login...');
       navigate('/login');
     } catch (err) {
-      console.error('[ONBOARDING] Account creation error:', err.message);
       alert(err.message);
     } finally {
       setIsLoading(false);

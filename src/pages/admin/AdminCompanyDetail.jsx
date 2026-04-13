@@ -48,8 +48,8 @@ const AdminCompanyDetail = () => {
       const json = await res.json();
       if (!res.ok) throw new Error(json.message);
       setData(json);
-    } catch (err) {
-      console.error('[ADMIN DETAIL]', err.message);
+    } catch {
+      // silently fail
     } finally {
       setIsLoading(false);
     }

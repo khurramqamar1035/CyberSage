@@ -64,8 +64,8 @@ const AdminDashboard = () => {
     try {
       const response = await axios.get(`${API}/blogs?published_only=false`);
       setBlogs(response.data);
-    } catch (error) {
-      console.error('Error fetching blogs:', error);
+    } catch {
+      // silently fail
     }
   };
 
@@ -73,8 +73,8 @@ const AdminDashboard = () => {
     try {
       const response = await axios.get(`${API}/faq`);
       setFaqs(response.data);
-    } catch (error) {
-      console.error('Error fetching FAQs:', error);
+    } catch {
+      // silently fail
     }
   };
 
@@ -106,8 +106,6 @@ const AdminDashboard = () => {
         published: blogForm.published,
       };
   
-      console.log("Updating blog with ID:", editingBlog, "Data:", data);
-  
       // PUT request using the blog's ID in the URL
       await axios.put(`${API}/blogs/${editingBlog}`, data, {
         headers: { Authorization: `Bearer ${token}` },
@@ -131,8 +129,7 @@ const AdminDashboard = () => {
   
       // Refresh blog list
       fetchBlogs();
-    } catch (error) {
-      console.error("Error updating blog:", error.response?.data || error.message);
+    } catch {
       toast({ title: "Error updating blog", variant: "destructive" });
     }
   };

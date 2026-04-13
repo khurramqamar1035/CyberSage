@@ -25,11 +25,9 @@ const MyServices = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      console.log('[MY SERVICES] Data:', data);
       if (!res.ok) throw new Error(data.message || 'Failed to fetch services');
       setServices(data);
     } catch (err) {
-      console.error('[MY SERVICES] Error:', err.message);
       setError(err.message);
     } finally {
       setIsLoading(false);

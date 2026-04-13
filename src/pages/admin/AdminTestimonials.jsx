@@ -41,8 +41,8 @@ const AdminTestimonials = () => {
       });
       const data = await res.json();
       setTestimonials(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error('[ADMIN TESTIMONIALS] Error:', err.message);
+    } catch {
+      // silently fail
     } finally {
       setIsLoading(false);
     }

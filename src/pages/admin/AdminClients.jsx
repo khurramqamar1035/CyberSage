@@ -40,8 +40,8 @@ const AdminClients = () => {
       });
       const data = await res.json();
       setClients(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error('[ADMIN CLIENTS] Error:', err.message);
+    } catch {
+      // silently fail
     } finally {
       setIsLoading(false);
     }

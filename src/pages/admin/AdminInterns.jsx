@@ -36,8 +36,8 @@ const AdminInterns = () => {
       });
       const data = await res.json();
       setInterns(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error('[ADMIN INTERNS]', err.message);
+    } catch {
+      // silently fail
     } finally {
       setIsLoading(false);
     }

@@ -35,8 +35,7 @@ const ContactPage = () => {
       } else {
         alert("❌ Failed to send enquiry, missing fields or server error");
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert("❌ Failed to send enquiry");
     } finally {
       setIsSubmitting(false);

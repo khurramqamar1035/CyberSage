@@ -38,8 +38,8 @@ const AboutPage = () => {
 
         setTeamMembers(teamRes.data);
         setOffices(officeRes.data);
-      } catch (err) {
-        console.error("Failed to load about data", err);
+      } catch {
+        // silently fail
       } finally {
         setLoading(false);
       }
