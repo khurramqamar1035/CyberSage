@@ -377,7 +377,7 @@ const AdminInterns = () => {
                   { label: 'Degree / Course', value: selectedIntern.degree,         icon: GraduationCap },
                   { label: 'University',      value: selectedIntern.university || '—', icon: null },
                   { label: 'Year of Study',   value: selectedIntern.universityYear, icon: null },
-                  { label: 'Applied On',        value: fmtDate(selectedIntern.applied_at), icon: Calendar },
+                  { label: 'Applied On',          value: fmtDate(selectedIntern.applied_at), icon: Calendar },
                   { label: 'Status Last Updated', value: selectedIntern.statusUpdatedAt ? fmtDate(selectedIntern.statusUpdatedAt) : 'Not yet updated', icon: null },
                 ].map(({ label, value, icon: Icon }) => (
                   <div key={label} className="bg-[#06080A] border border-[#1C212E] rounded-xl px-4 py-3">
@@ -389,6 +389,23 @@ const AdminInterns = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Skills */}
+              {selectedIntern.skills?.length > 0 && (
+                <div className="bg-[#06080A] border border-[#1C212E] rounded-xl px-4 py-3">
+                  <p className="text-slate-500 text-xs mb-2">Skills</p>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedIntern.skills.map((skill, i) => (
+                      <span
+                        key={i}
+                        className="inline-block bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs px-2.5 py-1 rounded-md"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Status changer */}
               <div className="pt-2">

@@ -1,21 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 
 const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year', 'Masters', 'PhD', 'Graduate'];
+const MAX_SKILLS = 12;
 
 export default function InternshipPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: '', email: '', phone: '', degree: '', universityYear: '', university: '',
   });
+  const [skills, setSkills]         = useState([]);
+  const [skillInput, setSkillInput] = useState('');
+  const skillRef                    = useRef(null);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess]       = useState(false);
   const [error, setError]           = useState('');
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  /* ── Skills helpers ── */
+  const addSkill = (raw) => {
+    const value = raw.trim();
+    if (!value) return;
+    if (skills.length >= MAX_SKILLS) return;
+    if (skills.map(s => s.toLowerCase()).includes(value.toLowerCase())) return;
+    setSkills((prev) => [...prev, value]);
+    setSkillInput('');
+  };
+
+  const handleSkillKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      addSkill(skillInput);
+    } else if (e.key === 'Backspace' && skillInput === '' && skills.length > 0) {
+      setSkills((prev) => prev.slice(0, -1));
+    }
+  };
+
+  const removeSkill = (index) => {
+    setSkills((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -31,7 +58,7 @@ export default function InternshipPage() {
       const res = await fetch(`${API_URL}/api/interns/apply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, skills }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Submission failed.');
@@ -207,6 +234,57 @@ export default function InternshipPage() {
                     {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
                   </select>
                 </div>
+              </div>
+
+              {/* Skills */}
+              <div>
+                <label className="block text-on-surface-variant text-xs font-label uppercase tracking-widest mb-2">
+                  Skills
+                  <span className="ml-2 normal-case text-on-surface-variant/50 tracking-normal font-normal">
+                    (press Enter or comma to add · max {MAX_SKILLS})
+                  </span>
+                </label>
+
+                {/* Tag container — click anywhere to focus the input */}
+                <div
+                  onClick={() => skillRef.current?.focus()}
+                  className="min-h-[48px] w-full bg-surface-container border border-outline-variant/40 px-3 py-2 flex flex-wrap gap-2 items-center cursor-text focus-within:border-tertiary/50 transition-colors"
+                >
+                  {skills.map((skill, i) => (
+                    <span
+                      key={i}
+                      className="inline-flex items-center gap-1.5 bg-tertiary/10 border border-tertiary/30 text-tertiary text-xs font-label px-2.5 py-1"
+                    >
+                      {skill}
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); removeSkill(i); }}
+                        className="text-tertiary/60 hover:text-tertiary leading-none"
+                        aria-label={`Remove ${skill}`}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+
+                  {skills.length < MAX_SKILLS && (
+                    <input
+                      ref={skillRef}
+                      value={skillInput}
+                      onChange={(e) => setSkillInput(e.target.value)}
+                      onKeyDown={handleSkillKeyDown}
+                      onBlur={() => addSkill(skillInput)}
+                      placeholder={skills.length === 0 ? 'e.g. Python, Networking, Linux…' : ''}
+                      className="flex-1 min-w-[140px] bg-transparent text-white text-sm focus:outline-none placeholder-on-surface-variant/40"
+                    />
+                  )}
+                </div>
+
+                {skills.length > 0 && (
+                  <p className="text-on-surface-variant/40 text-xs mt-1.5">
+                    {skills.length}/{MAX_SKILLS} skill{skills.length !== 1 ? 's' : ''} added
+                  </p>
+                )}
               </div>
 
               <button
