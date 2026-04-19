@@ -54,11 +54,19 @@ export default function InternshipPage() {
       return;
     }
     setSubmitting(true);
+
+    // Flush any skill the user typed but didn't confirm with Enter/comma
+    const finalSkills = [...skills];
+    const pending = skillInput.trim();
+    if (pending && finalSkills.length < MAX_SKILLS && !finalSkills.map(s => s.toLowerCase()).includes(pending.toLowerCase())) {
+      finalSkills.push(pending);
+    }
+
     try {
       const res = await fetch(`${API_URL}/api/interns/apply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, skills }),
+        body: JSON.stringify({ ...form, skills: finalSkills }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Submission failed.');
