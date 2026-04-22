@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import {
   GraduationCap, Trash2, Loader2, Check, Search,
   ChevronDown, Mail, Phone, Calendar, RefreshCw, X,
+  Lock, Unlock, Users,
 } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
@@ -16,18 +17,67 @@ const STATUS_STYLES = {
 };
 
 const AdminInterns = () => {
-  const [interns, setInterns]         = useState([]);
-  const [isLoading, setIsLoading]     = useState(true);
-  const [search, setSearch]           = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [updatingId, setUpdatingId]   = useState(null);
-  const [deletingId, setDeletingId]   = useState(null);
-  const [success, setSuccess]         = useState('');
+  /* ── Applications state ── */
+  const [interns, setInterns]               = useState([]);
+  const [isLoading, setIsLoading]           = useState(true);
+  const [search, setSearch]                 = useState('');
+  const [filterStatus, setFilterStatus]     = useState('all');
+  const [updatingId, setUpdatingId]         = useState(null);
+  const [deletingId, setDeletingId]         = useState(null);
+  const [success, setSuccess]               = useState('');
   const [selectedIntern, setSelectedIntern] = useState(null);
+
+  /* ── Enrollment lock state ── */
+  const [enrollmentOpen, setEnrollmentOpen]   = useState(true);
+  const [lockLoading, setLockLoading]         = useState(false);
+  const [statusLoading, setStatusLoading]     = useState(true);
+
+  /* ── Waitlist state ── */
+  const [activeTab, setActiveTab]             = useState('applications'); // 'applications' | 'waitlist'
+  const [waitlist, setWaitlist]               = useState([]);
+  const [waitlistLoading, setWaitlistLoading] = useState(false);
+  const [deletingWaitId, setDeletingWaitId]   = useState(null);
 
   const token = localStorage.getItem('adminToken');
 
-  /* ─── Fetch ─────────────────────────────────────────────── */
+  /* ─── Fetch enrollment status ──────────────────────────────── */
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const res  = await fetch(`${API_URL}/api/enrollment/status`);
+        const data = await res.json();
+        setEnrollmentOpen(data.enrollmentOpen ?? true);
+      } catch {
+        // silently fail
+      } finally {
+        setStatusLoading(false);
+      }
+    };
+    fetchStatus();
+  }, []);
+
+  /* ─── Toggle enrollment lock ───────────────────────────────── */
+  const toggleEnrollment = async () => {
+    setLockLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/enrollment/status`, {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body:    JSON.stringify({ enrollmentOpen: !enrollmentOpen }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to update');
+      setEnrollmentOpen(data.enrollmentOpen);
+      setSuccess(data.enrollmentOpen ? 'Enrollment is now OPEN.' : 'Enrollment is now LOCKED.');
+      setTimeout(() => setSuccess(''), 3500);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLockLoading(false);
+    }
+  };
+
+  /* ─── Fetch applications ───────────────────────────────────── */
   const fetchInterns = async () => {
     setIsLoading(true);
     try {
@@ -45,41 +95,78 @@ const AdminInterns = () => {
 
   useEffect(() => { fetchInterns(); /* eslint-disable-next-line */ }, []);
 
-  /* ─── Filtered list ──────────────────────────────────────── */
+  /* ─── Fetch waitlist ───────────────────────────────────────── */
+  const fetchWaitlist = async () => {
+    setWaitlistLoading(true);
+    try {
+      const res  = await fetch(`${API_URL}/api/enrollment/waitlist`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setWaitlist(Array.isArray(data) ? data : []);
+    } catch {
+      // silently fail
+    } finally {
+      setWaitlistLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'waitlist') fetchWaitlist();
+    /* eslint-disable-next-line */
+  }, [activeTab]);
+
+  /* ─── Delete waitlist entry ────────────────────────────────── */
+  const handleDeleteWaitlist = async (entry) => {
+    if (!window.confirm(`Remove ${entry.email} from the waitlist?`)) return;
+    setDeletingWaitId(entry._id);
+    try {
+      const res = await fetch(`${API_URL}/api/enrollment/waitlist/${entry._id}`, {
+        method:  'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to delete');
+      setWaitlist((prev) => prev.filter((e) => e._id !== entry._id));
+      setSuccess('Email removed from waitlist.');
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setDeletingWaitId(null);
+    }
+  };
+
+  /* ─── Filtered applications ────────────────────────────────── */
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return interns.filter((i) => {
       const matchesSearch =
         !q ||
-        i.name?.toLowerCase().includes(q) ||
-        i.email?.toLowerCase().includes(q) ||
+        i.name?.toLowerCase().includes(q)       ||
+        i.email?.toLowerCase().includes(q)      ||
         i.university?.toLowerCase().includes(q) ||
         i.degree?.toLowerCase().includes(q);
-      const matchesStatus =
-        filterStatus === 'all' || i.status === filterStatus;
+      const matchesStatus = filterStatus === 'all' || i.status === filterStatus;
       return matchesSearch && matchesStatus;
     });
   }, [interns, search, filterStatus]);
 
-  /* ─── Status counts ──────────────────────────────────────── */
+  /* ─── Status counts ────────────────────────────────────────── */
   const counts = useMemo(() => {
     const c = { all: interns.length, pending: 0, reviewed: 0, accepted: 0, rejected: 0 };
     interns.forEach((i) => { if (c[i.status] !== undefined) c[i.status]++; });
     return c;
   }, [interns]);
 
-  /* ─── Update status ──────────────────────────────────────── */
+  /* ─── Update application status ────────────────────────────── */
   const handleStatusChange = async (intern, newStatus) => {
     if (intern.status === newStatus) return;
     setUpdatingId(intern.id);
     try {
       const res = await fetch(`${API_URL}/api/interns/${intern.id}/status`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status: newStatus }),
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body:    JSON.stringify({ status: newStatus }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update status');
@@ -98,13 +185,13 @@ const AdminInterns = () => {
     }
   };
 
-  /* ─── Delete ─────────────────────────────────────────────── */
+  /* ─── Delete application ────────────────────────────────────── */
   const handleDelete = async (intern) => {
     if (!window.confirm(`Delete ${intern.name}'s application? This cannot be undone.`)) return;
     setDeletingId(intern.id);
     try {
       const res = await fetch(`${API_URL}/api/interns/${intern.id}`, {
-        method: 'DELETE',
+        method:  'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to delete');
@@ -119,20 +206,18 @@ const AdminInterns = () => {
     }
   };
 
-  /* ─── Format date ────────────────────────────────────────── */
+  /* ─── Format date ───────────────────────────────────────────── */
   const fmtDate = (d) =>
     d
-      ? new Date(d).toLocaleDateString('en-GB', {
-          day: '2-digit', month: 'short', year: 'numeric',
-        })
+      ? new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
       : '—';
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ═══════════════════════════════════════════════════════════ */
   return (
     <div className="space-y-6">
 
       {/* ── Header ── */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
+      <div className="flex items-start justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
           <GraduationCap className="w-6 h-6 text-red-400" />
           <h1 className="text-2xl font-bold text-white">Intern Applications</h1>
@@ -140,34 +225,49 @@ const AdminInterns = () => {
             {interns.length}
           </span>
         </div>
-        <button
-          onClick={fetchInterns}
-          disabled={isLoading}
-          className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-[#13192B] rounded-xl text-sm transition-all disabled:opacity-50"
-        >
-          <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-          Refresh
-        </button>
-      </div>
 
-      {/* ── Status tabs ── */}
-      <div className="flex items-center gap-2 flex-wrap">
-        {['all', ...STATUS_OPTIONS].map((s) => (
+        {/* ── Enrollment lock toggle ── */}
+        <div className="flex items-center gap-3">
+          {/* Status pill */}
+          {!statusLoading && (
+            <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border ${
+              enrollmentOpen
+                ? 'bg-green-500/10 text-green-400 border-green-500/20'
+                : 'bg-red-500/10 text-red-400 border-red-500/20'
+            }`}>
+              {enrollmentOpen ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
+              Enrollment {enrollmentOpen ? 'Open' : 'Locked'}
+            </span>
+          )}
+
           <button
-            key={s}
-            onClick={() => setFilterStatus(s)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all border ${
-              filterStatus === s
-                ? s === 'all'
-                  ? 'bg-red-500/10 text-red-400 border-red-500/30'
-                  : STATUS_STYLES[s] + ' border'
-                : 'text-slate-500 border-transparent hover:border-[#1C212E] hover:text-slate-300'
+            onClick={toggleEnrollment}
+            disabled={lockLoading || statusLoading}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all disabled:opacity-50 border ${
+              enrollmentOpen
+                ? 'bg-red-500/10 text-red-400 border-red-500/20 hover:bg-red-500/20'
+                : 'bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500/20'
             }`}
           >
-            {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
-            <span className="ml-1.5 opacity-70">({counts[s]})</span>
+            {lockLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : enrollmentOpen ? (
+              <Lock className="w-4 h-4" />
+            ) : (
+              <Unlock className="w-4 h-4" />
+            )}
+            {enrollmentOpen ? 'Lock Enrollment' : 'Open Enrollment'}
           </button>
-        ))}
+
+          <button
+            onClick={fetchInterns}
+            disabled={isLoading}
+            className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-[#13192B] rounded-xl text-sm transition-all disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* ── Success banner ── */}
@@ -178,162 +278,279 @@ const AdminInterns = () => {
         </div>
       )}
 
-      {/* ── Search ── */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by name, email, university or degree…"
-          className="w-full bg-[#0B0F19] border border-[#1C212E] text-white text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-red-500/40 placeholder-slate-600"
-        />
-        {search && (
-          <button
-            onClick={() => setSearch('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        )}
+      {/* ── Tabs: Applications | Waitlist ── */}
+      <div className="flex items-center gap-1 border-b border-[#1C212E]">
+        <button
+          onClick={() => setActiveTab('applications')}
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-all border-b-2 -mb-px ${
+            activeTab === 'applications'
+              ? 'border-red-500 text-red-400'
+              : 'border-transparent text-slate-500 hover:text-slate-300'
+          }`}
+        >
+          <GraduationCap className="w-4 h-4" />
+          Applications
+          <span className="bg-[#1C212E] text-slate-400 text-xs px-1.5 py-0.5 rounded">
+            {interns.length}
+          </span>
+        </button>
+        <button
+          onClick={() => setActiveTab('waitlist')}
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-all border-b-2 -mb-px ${
+            activeTab === 'waitlist'
+              ? 'border-amber-500 text-amber-400'
+              : 'border-transparent text-slate-500 hover:text-slate-300'
+          }`}
+        >
+          <Users className="w-4 h-4" />
+          Waitlist
+          {waitlist.length > 0 && (
+            <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-1.5 py-0.5 rounded">
+              {waitlist.length}
+            </span>
+          )}
+        </button>
       </div>
 
-      {/* ── Loading ── */}
-      {isLoading ? (
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
-        </div>
-      ) : filtered.length === 0 ? (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
-          <GraduationCap className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-          <p className="text-slate-400 text-lg font-medium">No applications found</p>
-          <p className="text-slate-600 text-sm mt-1">
-            {search ? 'Try a different search term.' : 'No internship applications yet.'}
-          </p>
-        </div>
-      ) : (
+      {/* ══════════════════ APPLICATIONS TAB ══════════════════ */}
+      {activeTab === 'applications' && (
+        <>
+          {/* ── Status filter tabs ── */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {['all', ...STATUS_OPTIONS].map((s) => (
+              <button
+                key={s}
+                onClick={() => setFilterStatus(s)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all border ${
+                  filterStatus === s
+                    ? s === 'all'
+                      ? 'bg-red-500/10 text-red-400 border-red-500/30'
+                      : STATUS_STYLES[s] + ' border'
+                    : 'text-slate-500 border-transparent hover:border-[#1C212E] hover:text-slate-300'
+                }`}
+              >
+                {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
+                <span className="ml-1.5 opacity-70">({counts[s]})</span>
+              </button>
+            ))}
+          </div>
 
-        /* ── Table ── */
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-[#1C212E] text-slate-500 text-xs uppercase tracking-wider">
-                  <th className="text-left px-6 py-4 font-medium">Applicant</th>
-                  <th className="text-left px-6 py-4 font-medium hidden md:table-cell">Degree / University</th>
-                  <th className="text-left px-6 py-4 font-medium hidden lg:table-cell">Year</th>
-                  <th className="text-left px-6 py-4 font-medium hidden xl:table-cell">Applied</th>
-                  <th className="text-left px-6 py-4 font-medium">Status</th>
-                  <th className="text-right px-6 py-4 font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#1C212E]">
-                {filtered.map((intern) => (
-                  <tr
-                    key={intern.id || intern._id}
-                    className="hover:bg-[#0d1220] transition-colors"
-                  >
-                    {/* Name + contact */}
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => setSelectedIntern(intern)}
-                        className="text-left group"
-                      >
-                        <p className="text-white font-medium group-hover:text-red-400 transition-colors">
-                          {intern.name}
-                        </p>
-                        <div className="flex items-center gap-1.5 mt-0.5 text-slate-500 text-xs">
-                          <Mail className="w-3 h-3" />
-                          {intern.email}
-                        </div>
-                        <div className="flex items-center gap-1.5 mt-0.5 text-slate-500 text-xs">
-                          <Phone className="w-3 h-3" />
-                          {intern.phone}
-                        </div>
-                      </button>
-                    </td>
+          {/* ── Search ── */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name, email, university or degree…"
+              className="w-full bg-[#0B0F19] border border-[#1C212E] text-white text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-red-500/40 placeholder-slate-600"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
 
-                    {/* Degree */}
-                    <td className="px-6 py-4 hidden md:table-cell">
-                      <p className="text-slate-200 font-medium text-xs">{intern.degree}</p>
-                      {intern.university && (
-                        <p className="text-slate-500 text-xs mt-0.5">{intern.university}</p>
-                      )}
-                    </td>
-
-                    {/* Year */}
-                    <td className="px-6 py-4 hidden lg:table-cell">
-                      <span className="text-slate-300 text-xs">{intern.universityYear}</span>
-                    </td>
-
-                    {/* Applied at */}
-                    <td className="px-6 py-4 hidden xl:table-cell">
-                      <div className="flex items-center gap-1.5 text-slate-400 text-xs">
-                        <Calendar className="w-3 h-3" />
-                        {fmtDate(intern.applied_at)}
-                      </div>
-                    </td>
-
-                    {/* Status dropdown */}
-                    <td className="px-6 py-4">
-                      <div className="relative inline-flex items-center">
-                        {updatingId === intern.id ? (
-                          <Loader2 className="w-4 h-4 text-slate-400 animate-spin" />
-                        ) : (
-                          <div className="relative">
-                            <select
-                              value={intern.status}
-                              onChange={(e) => handleStatusChange(intern, e.target.value)}
-                              className={`appearance-none text-xs font-medium px-3 py-1.5 pr-7 rounded-lg border cursor-pointer bg-transparent focus:outline-none ${
-                                STATUS_STYLES[intern.status] || STATUS_STYLES.pending
-                              }`}
-                            >
-                              {STATUS_OPTIONS.map((s) => (
-                                <option key={s} value={s} className="bg-[#0B0F19] text-white">
-                                  {s.charAt(0).toUpperCase() + s.slice(1)}
-                                </option>
-                              ))}
-                            </select>
-                            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 opacity-60" />
-                          </div>
-                        )}
-                      </div>
-                    </td>
-
-                    {/* Actions */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => setSelectedIntern(intern)}
-                          className="p-2 text-slate-500 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all text-xs font-medium"
-                          title="View details"
-                        >
-                          View
-                        </button>
-                        <button
-                          onClick={() => handleDelete(intern)}
-                          disabled={deletingId === intern.id}
-                          className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50"
-                          title="Delete"
-                        >
-                          {deletingId === intern.id ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                          ) : (
-                            <Trash2 className="w-4 h-4" />
+          {/* ── Table or empty state ── */}
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
+              <GraduationCap className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+              <p className="text-slate-400 text-lg font-medium">No applications found</p>
+              <p className="text-slate-600 text-sm mt-1">
+                {search ? 'Try a different search term.' : 'No internship applications yet.'}
+              </p>
+            </div>
+          ) : (
+            <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-[#1C212E] text-slate-500 text-xs uppercase tracking-wider">
+                      <th className="text-left px-6 py-4 font-medium">Applicant</th>
+                      <th className="text-left px-6 py-4 font-medium hidden md:table-cell">Degree / University</th>
+                      <th className="text-left px-6 py-4 font-medium hidden lg:table-cell">Year</th>
+                      <th className="text-left px-6 py-4 font-medium hidden xl:table-cell">Applied</th>
+                      <th className="text-left px-6 py-4 font-medium">Status</th>
+                      <th className="text-right px-6 py-4 font-medium">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1C212E]">
+                    {filtered.map((intern) => (
+                      <tr key={intern.id || intern._id} className="hover:bg-[#0d1220] transition-colors">
+                        <td className="px-6 py-4">
+                          <button onClick={() => setSelectedIntern(intern)} className="text-left group">
+                            <p className="text-white font-medium group-hover:text-red-400 transition-colors">
+                              {intern.name}
+                            </p>
+                            <div className="flex items-center gap-1.5 mt-0.5 text-slate-500 text-xs">
+                              <Mail className="w-3 h-3" />{intern.email}
+                            </div>
+                            <div className="flex items-center gap-1.5 mt-0.5 text-slate-500 text-xs">
+                              <Phone className="w-3 h-3" />{intern.phone}
+                            </div>
+                          </button>
+                        </td>
+                        <td className="px-6 py-4 hidden md:table-cell">
+                          <p className="text-slate-200 font-medium text-xs">{intern.degree}</p>
+                          {intern.university && (
+                            <p className="text-slate-500 text-xs mt-0.5">{intern.university}</p>
                           )}
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                        </td>
+                        <td className="px-6 py-4 hidden lg:table-cell">
+                          <span className="text-slate-300 text-xs">{intern.universityYear}</span>
+                        </td>
+                        <td className="px-6 py-4 hidden xl:table-cell">
+                          <div className="flex items-center gap-1.5 text-slate-400 text-xs">
+                            <Calendar className="w-3 h-3" />{fmtDate(intern.applied_at)}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="relative inline-flex items-center">
+                            {updatingId === intern.id ? (
+                              <Loader2 className="w-4 h-4 text-slate-400 animate-spin" />
+                            ) : (
+                              <div className="relative">
+                                <select
+                                  value={intern.status}
+                                  onChange={(e) => handleStatusChange(intern, e.target.value)}
+                                  className={`appearance-none text-xs font-medium px-3 py-1.5 pr-7 rounded-lg border cursor-pointer bg-transparent focus:outline-none ${
+                                    STATUS_STYLES[intern.status] || STATUS_STYLES.pending
+                                  }`}
+                                >
+                                  {STATUS_OPTIONS.map((s) => (
+                                    <option key={s} value={s} className="bg-[#0B0F19] text-white">
+                                      {s.charAt(0).toUpperCase() + s.slice(1)}
+                                    </option>
+                                  ))}
+                                </select>
+                                <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 opacity-60" />
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => setSelectedIntern(intern)}
+                              className="p-2 text-slate-500 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all text-xs font-medium"
+                            >
+                              View
+                            </button>
+                            <button
+                              onClick={() => handleDelete(intern)}
+                              disabled={deletingId === intern.id}
+                              className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50"
+                            >
+                              {deletingId === intern.id ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <Trash2 className="w-4 h-4" />
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="px-6 py-3 border-t border-[#1C212E] text-xs text-slate-500">
+                Showing {filtered.length} of {interns.length} application{interns.length !== 1 ? 's' : ''}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* ══════════════════ WAITLIST TAB ══════════════════ */}
+      {activeTab === 'waitlist' && (
+        <>
+          <div className="flex items-center justify-between">
+            <p className="text-slate-400 text-sm">
+              Emails collected when enrollment was locked.
+            </p>
+            <button
+              onClick={fetchWaitlist}
+              disabled={waitlistLoading}
+              className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-[#13192B] rounded-xl text-sm transition-all disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 ${waitlistLoading ? 'animate-spin' : ''}`} />
+              Refresh
+            </button>
           </div>
 
-          {/* Table footer */}
-          <div className="px-6 py-3 border-t border-[#1C212E] text-xs text-slate-500">
-            Showing {filtered.length} of {interns.length} application{interns.length !== 1 ? 's' : ''}
-          </div>
-        </div>
+          {waitlistLoading ? (
+            <div className="flex items-center justify-center h-48">
+              <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
+            </div>
+          ) : waitlist.length === 0 ? (
+            <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
+              <Users className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+              <p className="text-slate-400 text-lg font-medium">No waitlist entries yet</p>
+              <p className="text-slate-600 text-sm mt-1">
+                Emails will appear here when users sign up while enrollment is locked.
+              </p>
+            </div>
+          ) : (
+            <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-[#1C212E] text-slate-500 text-xs uppercase tracking-wider">
+                      <th className="text-left px-6 py-4 font-medium">#</th>
+                      <th className="text-left px-6 py-4 font-medium">Email Address</th>
+                      <th className="text-left px-6 py-4 font-medium hidden md:table-cell">Signed Up</th>
+                      <th className="text-right px-6 py-4 font-medium">Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1C212E]">
+                    {waitlist.map((entry, idx) => (
+                      <tr key={entry._id} className="hover:bg-[#0d1220] transition-colors">
+                        <td className="px-6 py-4 text-slate-600 text-xs">{idx + 1}</td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            <Mail className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                            <span className="text-slate-200 font-medium">{entry.email}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 hidden md:table-cell">
+                          <div className="flex items-center gap-1.5 text-slate-400 text-xs">
+                            <Calendar className="w-3 h-3" />
+                            {fmtDate(entry.addedAt)}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <button
+                            onClick={() => handleDeleteWaitlist(entry)}
+                            disabled={deletingWaitId === entry._id}
+                            className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50"
+                            title="Remove from waitlist"
+                          >
+                            {deletingWaitId === entry._id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Trash2 className="w-4 h-4" />
+                            )}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="px-6 py-3 border-t border-[#1C212E] text-xs text-slate-500">
+                {waitlist.length} email{waitlist.length !== 1 ? 's' : ''} on the waitlist
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* ── Detail Modal ── */}
@@ -346,7 +563,6 @@ const AdminInterns = () => {
             className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl w-full max-w-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal header */}
             <div className="flex items-center justify-between p-6 border-b border-[#1C212E]">
               <div>
                 <h2 className="text-white font-bold text-lg">{selectedIntern.name}</h2>
@@ -360,9 +576,7 @@ const AdminInterns = () => {
               </button>
             </div>
 
-            {/* Modal body */}
             <div className="p-6 space-y-4">
-              {/* Status badge */}
               <div className="flex items-center justify-between">
                 <span className="text-slate-400 text-sm">Current Status</span>
                 <span className={`text-xs font-medium px-3 py-1 rounded-lg border capitalize ${STATUS_STYLES[selectedIntern.status] || STATUS_STYLES.pending}`}>
@@ -372,11 +586,11 @@ const AdminInterns = () => {
 
               <div className="grid grid-cols-1 gap-3">
                 {[
-                  { label: 'Email',           value: selectedIntern.email,          icon: Mail },
-                  { label: 'Phone',           value: selectedIntern.phone,          icon: Phone },
-                  { label: 'Degree / Course', value: selectedIntern.degree,         icon: GraduationCap },
-                  { label: 'University',      value: selectedIntern.university || '—', icon: null },
-                  { label: 'Year of Study',   value: selectedIntern.universityYear, icon: null },
+                  { label: 'Email',               value: selectedIntern.email,          icon: Mail },
+                  { label: 'Phone',               value: selectedIntern.phone,          icon: Phone },
+                  { label: 'Degree / Course',     value: selectedIntern.degree,         icon: GraduationCap },
+                  { label: 'University',          value: selectedIntern.university || '—', icon: null },
+                  { label: 'Year of Study',       value: selectedIntern.universityYear, icon: null },
                   { label: 'Applied On',          value: fmtDate(selectedIntern.applied_at), icon: Calendar },
                   { label: 'Status Last Updated', value: selectedIntern.statusUpdatedAt ? fmtDate(selectedIntern.statusUpdatedAt) : 'Not yet updated', icon: null },
                 ].map(({ label, value, icon: Icon }) => (
@@ -390,16 +604,12 @@ const AdminInterns = () => {
                 ))}
               </div>
 
-              {/* Skills */}
               {selectedIntern.skills?.length > 0 && (
                 <div className="bg-[#06080A] border border-[#1C212E] rounded-xl px-4 py-3">
                   <p className="text-slate-500 text-xs mb-2">Skills</p>
                   <div className="flex flex-wrap gap-2">
                     {selectedIntern.skills.map((skill, i) => (
-                      <span
-                        key={i}
-                        className="inline-block bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs px-2.5 py-1 rounded-md"
-                      >
+                      <span key={i} className="inline-block bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs px-2.5 py-1 rounded-md">
                         {skill}
                       </span>
                     ))}
@@ -407,7 +617,6 @@ const AdminInterns = () => {
                 </div>
               )}
 
-              {/* Status changer */}
               <div className="pt-2">
                 <p className="text-slate-400 text-sm mb-3 font-medium">Update Status</p>
                 <div className="grid grid-cols-2 gap-2">
@@ -433,7 +642,6 @@ const AdminInterns = () => {
               </div>
             </div>
 
-            {/* Modal footer */}
             <div className="flex items-center justify-between px-6 py-4 border-t border-[#1C212E]">
               <button
                 onClick={() => handleDelete(selectedIntern)}

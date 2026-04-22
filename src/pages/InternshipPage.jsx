@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
@@ -17,6 +17,20 @@ export default function InternshipPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess]       = useState(false);
   const [error, setError]           = useState('');
+
+  /* ── Enrollment status ── */
+  const [enrollmentOpen, setEnrollmentOpen]   = useState(null); // null = loading
+  const [waitlistEmail, setWaitlistEmail]     = useState('');
+  const [waitlistStatus, setWaitlistStatus]   = useState(''); // 'success' | 'error' | ''
+  const [waitlistMsg, setWaitlistMsg]         = useState('');
+  const [waitlistSubmitting, setWaitlistSubmitting] = useState(false);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/enrollment/status`)
+      .then((r) => r.json())
+      .then((d) => setEnrollmentOpen(d.enrollmentOpen ?? true))
+      .catch(() => setEnrollmentOpen(true)); // fail open
+  }, []);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -43,6 +57,32 @@ export default function InternshipPage() {
 
   const removeSkill = (index) => {
     setSkills((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  /* ── Waitlist submit ── */
+  const handleWaitlistSubmit = async (e) => {
+    e.preventDefault();
+    const email = waitlistEmail.trim();
+    if (!email) return;
+    setWaitlistSubmitting(true);
+    setWaitlistStatus('');
+    try {
+      const res  = await fetch(`${API_URL}/api/enrollment/waitlist`, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.');
+      setWaitlistStatus('success');
+      setWaitlistMsg(data.message);
+      setWaitlistEmail('');
+    } catch (err) {
+      setWaitlistStatus('error');
+      setWaitlistMsg(err.message);
+    } finally {
+      setWaitlistSubmitting(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -77,6 +117,82 @@ export default function InternshipPage() {
       setSubmitting(false);
     }
   };
+
+  /* ── Loading enrollment status ── */
+  if (enrollmentOpen === null) {
+    return (
+      <main className="min-h-screen blueprint-grid flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-tertiary border-t-transparent rounded-full animate-spin" />
+      </main>
+    );
+  }
+
+  /* ── Enrollment closed ── */
+  if (!enrollmentOpen) {
+    return (
+      <main className="min-h-screen blueprint-grid flex items-center justify-center px-6 pt-32 pb-24">
+        <div className="w-full max-w-lg text-center">
+          <div className="glass-card p-12">
+            {/* Lock icon */}
+            <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-6">
+              <span className="material-symbols-outlined text-3xl text-amber-400"
+                style={{ fontVariationSettings: "'FILL' 1" }}>
+                lock
+              </span>
+            </div>
+
+            <h2 className="font-headline text-3xl font-bold text-white mb-3">
+              Enrollments Are Closed
+            </h2>
+            <p className="text-on-surface-variant leading-relaxed mb-8">
+              We are not accepting new applications at this time. Please wait for the
+              next intake — enter your email below and we'll notify you the moment
+              enrollment opens again.
+            </p>
+
+            {/* Waitlist form */}
+            {waitlistStatus === 'success' ? (
+              <div className="bg-green-500/10 border border-green-500/20 rounded-xl px-6 py-5">
+                <span className="material-symbols-outlined text-3xl text-green-400 mb-2 block"
+                  style={{ fontVariationSettings: "'FILL' 1" }}>
+                  check_circle
+                </span>
+                <p className="text-green-400 font-medium text-sm">{waitlistMsg}</p>
+              </div>
+            ) : (
+              <form onSubmit={handleWaitlistSubmit} className="flex flex-col gap-3">
+                <input
+                  type="email"
+                  value={waitlistEmail}
+                  onChange={(e) => setWaitlistEmail(e.target.value)}
+                  required
+                  placeholder="Enter your email address"
+                  className="w-full bg-surface-container border border-outline-variant/40 text-white text-sm px-4 py-3 focus:outline-none focus:border-tertiary/50 placeholder-on-surface-variant/40 transition-colors"
+                />
+                {waitlistStatus === 'error' && (
+                  <p className="text-red-400 text-xs text-left">{waitlistMsg}</p>
+                )}
+                <button
+                  type="submit"
+                  disabled={waitlistSubmitting}
+                  className="w-full bg-tertiary text-on-tertiary py-3 font-label text-sm uppercase tracking-widest font-bold hover:brightness-110 disabled:opacity-50 transition-all"
+                >
+                  {waitlistSubmitting ? 'Submitting…' : 'Notify Me When Open'}
+                </button>
+              </form>
+            )}
+
+            <button
+              onClick={() => navigate('/training')}
+              className="mt-6 text-on-surface-variant/50 hover:text-on-surface-variant text-sm transition-colors"
+            >
+              ← Back to Training
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   if (success) {
     return (

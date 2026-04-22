@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+const API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 
 const TIERS = [
   {
@@ -40,6 +42,14 @@ const TIERS = [
 
 export default function TrainingAcademy() {
   const navigate = useNavigate();
+  const [enrollmentOpen, setEnrollmentOpen] = useState(true);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/enrollment/status`)
+      .then((r) => r.json())
+      .then((d) => setEnrollmentOpen(d.enrollmentOpen ?? true))
+      .catch(() => setEnrollmentOpen(true));
+  }, []);
 
   return (
     <main className="pt-32 pb-24 px-6 md:px-12 max-w-[1440px] mx-auto">
@@ -118,13 +128,24 @@ export default function TrainingAcademy() {
               out in the industry.
             </p>
           </div>
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 flex flex-col items-center gap-3">
             <button
               onClick={() => navigate('/training/internship')}
-              className="bg-tertiary text-on-tertiary px-10 py-5 font-label text-sm uppercase tracking-widest font-bold hover:brightness-110 transition-all shadow-[0_0_30px_rgba(68,216,241,0.25)] whitespace-nowrap"
+              className={`px-10 py-5 font-label text-sm uppercase tracking-widest font-bold transition-all whitespace-nowrap ${
+                enrollmentOpen
+                  ? 'bg-tertiary text-on-tertiary hover:brightness-110 shadow-[0_0_30px_rgba(68,216,241,0.25)]'
+                  : 'bg-surface-container border border-outline-variant/40 text-on-surface-variant/60 cursor-not-allowed'
+              }`}
+              disabled={!enrollmentOpen}
             >
-              Enroll Now for Internship
+              {enrollmentOpen ? 'Enroll Now for Internship' : 'Enrollment Closed'}
             </button>
+            {!enrollmentOpen && (
+              <span className="inline-flex items-center gap-1.5 text-xs text-amber-400/80">
+                <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>lock</span>
+                Applications currently closed — check back soon
+              </span>
+            )}
           </div>
         </div>
       </section>
