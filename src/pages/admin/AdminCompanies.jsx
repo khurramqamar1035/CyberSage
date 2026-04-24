@@ -20,7 +20,7 @@ const AdminCompanies = () => {
 
   const fetchCompanies = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/admink/companies`, {
+      const res = await fetch(`${API_URL}/api/admin/companies`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -151,7 +151,7 @@ const AdminCompanies = () => {
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <button
-                      onClick={() => navigate(`/admink/companies/${company._id}`)}
+                      onClick={() => navigate(`/admin/companies/${company._id}`)}
                       className="p-2 text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
                     >
                       <Eye className="w-4 h-4" />

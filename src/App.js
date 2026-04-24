@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-// Public layout (new Protope 2 design nav + footer)
+// Public layout
 import PublicLayout from './components/PublicLayout';
 
 // Public pages
@@ -52,7 +52,6 @@ import Onboarding from './pages/auth/Onboarding';
 import VerifyEmail from './pages/auth/VerifyEmail';
 
 // Admin
-import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminCompanies from './pages/admin/AdminCompanies';
@@ -70,7 +69,7 @@ const AdminRoute = ({ children }) => {
   const token = localStorage.getItem('adminToken');
   const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
   if (!token || adminUser.role !== 'admin') {
-    return <Navigate to="/admink" replace />;
+    return <Navigate to="/admin" replace />;
   }
   return children;
 };
@@ -79,7 +78,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* ── Public Routes (Protope 2 design with PublicLayout nav + footer) ── */}
+        {/* ── Public Routes ── */}
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<LandingPage />} />
 
@@ -114,7 +113,7 @@ function App() {
           <Route path="FAQ" element={<FAQPage />} />
           <Route path="about" element={<AboutPage />} />
 
-          {/* Legacy redirect shims (keeps old links working) */}
+          {/* Legacy redirect shims */}
           <Route path="security" element={<Navigate to="/security-services" replace />} />
           <Route path="development" element={<Navigate to="/development-services" replace />} />
           <Route path="services/AiSecurityAudit" element={<Navigate to="/security-services/ai-audit" replace />} />
@@ -149,10 +148,9 @@ function App() {
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
 
         {/* ── Admin ── */}
-        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/superuseruk" element={<SuperAdminDashboard />} />
-        <Route path="/admink" element={<AdminLogin />} />
-        <Route path="/admink/*" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/*" element={<AdminRoute><AdminLayout /></AdminRoute>}>
           <Route path="companies" element={<AdminCompanies />} />
           <Route path="companies/:userId" element={<AdminCompanyDetail />} />
           <Route path="blogs" element={<AdminBlogs />} />

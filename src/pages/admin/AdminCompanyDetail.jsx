@@ -42,7 +42,7 @@ const AdminCompanyDetail = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/admink/companies/${userId}`, {
+      const res = await fetch(`${API_URL}/api/admin/companies/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const json = await res.json();
@@ -88,7 +88,7 @@ const AdminCompanyDetail = () => {
     const handleSave = async () => {
       setSaving(true);
       try {
-        await apiCall('PUT', `/api/admink/dashboard/${userId}`, form);
+        await apiCall('PUT', `/api/admin/dashboard/${userId}`, form);
         await fetchData();
         alert('Dashboard stats updated!');
       } catch (err) {
@@ -156,7 +156,7 @@ const AdminCompanyDetail = () => {
     const handleAdd = async () => {
       setSaving(true);
       try {
-        await apiCall('POST', `/api/admink/users/${userId}/services`, addForm);
+        await apiCall('POST', `/api/admin/users/${userId}/services`, addForm);
         await fetchData();
         setModal(null);
       } catch (err) {
@@ -169,7 +169,7 @@ const AdminCompanyDetail = () => {
     const handleUpdate = async (userServiceId, updatedData) => {
       setSaving(true);
       try {
-        await apiCall('PUT', `/api/admink/services/${userServiceId}`, updatedData);
+        await apiCall('PUT', `/api/admin/services/${userServiceId}`, updatedData);
         await fetchData();
         setModal(null);
       } catch (err) {
@@ -182,7 +182,7 @@ const AdminCompanyDetail = () => {
     const handleRemove = async (userServiceId) => {
       if (!window.confirm('Remove this service?')) return;
       try {
-        await apiCall('DELETE', `/api/admink/services/${userServiceId}`);
+        await apiCall('DELETE', `/api/admin/services/${userServiceId}`);
         await fetchData();
       } catch (err) {
         alert(err.message);
@@ -324,7 +324,7 @@ const AdminCompanyDetail = () => {
     const handleCreate = async () => {
       setSaving(true);
       try {
-        await apiCall('POST', `/api/admink/users/${userId}/reports`, {
+        await apiCall('POST', `/api/admin/users/${userId}/reports`, {
           ...form,
           details: form.details.split('\n').filter(Boolean),
         });
@@ -340,7 +340,7 @@ const AdminCompanyDetail = () => {
     const handleDelete = async (reportId) => {
       if (!window.confirm('Delete this report?')) return;
       try {
-        await apiCall('DELETE', `/api/admink/reports/${reportId}`);
+        await apiCall('DELETE', `/api/admin/reports/${reportId}`);
         await fetchData();
       } catch (err) {
         alert(err.message);
@@ -471,7 +471,7 @@ const AdminCompanyDetail = () => {
             onSave={async (reportId, updatedData) => {
               setSaving(true);
               try {
-                await apiCall('PUT', `/api/admink/reports/${reportId}`, updatedData);
+                await apiCall('PUT', `/api/admin/reports/${reportId}`, updatedData);
                 await fetchData();
                 setModal(null);
               } catch (err) {
@@ -492,7 +492,7 @@ const AdminCompanyDetail = () => {
   const BillingTab = () => {
     const handleUpdatePayment = async (userServiceId, paymentStatus) => {
       try {
-        await apiCall('PUT', `/api/admink/payments/${userServiceId}`, {
+        await apiCall('PUT', `/api/admin/payments/${userServiceId}`, {
           paymentStatus,
           invoiceDate: new Date(),
         });
@@ -577,7 +577,7 @@ const AdminCompanyDetail = () => {
       {/* Back + Header */}
       <div className="flex items-center gap-4">
         <button
-          onClick={() => navigate('/admink/companies')}
+          onClick={() => navigate('/admin/companies')}
           className="p-2 text-slate-400 hover:text-slate-200 hover:bg-[#13192B] rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />

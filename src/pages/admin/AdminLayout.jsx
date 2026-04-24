@@ -3,12 +3,12 @@ import { NavLink, useNavigate, Outlet } from 'react-router-dom';
 import { Building2, LogOut, FileText, HelpCircle, MessageSquare, Users, GraduationCap, Menu, X } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { to: '/admink/companies',    icon: Building2,      label: 'Companies' },
-  { to: '/admink/blogs',        icon: FileText,       label: 'Blog Posts' },
-  { to: '/admink/faqs',         icon: HelpCircle,     label: 'FAQs' },
-  { to: '/admink/testimonials', icon: MessageSquare,  label: 'Testimonials' },
-  { to: '/admink/clients',      icon: Users,          label: 'Clients' },
-  { to: '/admink/interns',      icon: GraduationCap,  label: 'Intern Applications' },
+  { to: '/admin/companies',    icon: Building2,      label: 'Companies' },
+  { to: '/admin/blogs',        icon: FileText,       label: 'Blog Posts' },
+  { to: '/admin/faqs',         icon: HelpCircle,     label: 'FAQs' },
+  { to: '/admin/testimonials', icon: MessageSquare,  label: 'Testimonials' },
+  { to: '/admin/clients',      icon: Users,          label: 'Clients' },
+  { to: '/admin/interns',      icon: GraduationCap,  label: 'Intern Applications' },
 ];
 
 const AdminLayout = () => {
@@ -19,7 +19,7 @@ const AdminLayout = () => {
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
-    navigate('/admink');
+    navigate('/admin');
   };
 
   const SidebarContent = () => (
