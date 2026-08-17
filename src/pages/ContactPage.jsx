@@ -99,10 +99,7 @@ const ContactPage = () => {
                     <div className="min-w-0">
                       <h3 className="text-xl font-bold text-white leading-tight">Mr Manish</h3>
                       <p className="text-sm text-cyan-400 font-medium mt-0.5">Business Manager</p>
-                      <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                        Pricing, partnerships and commercial questions — Manish is your first
-                        point of contact.
-                      </p>
+                      <p className="text-slate-400 text-sm mt-2">Business and partnership enquiries</p>
                       <p className="text-slate-300 text-sm mt-2 font-medium">
                         <a href="tel:+918292998867" className="hover:text-white transition-colors">+91 82929 98867</a>
                       </p>
