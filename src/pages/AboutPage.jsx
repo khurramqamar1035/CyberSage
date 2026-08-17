@@ -14,7 +14,6 @@ import {
 } from "../components/ui/dialog";
 import { Badge } from "../components/ui/badge";
 import { MapPin, Users, Building2, Menu, X } from "lucide-react";
-import SageAI from "../components/SageAI";
 import axios from "axios";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -305,7 +304,6 @@ const AboutPage = () => {
         )}
       </Dialog>
 
-      <SageAI />
     </div>
   );
 };

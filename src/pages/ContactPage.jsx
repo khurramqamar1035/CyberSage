@@ -58,8 +58,8 @@ const ContactPage = () => {
       <section className="relative py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12">
-            {/* Email Card */}
-            <div>
+            {/* Email + Business Enquiries */}
+            <div className="space-y-8">
               <Card className="bg-slate-900/60 border-slate-700">
                 <CardContent className="pt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <Mail className="w-6 h-6 text-amber-400" />
@@ -78,6 +78,48 @@ const ContactPage = () => {
                       cybersageuk@gmail.com
                     </Button>
                   </div>
+                </CardContent>
+              </Card>
+
+              {/* Business Enquiries Card */}
+              <Card className="bg-slate-900/60 border-slate-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-white text-base font-semibold uppercase tracking-wider text-slate-300">
+                    Business Enquiries
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-2">
+                  <div className="flex items-center gap-5">
+                    <img
+                      src="/manish.jpg"
+                      alt="Manish — Business Manager"
+                      className="w-24 h-24 rounded-xl object-cover object-top border border-slate-700 shrink-0"
+                      onError={(e) => { e.currentTarget.style.display = "none"; }}
+                    />
+                    <div className="min-w-0">
+                      <h3 className="text-xl font-bold text-white leading-tight">Mr Manish</h3>
+                      <p className="text-sm text-cyan-400 font-medium mt-0.5">Business Manager</p>
+                      <p className="text-slate-400 text-sm mt-2 leading-relaxed">
+                        Pricing, partnerships and commercial questions — Manish is your first
+                        point of contact.
+                      </p>
+                      <p className="text-slate-300 text-sm mt-2 font-medium">
+                        <a href="tel:+918292998867" className="hover:text-white transition-colors">+91 82929 98867</a>
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    className="mt-5 border-gray-700 text-white hover:bg-gray-800 w-full sm:w-auto flex items-center justify-center gap-2"
+                    onClick={() =>
+                      window.open(
+                        "https://mail.google.com/mail/?view=cm&fs=1&to=mkumar@cybersage.uk",
+                        "_blank"
+                      )
+                    }
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    mkumar@cybersage.uk
+                  </Button>
                 </CardContent>
               </Card>
             </div>
