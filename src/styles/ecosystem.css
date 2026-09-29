@@ -1,0 +1,104 @@
+/* ─────────────────────────────────────────────────────────────
+   CyberSage ecosystem styles
+   Motion rules (Emil Kowalski): ease-out for enter, linear for
+   constant motion, transform/opacity only, <300ms for UI,
+   hover gated to real pointers, everything off for reduced motion.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --cs-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --cs-ease-io: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.cs-display { font-family: 'Space Grotesk', sans-serif; }
+.cs-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+
+/* Press feedback */
+.cs-press { transition: transform 160ms var(--cs-ease-out), background-color 200ms ease, border-color 200ms ease, color 200ms ease; }
+.cs-press:active { transform: scale(0.97); }
+
+/* Nav underline */
+.cs-navlink { position: relative; }
+.cs-navlink::after {
+  content: ''; position: absolute; left: 12px; right: 12px; bottom: 6px; height: 1.5px;
+  background: #44d8f1; transform: scaleX(0); transform-origin: left;
+  transition: transform 220ms var(--cs-ease-out);
+}
+.cs-navlink[data-active='true']::after,
+.cs-navlink[aria-expanded='true']::after { transform: scaleX(1); }
+
+.cs-arrow { transition: transform 220ms var(--cs-ease-out); }
+.cs-lift { transition: transform 240ms var(--cs-ease-out), border-color 200ms ease, background-color 200ms ease; }
+
+@media (hover: hover) and (pointer: fine) {
+  .cs-navlink:hover::after { transform: scaleX(1); }
+  .cs-hover-arrow:hover .cs-arrow { transform: translateX(4px); }
+  .cs-lift:hover { transform: translateY(-3px); border-color: #434655; }
+  .cs-menu-item:hover { background-color: #191f31; }
+  .cs-btn-blue:hover { background-color: #1d4fd0; }
+  .cs-btn-line:hover { background-color: #191f31; border-color: #8d90a0; }
+}
+
+/* Dropdown: scales out of its trigger, interruptible transition */
+.cs-pop {
+  transform-origin: top left;
+  transition: opacity 200ms var(--cs-ease-out), transform 200ms var(--cs-ease-out), visibility 0s linear 200ms;
+  opacity: 0; transform: scale(0.97) translateY(-4px); visibility: hidden; pointer-events: none;
+}
+.cs-pop[data-open='true'] {
+  opacity: 1; transform: none; visibility: visible; pointer-events: auto;
+  transition: opacity 200ms var(--cs-ease-out), transform 200ms var(--cs-ease-out), visibility 0s;
+}
+
+/* Mobile sheet */
+.cs-sheet { transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1), opacity 300ms ease; transform: translateY(-8px); opacity: 0; visibility: hidden; }
+.cs-sheet[data-open='true'] { transform: none; opacity: 1; visibility: visible; }
+
+/* First-view entrance */
+@keyframes cs-rise { from { opacity: 0; transform: translateY(14px); filter: blur(4px); } to { opacity: 1; transform: none; filter: blur(0); } }
+.cs-rise { animation: cs-rise 800ms var(--cs-ease-out) both; }
+.cs-d1 { animation-delay: 60ms; } .cs-d2 { animation-delay: 140ms; } .cs-d3 { animation-delay: 220ms; }
+.cs-d4 { animation-delay: 300ms; } .cs-d5 { animation-delay: 380ms; } .cs-d6 { animation-delay: 460ms; }
+
+/* Scroll reveal (see Reveal.jsx) */
+.cs-reveal { opacity: 0; transform: translateY(16px); transition: opacity 700ms var(--cs-ease-out), transform 700ms var(--cs-ease-out); }
+.cs-reveal[data-in='true'] { opacity: 1; transform: none; }
+
+/* Ambient, constant motion = linear */
+@keyframes cs-spin { to { transform: rotate(360deg); } }
+@keyframes cs-spinr { to { transform: rotate(-360deg); } }
+.cs-orbit { animation: cs-spin 90s linear infinite; }
+.cs-counter { animation: cs-spinr 90s linear infinite; }
+.cs-orbit-slow { animation: cs-spinr 150s linear infinite; }
+@keyframes cs-emblem { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+.cs-emblem-in { animation: cs-emblem 1000ms var(--cs-ease-out) 200ms both; }
+@keyframes cs-ticker { to { transform: translateY(-50%); } }
+.cs-ticker { animation: cs-ticker 36s linear infinite; }
+@keyframes cs-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.cs-pulse { animation: cs-pulse 2s ease-in-out infinite; }
+@keyframes cs-dash { to { stroke-dashoffset: -40; } }
+.cs-flow { animation: cs-dash 1.6s linear infinite; }
+@keyframes cs-grow { from { transform: scaleY(0.15); } to { transform: scaleY(1); } }
+.cs-bar { transform-origin: bottom; animation: cs-grow 700ms var(--cs-ease-out) both; }
+@keyframes cs-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.cs-fill { transform-origin: left; animation: cs-fill 900ms var(--cs-ease-out) 300ms both; }
+@keyframes cs-marquee { to { transform: translateX(-50%); } }
+.cs-marquee { animation: cs-marquee 40s linear infinite; }
+
+.cs-grid-bg {
+  background-image: linear-gradient(rgba(67, 70, 85, 0.28) 1px, transparent 1px), linear-gradient(90deg, rgba(67, 70, 85, 0.28) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+.cs-fade-mask {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+}
+.cs-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-rise, .cs-orbit, .cs-counter, .cs-orbit-slow, .cs-emblem-in, .cs-ticker, .cs-pulse, .cs-flow, .cs-bar, .cs-fill, .cs-marquee { animation: none !important; }
+  .cs-reveal { opacity: 1; transform: none; transition: none; }
+  .cs-pop, .cs-sheet, .cs-press, .cs-lift, .cs-arrow, .cs-navlink::after { transition: none !important; }
+}

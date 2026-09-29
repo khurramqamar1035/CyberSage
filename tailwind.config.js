@@ -90,8 +90,9 @@ module.exports = {
   			}
   		},
   		fontFamily: {
-  			"headline": ["Inter", "sans-serif"],
-  			"body":     ["Inter", "sans-serif"],
+  			"headline": ["Space Grotesk", "sans-serif"],
+  			"body":     ["Hanken Grotesk", "sans-serif"],
+  			"mono":     ["IBM Plex Mono", "ui-monospace", "monospace"],
   			"label":    ["Space Grotesk", "sans-serif"],
   		},
   		borderRadius: {

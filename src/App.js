@@ -15,6 +15,7 @@ import BlogPage from './pages/BlogPage';
 import BlogDetailPage from './pages/BlogDetailPage';
 import FAQPage from './pages/FAQPage';
 import AboutPage from './pages/AboutPage';
+import ProductPage from './pages/products/ProductPage';
 
 // Security sub-pages
 import AiSecurityAudit from './pages/services/AiSecurityAudit';
@@ -81,6 +82,15 @@ function App() {
         {/* ── Public Routes ── */}
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<LandingPage />} />
+
+          {/* Products (CyberSage ecosystem) */}
+          <Route path="products" element={<Navigate to="/#ecosystem" replace />} />
+          <Route path="products/:slug" element={<ProductPage />} />
+          <Route path="nexus" element={<Navigate to="/products/nexus" replace />} />
+          <Route path="sage-education" element={<Navigate to="/products/education" replace />} />
+          <Route path="sage-vault" element={<Navigate to="/products/vault" replace />} />
+          <Route path="sage-sentinel" element={<Navigate to="/products/sentinel" replace />} />
+          <Route path="sage-brain" element={<Navigate to="/products/brain" replace />} />
 
           {/* Security */}
           <Route path="security-services" element={<SecurityPage />} />
