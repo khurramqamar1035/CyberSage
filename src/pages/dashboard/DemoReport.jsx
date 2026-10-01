@@ -8,10 +8,15 @@ const DemoReport = () => {
       {/* Header Controls */}
       <div className="max-w-4xl mx-auto flex justify-between items-center mb-8">
         <button 
-          onClick={() => window.close()}
+          onClick={() => {
+            // Opened in a new tab from the dashboard: close it. Opened directly: go back or home.
+            if (window.opener) window.close();
+            else if (window.history.length > 1) window.history.back();
+            else window.location.assign(localStorage.getItem('token') ? '/dashboard' : '/');
+          }}
           className="text-slate-400 hover:text-white flex items-center transition-colors text-sm font-medium"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
+          <ArrowLeft className="w-4 h-4 mr-2" /> Back
         </button>
         <button 
           onClick={() => window.print()}

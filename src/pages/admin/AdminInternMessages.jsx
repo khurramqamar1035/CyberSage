@@ -3,25 +3,25 @@ import { MessageSquareQuote } from 'lucide-react';
 import AdminCollection from './AdminCollection';
 
 const FIELDS = [
-  { name: 'name', label: 'Intern name', required: true },
+  { name: 'name', label: 'Name', required: true },
   { name: 'message', label: 'Their testimonial', type: 'textarea', rows: 7, required: true, hint: 'Paste what they wrote, in their own words.' },
-  { name: 'role', label: 'Role or track', placeholder: 'e.g. Security Intern, SOC track' },
-  { name: 'cohort', label: 'Cohort', placeholder: 'e.g. Summer 2026' },
+  { name: 'role', label: 'Role', placeholder: 'e.g. Security Intern, Client, Partner' },
+  { name: 'cohort', label: 'Batch or organisation', placeholder: 'e.g. Intern 2026, Acme Ltd' },
   { name: 'photo', label: 'Photo URL (optional)', type: 'image' },
   { name: 'linkedin', label: 'LinkedIn URL (optional)', placeholder: 'https://www.linkedin.com/in/…' },
-  { name: 'order', label: 'Display order', type: 'number', default: 0, hint: 'The lowest number is shown as the large featured message.' },
+  { name: 'order', label: 'Display order', type: 'number', default: 0, hint: 'Lower numbers appear first in the row.' },
   { name: 'published', label: 'Published', type: 'checkbox', checkboxLabel: 'Show on the website', default: true },
 ];
 
 export default function AdminInternMessages() {
   return (
     <AdminCollection
-      title="Intern testimonials"
+      title="Testimonials (scrolling)"
       icon={MessageSquareQuote}
       path="intern-messages"
       fields={FIELDS}
-      empty="No intern testimonials yet"
-      help="Testimonials interns leave before finishing, shown on the Internship and Core team pages. Only add messages the intern has agreed to share publicly."
+      empty="No testimonials added yet"
+      help="Shown in the moving Testimonials row on the Internship and Core team pages, next to the three built in. Add anyone: interns, clients or partners. Adding someone with the same name as a built-in one replaces it. Only add testimonials the person has agreed to share."
       renderItem={(it, actions) => (
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">

@@ -121,3 +121,14 @@
   .cert-print-area > div { padding: 0 !important; max-width: none !important; }
   .cert-print-area .cs-guides, .cert-no-print { display: none !important; }
 }
+
+/* Testimonials: continuously moving row */
+.cs-marquee { -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.cs-marquee-track { animation: cs-marquee var(--marquee-duration, 40s) linear infinite; }
+.cs-marquee:hover .cs-marquee-track, .cs-marquee:focus-within .cs-marquee-track { animation-play-state: paused; }
+@keyframes cs-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .cs-marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .cs-marquee-track { animation: none; }
+  .cs-marquee-track > [aria-hidden="true"] { display: none; }
+}

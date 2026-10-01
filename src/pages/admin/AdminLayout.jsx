@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { to: '/admin/clients',      icon: Users,          label: 'Clients' },
   { to: '/admin/interns',      icon: GraduationCap,  label: 'Intern Applications' },
   { to: '/admin/certificates', icon: Award,          label: 'Certificates' },
-  { to: '/admin/intern-messages', icon: MessageSquareQuote, label: 'Intern Testimonials' },
+  { to: '/admin/intern-messages', icon: MessageSquareQuote, label: 'Testimonials (scrolling)' },
   { to: '/admin/gallery',      icon: ImageIcon,      label: 'Gallery' },
 ];
 
