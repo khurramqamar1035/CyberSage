@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Guides } from './ServiceTemplates';
 
-// Farewell messages left by interns, managed in Admin > Intern messages.
+// Testimonials managed in Admin > Intern Testimonials.
 // Renders nothing until at least one message is published.
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -57,18 +57,18 @@ function Message({ m }) {
   );
 }
 
-export default function InternVoices({ title = 'What our interns say.', intro = 'Testimonials from interns, in their own words, written as they finished the programme.' }) {
+export default function InternVoices({ title = 'Testimonials.', intro = '' }) {
   const list = useMessages();
   if (list.length === 0) return null;
   const [featured, ...rest] = list;
   return (
-    <section id="intern-messages" className="relative s-off overflow-hidden scroll-mt-16">
+    <section id="testimonials" className="relative s-off overflow-hidden scroll-mt-16">
       <Guides />
       <div className={`${WRAP} relative py-16 md:py-20`}>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
           <div className="lg:col-span-4">
             <h2 className="m-0 t-wide font-[250] text-[30px] md:text-[44px] leading-[1.04] tracking-[-0.03em]">{title}</h2>
-            <p className="m-0 mt-4 text-[16px] leading-relaxed text-[#3E4555] max-w-[40ch]">{intro}</p>
+            {intro && <p className="m-0 mt-4 text-[16px] leading-relaxed text-[#3E4555] max-w-[40ch]">{intro}</p>}
           </div>
           <figure className="m-0 lg:col-span-7 lg:col-start-6 flex flex-col gap-6">
             <blockquote className="m-0 t-wide font-[250] text-[22px] md:text-[30px] leading-[1.3] tracking-[-0.015em] whitespace-pre-line">&ldquo;{featured.message}&rdquo;</blockquote>
