@@ -62,5 +62,13 @@
     "height": 1200,
     "order": 7,
     "published": true
+  },
+  {
+    "id": "bb3de0ef7a92",
+    "src": "/content/gallery/bb3de0ef7a92.jpg",
+    "width": 1600,
+    "height": 1200,
+    "order": 8,
+    "published": true
   }
 ]
