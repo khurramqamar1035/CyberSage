@@ -90,9 +90,9 @@ module.exports = {
   			}
   		},
   		fontFamily: {
-  			"headline": ["Geist", "sans-serif"],
-  			"body":     ["Geist", "sans-serif"],
-  			"mono":     ["Geist Mono", "ui-monospace", "monospace"],
+  			"headline": ["Archivo", "sans-serif"],
+  			"body":     ["Archivo", "sans-serif"],
+  			"mono":     ["IBM Plex Mono", "ui-monospace", "monospace"],
   			"label":    ["Space Grotesk", "sans-serif"],
   		},
   		borderRadius: {

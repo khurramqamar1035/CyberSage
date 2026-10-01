@@ -4,35 +4,39 @@ import { PRODUCTS, SERVICE_GROUPS, COMPANY_LINKS, RESOURCE_LINKS } from '../../d
 
 const Col = ({ title, links }) => (
   <div className="flex flex-col gap-2.5">
-    <div className="text-[13px] text-[#8D96AA]">{title}</div>
+    <div className="text-[13px] text-[#5B6575]">{title}</div>
     {links.map((l) => (
-      <Link key={l.to + l.name} to={l.to} className="text-[14px] text-[#DCE1FB] hover:text-white hover:underline underline-offset-4 decoration-[#5F6676]">{l.name}</Link>
+      <Link key={l.to + l.name} to={l.to} className="text-[14px] text-[#ECEEF1] hover:text-white hover:underline underline-offset-4 decoration-[#5F6676]">{l.name}</Link>
     ))}
   </div>
 );
 
 export default function SiteFooter() {
   return (
-    <footer className="cs-sans mt-auto bg-[#0C1324] text-[#DCE1FB] border-t border-[#1E2638]">
-      <div className="max-w-[1320px] mx-auto px-5 md:px-8 pt-14 pb-8">
+    <footer className="cs-sans mt-auto bg-[#07090D] text-[#ECEEF1] border-t border-[#171C26]">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 pt-14 pb-8">
         <div className="grid grid-cols-2 md:grid-cols-[minmax(0,1.4fr)_repeat(4,minmax(0,1fr))] gap-x-8 gap-y-10">
           <div className="col-span-2 md:col-span-1 flex flex-col gap-4 max-w-[300px]">
             <Link to="/" className="flex items-center gap-2.5" aria-label="CyberSage home">
               <img src="/brand/emblem.png" alt="" className="w-8 h-8 object-contain" />
               <img src="/brand/wordmark.png" alt="CyberSage" className="h-[15px] w-auto object-contain" />
             </Link>
-            <p className="m-0 text-[14px] leading-relaxed text-[#AEB6C8]">Security operations, intelligence, workspace, education and training platforms, built to work as one.</p>
+            <p className="m-0 text-[14px] leading-relaxed text-[#A9B8D0]">Security operations, intelligence, workspace, education and training platforms, built to work as one.</p>
           </div>
           <Col title="Products" links={PRODUCTS.map((p) => ({ name: p.name, to: `/products/${p.slug}` }))} />
           <Col title="Services" links={[...SERVICE_GROUPS.map((g) => ({ name: g.title, to: g.to })), { name: 'Internships', to: '/training/internship' }]} />
           <Col title="Company" links={COMPANY_LINKS} />
           <Col title="Resources" links={[...RESOURCE_LINKS, { name: 'Client portal', to: '/login' }]} />
         </div>
-        <div className="mt-12 pt-6 border-t border-[#1E2638] flex flex-col sm:flex-row justify-between gap-3 text-[13px] text-[#8D96AA]">
+        <div className="mt-12 pt-6 border-t border-[#171C26] flex flex-col sm:flex-row justify-between gap-3 text-[13px] text-[#5B6575]">
           <span>© {new Date().getFullYear()} CyberSage. All rights reserved.</span>
           {/* Legal pages are not live yet; plain text until they are */}
           <span className="flex flex-wrap gap-x-6 gap-y-1"><span>Privacy policy</span><span>Terms of service</span><span>Ethics protocol</span></span>
         </div>
+      </div>
+      {/* the wordmark, cropped by the page edge */}
+      <div className="overflow-hidden select-none" aria-hidden="true">
+        <div className="t-expanded font-[200] text-[#141922] leading-[0.74] tracking-[-0.04em] whitespace-nowrap text-center text-[17vw] translate-y-[14%]">CYBERSAGE</div>
       </div>
     </footer>
   );

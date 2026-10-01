@@ -64,7 +64,7 @@ export function MagneticLink({ to, href, variant = 'primary', arrow = true, chil
   const inner = <>{children}{arrow && <Arrow />}</>;
   return (
     <motion.span ref={ref} style={{ x: sx, y: sy, display: 'inline-flex' }} onMouseMove={onMove} onMouseLeave={onLeave}>
-      {href ? <a href={href} className={cls}>{inner}</a> : <Link to={to} className={cls}>{inner}</Link>}
+      {href ? <a href={href} className={cls} {...(/^https?:/.test(href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{inner}</a> : <Link to={to} className={cls}>{inner}</Link>}
     </motion.span>
   );
 }

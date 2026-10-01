@@ -1,14 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PRODUCTS, SERVICE_GROUPS, productBySlug } from '../data/ecosystem';
-import HeroSystem from '../components/site/HeroSystem';
-import PlatformDiagram from '../components/site/PlatformDiagram';
-import ProductVisual from '../components/site/ProductVisual';
-import ProductStage from '../components/site/ProductStage';
-import ProductMark from '../components/site/ProductMark';
-import VantaNet from '../components/site/VantaNet';
-import { MagneticLink, Parallax, Reveal, RevealText, SectionMarker } from '../components/site/motion';
+import SignalField from '../components/site/SignalField';
+import PlatformTrace from '../components/site/PlatformTrace';
+import ProductArt from '../components/site/ProductArt';
+import { MagneticLink, Parallax, Reveal } from '../components/site/motion';
 
 const BACKEND_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 
@@ -29,143 +26,87 @@ function writeCache(key, data) {
   try { localStorage.setItem(key, JSON.stringify({ data, ts: Date.now() })); } catch {}
 }
 
-const WRAP = 'max-w-[1320px] mx-auto px-5 md:px-8';
-const SECTIONS = 6;
-const H2 = 'm-0 text-[28px] md:text-[36px] leading-[1.1] font-medium tracking-[-0.025em]';
+const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
+const EASE = [0.23, 1, 0.32, 1];
 
-// The sequence of a real incident, end to end
-const TIMELINE = [
-  { t: '02:41', who: 'Nexus', what: 'A lookalike invoice email reaches six people in finance.' },
-  { t: '03:05', who: 'Sentinel', what: 'One of them signs in from a second country 17 minutes after the first.' },
-  { t: '03:07', who: 'Sentinel', what: 'A playbook revokes the session and removes a new forwarding rule.' },
-  { t: '03:09', who: 'Brain', what: 'Brain links the login to the email and drafts a recommendation.' },
-  { t: '08:30', who: 'Analyst', what: 'The on-call analyst reviews the evidence and approves four resets.' },
-  { t: '+7 days', who: 'Vault', what: 'Finance works through the same attack as a guided investigation.' },
+// Signal Field configuration (a constant so the canvas isn't rebuilt each render).
+// Channels are labelled with the products; no events or figures are shown.
+const HERO_LABELS = [{ line: 3, text: 'NEXUS' }, { line: 9, text: 'SAGE EDUCATION' }, { line: 15, text: 'SAGE VAULT' }, { line: 21, text: 'SAGE SENTINEL' }, { line: 27, text: 'SAGE BRAIN' }];
+
+// Each product is its own chapter, on a surface that suits its own design language.
+const CHAPTERS = [
+  { slug: 'nexus', word: 'NEXUS', surface: 's-paper tx-dot', tone: 'dark' },
+  { slug: 'education', word: 'EDUCATION', surface: 's-off', tone: 'dark' },
+  { slug: 'vault', word: 'VAULT', surface: 'bg-[#0E1117] text-[#ECEEF1] tx-grain', tone: 'light' },
+  { slug: 'sentinel', word: 'SENTINEL', surface: 's-black tx-grain', tone: 'light', outline: true },
+  { slug: 'brain', word: 'BRAIN', surface: 's-navy tx-grain', tone: 'light' },
 ];
 
 const PRINCIPLES = [
-  { t: 'Evidence before action', d: 'Every recommendation from Sage Brain shows the events and sources behind it. An analyst should be able to check the reasoning in under a minute.' },
-  { t: 'People approve what matters', d: 'Automated playbooks handle routine containment. Changes to accounts, money or production systems wait for a named person.' },
-  { t: 'One platform, not five tools', d: 'The products share identity and context, so an incident in Sentinel, a message in Nexus and a lab in Vault are part of the same record.' },
-  { t: 'Practise on what really happens', d: 'Vault exercises are built from the kinds of incidents our own investigators work, not from textbook examples.' },
-];
+  { t: 'Built natively', d: 'We build each capability ourselves instead of stitching third-party tools together, so the products share one design and one way of working.' },
+  { t: 'Evidence before action', d: 'Recommendations come with the evidence behind them, so a person can check the reasoning.' },
+  { t: 'People approve what matters', d: 'Routine containment can run on its own. Actions on critical systems wait for an analyst.' },
+  { t: 'Practice should feel real', d: 'Vault simulations generate a new company and attack every session, so nobody can learn the answers by heart.' },
+]
 
-// Product switcher. Adapted from 21st.dev "Animated Tabs" (educalvolpz): roving tabindex,
-// arrow/Home/End keys, and a spring underline shared via layoutId.
-function ProductTabs() {
-  const [active, setActive] = useState('sentinel');
-  const [preview, setPreview] = useState(null);
-  const tabRefs = useRef({});
-  const stripRef = useRef(null);
+/* Oversized product identifier that bleeds past the container edge */
+function Identifier({ n, name, tone = 'dark', outline = false }) {
   const reduce = useReducedMotion();
-  const product = productBySlug(active);
-  const index = PRODUCTS.findIndex((p) => p.slug === active) + 1;
-
-  useEffect(() => {
-    const el = tabRefs.current[active]; const strip = stripRef.current;
-    if (el && strip && strip.scrollWidth > strip.clientWidth) strip.scrollTo({ left: Math.max(el.offsetLeft - 20, 0), behavior: reduce ? 'auto' : 'smooth' });
-  }, [active, reduce]);
-
-  const onKey = (e, i) => {
-    let n = i;
-    if (e.key === 'ArrowRight') n = (i + 1) % PRODUCTS.length;
-    else if (e.key === 'ArrowLeft') n = (i - 1 + PRODUCTS.length) % PRODUCTS.length;
-    else if (e.key === 'Home') n = 0;
-    else if (e.key === 'End') n = PRODUCTS.length - 1;
-    else return;
-    e.preventDefault();
-    const next = PRODUCTS[n].slug;
-    setActive(next);
-    tabRefs.current[next]?.focus();
-  };
-
-  // Hovering a tab previews that product's schematic behind the interface
-  const stageProduct = productBySlug(preview || active);
-
+  // long names shrink so the whole word fits; short ones stay huge
+  const k = Math.min(1, 7 / name.length);
+  const color = tone === 'dark' ? '#07090D' : '#ECEEF1';
   return (
-    <>
-      <div ref={stripRef} className="relative cs-scroll-x -mx-5 px-5 md:mx-0 md:px-0 border-b border-[#DCE0E7]">
-        <div role="tablist" aria-label="CyberSage products" className="flex min-w-max" onMouseLeave={() => setPreview(null)}>
-          {PRODUCTS.map((p, i) => {
-            const on = active === p.slug;
-            return (
-              <button key={p.slug} ref={(el) => { tabRefs.current[p.slug] = el; }} role="tab" type="button" id={`tab-${p.slug}`}
-                aria-selected={on} aria-controls="product-panel" tabIndex={on ? 0 : -1}
-                onClick={() => setActive(p.slug)} onKeyDown={(e) => onKey(e, i)} onMouseEnter={() => setPreview(p.slug)}
-                className={`group relative text-left mr-8 md:mr-12 pb-4 pt-1 bg-transparent flex items-start gap-3 transition-colors ${on ? 'text-[#0C1324]' : 'text-[#5F6676] hover:text-[#0C1324]'}`}>
-                <ProductMark slug={p.slug} size={26} accent={on ? '#2563EB' : 'currentColor'} className="mt-0.5 shrink-0" />
-                <span>
-                  <span className="block cs-meta">{p.role} / {String(i + 1).padStart(2, '0')}</span>
-                  <span className="block text-[17px] font-medium tracking-[-0.01em]">{p.name}</span>
-                </span>
-                {on && (
-                  <motion.span layoutId="product-tab-underline" aria-hidden="true" className="absolute left-0 right-0 -bottom-px h-[2px] bg-[#0C1324]"
-                    transition={reduce ? { duration: 0 } : { type: 'spring', bounce: 0.05, duration: 0.3 }} />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      <div id="product-panel" role="tabpanel" aria-labelledby={`tab-${active}`}
-        className="pt-12 grid grid-cols-1 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] gap-10 lg:gap-14">
-        <div key={active} className="cs-swap flex flex-col gap-4 lg:pt-1">
-          <div className="cs-meta text-[#5F6676]">{String(index).padStart(2, '0')} / {String(PRODUCTS.length).padStart(2, '0')} · {product.role}</div>
-          <h3 className="m-0 text-[26px] font-medium tracking-[-0.02em]">{product.name}</h3>
-          <p className="m-0 text-[18px] leading-snug text-[#0C1324]">{product.line}</p>
-          <p className="m-0 text-[15px] leading-relaxed text-[#3E4555] max-w-[46ch]">{product.summary}</p>
-          <dl className="m-0 mt-2 border-t border-[#DCE0E7]">
-            {product.caps.map((c) => (
-              <div key={c.t} className="py-2.5 border-b border-[#DCE0E7] flex flex-col gap-0.5">
-                <dt className="text-[14px] font-medium">{c.t}</dt>
-                <dd className="m-0 text-[14px] text-[#5F6676] leading-snug">{c.d}</dd>
-              </div>
-            ))}
-          </dl>
-          <Link to={`/products/${product.slug}`} className="cs-row-link inline-flex items-center gap-2 mt-1 w-fit text-[15px] font-medium text-[#1D4ED8]">
-            <span className="cs-row-title">Read about {product.name}</span>
-            <svg className="cs-btn-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" /></svg>
-          </Link>
-        </div>
-        <ProductStage product={stageProduct}
-          rail={[['System', `${product.name.replace('Sage ', '')} / ${product.role}`], ['Takes in', product.inputs[0]], ['Hands on', product.outputs[0]], ['Interface', 'Simulated']]} caption={product.figure}>
-          <div key={active} className="cs-swap"><ProductVisual product={product} caption={false} /></div>
-        </ProductStage>
-      </div>
-    </>
-  );
-}
-
-function IntelligenceLayer() {
-  const [focus, setFocus] = useState(null);
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] gap-12 lg:gap-16 items-start">
-      <div>
-        <RevealText className={`${H2} text-white`}>One intelligence layer.</RevealText>
-        <p className="mt-5 mb-0 text-[16px] leading-relaxed text-[#AEB6C8] max-w-[44ch]">Every CyberSage product reports into Sage Sentinel, and Sentinel reports into Sage Brain. Brain is where signals from across your organisation become one picture and one decision.</p>
-        <ul className="m-0 mt-8 p-0 list-none border-t border-[#1E2638]" onMouseLeave={() => setFocus(null)}>
-          {PRODUCTS.map((p) => (
-            <li key={p.slug}>
-              <Link to={`/products/${p.slug}`} onMouseEnter={() => setFocus(p.slug)} onFocus={() => setFocus(p.slug)} onBlur={() => setFocus(null)}
-                className={`flex items-center gap-3 py-3 border-b border-[#1E2638] transition-colors ${focus === p.slug ? 'text-white' : 'text-[#AEB6C8]'}`}>
-                <ProductMark slug={p.slug} size={22} accent={focus === p.slug ? '#7FA2FF' : 'currentColor'} />
-                <span className="cs-meta">{p.name}</span>
-                <span className="ml-auto text-[13px] text-[#6F7C98]">{p.role}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <PlatformDiagram focus={focus} />
+    <div className="relative overflow-hidden -mx-6 md:-mx-10 px-6 md:px-10" aria-hidden="true">
+      <span className="block cs-meta mb-3 md:mb-4" style={{ color: tone === 'dark' ? '#5B6575' : '#8B95A5' }}>{n} / 05</span>
+      <motion.div className="t-expanded font-[200] leading-[0.78] tracking-[-0.03em] whitespace-nowrap select-none"
+        style={{ fontSize: `min(${(15.5 * k).toFixed(2)}vw, ${Math.round(218 * k)}px)`, ...(outline ? { color: 'transparent', WebkitTextStroke: `1px ${color}` } : { color }) }}
+        initial={reduce ? false : { x: 40, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true, margin: '-15%' }} transition={{ duration: 1.1, ease: EASE }}>
+        {name}
+      </motion.div>
+      
     </div>
   );
 }
+
+function ChapterText({ slug, tone = 'dark' }) {
+  const p = productBySlug(slug);
+  const muted = tone === 'dark' ? 'text-[#3E4555]' : 'text-[#A9B8D0]';
+  const rule = tone === 'dark' ? 'border-[#07090D]' : 'border-[#ECEEF1]';
+  const line = tone === 'dark' ? 'border-[rgba(7,9,13,0.15)]' : 'border-[rgba(236,238,241,0.14)]';
+  return (
+    <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+      <div className="lg:col-span-5 flex flex-col gap-5">
+        {p.tagline && <p className={`m-0 cs-meta ${tone === 'dark' ? 'text-[#5B6575]' : 'text-[#8B95A5]'}`}>{p.tagline}</p>}
+        <h3 className="m-0 text-[28px] md:text-[34px] leading-[1.08] font-normal tracking-[-0.025em] max-w-[20ch]">{p.line}</h3>
+        <p className={`m-0 text-[16px] leading-relaxed ${muted} max-w-[48ch]`}>{p.desc}</p>
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-2">
+          <Link to={`/products/${p.slug}`} className="cs-row-link inline-flex items-center gap-3 w-fit text-[15px] font-medium">
+            <span className="cs-row-title transition-colors">Read about {p.name}</span>
+            <svg className="cs-btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M1 8h13M9 3l5 5-5 5" /></svg>
+          </Link>
+          {p.url && <a href={p.url} target="_blank" rel="noopener noreferrer" className="cs-link text-[15px]">{p.url.replace('https://', '').replace('www.', '')} ↗</a>}
+        </div>
+      </div>
+      <dl className={`lg:col-span-6 lg:col-start-7 m-0 border-t ${rule} self-start`}>
+        {p.caps.map((c) => (
+          <div key={c.t} className={`grid grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] gap-4 py-4 border-b ${line}`}>
+            <dt className="text-[15px] font-medium">{c.t}</dt>
+            <dd className={`m-0 text-[15px] leading-snug ${muted}`}>{c.d}</dd>
+          </div>
+        ))}
+      </dl>
+    </Reveal>
+  );
+}
+
+const Guides = ({ dark }) => <div className={`cs-guides ${dark ? 'on-dark' : ''}`} aria-hidden="true"><div /></div>;
 
 const LandingPage = () => {
   // Seed from cache immediately so data shows on first paint
   const [testimonials, setTestimonials] = useState(() => readCache('cs_testimonials') || []);
   const [clients, setClients] = useState(() => readCache('cs_clients') || []);
+  const [posts, setPosts] = useState(() => readCache('cs_blogs') || []);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/api/testimonials`)
@@ -178,6 +119,12 @@ const LandingPage = () => {
       .then((data) => { const list = Array.isArray(data) ? data : []; setClients(list); writeCache('cs_clients', list); })
       .catch(() => {});
 
+    // Latest writing for the research section (same endpoint as the blog page)
+    fetch(`${BACKEND_URL}/api/blogs`)
+      .then((res) => res.json())
+      .then((data) => { const list = Array.isArray(data) ? data.slice(0, 3) : []; setPosts(list); writeCache('cs_blogs', list); })
+      .catch(() => {});
+
     // Warm up core team in background so CoreTeamPage loads instantly
     fetch(`${BACKEND_URL}/api/about/team`)
       .then((res) => res.json())
@@ -188,194 +135,216 @@ const LandingPage = () => {
   const [featured, ...moreQuotes] = testimonials;
 
   return (
-    <main className="cs-sans text-[#0C1324]">
-      {/* ── 01 Hero ── */}
-      <section className="cs-paper">
-        <div className={`${WRAP} pt-12 md:pt-16 pb-16 md:pb-24 grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12 lg:gap-14 items-center`}>
-          <div>
-            <div className="cs-meta text-[#5F6676] flex items-center gap-3"><span className="w-1.5 h-1.5 bg-[#2563EB]" aria-hidden="true" />CyberSage / Est. 2024</div>
-            <RevealText as="h1" className="mt-6 mb-0 text-[36px] sm:text-[44px] lg:text-[52px] leading-[1.05] font-medium tracking-[-0.035em] max-w-[15ch]">
-              Security infrastructure for organisations that cannot afford to guess.
-            </RevealText>
-            <Reveal delay={0.1}>
-              <p className="mt-6 mb-0 text-[17px] leading-relaxed text-[#3E4555] max-w-[52ch]">
-                CyberSage builds five products that work as one platform. Sage Sentinel watches your estate and responds to threats. Sage Brain connects what it sees and proposes decisions. Nexus, Sage Education and Sage Vault give your people a secure place to work, run an institution and practise real security.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <MagneticLink to="/contact">Book a demo</MagneticLink>
-                <MagneticLink href="#platform" variant="secondary" arrow={false}>Explore the platform</MagneticLink>
+    <main className="cs-sans">
+      {/* ═══ HERO: statement over the Signal Field ═══ */}
+      <section className="relative s-black tx-grain overflow-hidden">
+        <Guides dark />
+        <div className={`${WRAP} pt-16 md:pt-24`}>
+          <motion.h1 className="m-0 font-light text-[#ECEEF1] text-[44px] sm:text-[64px] lg:text-[88px] xl:text-[104px] leading-[0.98] tracking-[-0.035em] max-w-[16ch]"
+            initial={reduce ? false : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease: EASE }}>
+            Security infrastructure for organisations that cannot afford to guess.
+          </motion.h1>
+        </div>
+        <div className="relative mt-10 md:mt-14 tx-scan">
+          <SignalField lines={32} theme="dark" labels={HERO_LABELS} eventX={0.58} className="h-[300px] md:h-[440px]"
+            ariaLabel="The Signal Field: thirty-two stacked channels, one per layer of the platform, with a disturbance travelling down through them." />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#07090D] to-transparent" />
+        </div>
+        <div className={`${WRAP} relative py-10 md:py-14 grid grid-cols-1 md:grid-cols-12 gap-8 items-end`}>
+          <p className="md:col-span-6 m-0 text-[17px] leading-relaxed text-[#A9B8D0] max-w-[54ch]">
+            CyberSage builds five products that work as one platform. Sentinel watches your estate and responds to threats. Brain connects what it sees and proposes decisions. Nexus, Sage Education and Vault give people a secure place to work, run an institution and practise real security.
+          </p>
+          <div className="md:col-span-3 md:col-start-8"><MagneticLink to="/contact" variant="on-dark">Book a demo</MagneticLink></div>
+          <p className="md:col-span-2 m-0 text-[12px] leading-relaxed text-[#5B6575]">Above: the Signal Field, one line per channel across the platform. Move across it to inspect.</p>
+        </div>
+      </section>
+
+      {/* ═══ STATEMENT + chapter index ═══ */}
+      <section className="relative s-paper tx-dot overflow-hidden">
+        <Guides />
+        <div className={`${WRAP} relative py-20 md:py-32`}>
+          <Reveal>
+            <p className="m-0 t-wide font-[250] text-[40px] sm:text-[60px] lg:text-[84px] leading-[1.0] tracking-[-0.035em] max-w-[18ch]">
+              Five products. One ecosystem.
+            </p>
+          </Reveal>
+          <div className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-10">
+            <p className="md:col-span-4 m-0 text-[16px] leading-relaxed text-[#3E4555]">The platform reads top to bottom: where people work, where institutions run, where skills are built, where threats are caught and where decisions are made. Scroll down the stack.</p>
+            <nav aria-label="Product chapters" className="md:col-span-7 md:col-start-6">
+              <ol className="m-0 p-0 list-none border-t border-[#07090D]">
+                {PRODUCTS.map((p, i) => (
+                  <li key={p.slug}>
+                    <a href={`#ch-${p.slug}`} className="cs-row-link grid grid-cols-[48px_minmax(0,1fr)_auto] md:grid-cols-[56px_minmax(0,1.1fr)_minmax(0,1fr)_auto] gap-4 items-baseline py-4 border-b border-[rgba(7,9,13,0.14)]">
+                      <span className="cs-data text-[#5B6575]">0{i + 1}</span>
+                      <span className="cs-row-title text-[22px] md:text-[26px] font-normal tracking-[-0.02em] transition-colors">{p.name}</span>
+                      <span className="hidden md:block text-[14px] text-[#5B6575]">{p.role}</span>
+                      <svg className="cs-btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M8 1v13M3 9l5 5 5-5" /></svg>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </section>
+
+      {CHAPTERS.map((c, i) => (
+        <section key={c.slug} id={`ch-${c.slug}`} className={`relative overflow-hidden scroll-mt-16 ${c.surface}`}>
+          <Guides dark={c.tone === 'light'} />
+          <div className={`${WRAP} relative pt-6 pb-20 md:pb-28`}>
+            <Identifier n={`0${i + 1}`} name={c.word} tone={c.tone} outline={c.outline} />
+            <Parallax className="relative mt-10 md:mt-14" distance={20}>
+              <div className={c.tone === 'light' ? 'shadow-[0_50px_100px_-50px_rgba(0,0,0,0.9)] ring-1 ring-white/5' : 'shadow-[0_50px_100px_-50px_rgba(7,9,13,0.45)] ring-1 ring-black/5'}>
+                <ProductArt slug={c.slug} />
               </div>
-              <dl className="mt-10 m-0 grid grid-cols-2 gap-6 max-w-[440px] border-t border-[#C5CBD6] pt-4">
-                <div><dt className="cs-meta text-[#5F6676]">Platform</dt><dd className="m-0 mt-1 text-[14px]">5 products, one record</dd></div>
-                <div><dt className="cs-meta text-[#5F6676]">Team credentials</dt><dd className="m-0 mt-1 text-[14px]">CEH, CHFI, MSc Cyber Security</dd></div>
-              </dl>
-            </Reveal>
+            </Parallax>
+            <div className="mt-14 md:mt-20"><ChapterText slug={c.slug} tone={c.tone} /></div>
           </div>
-          <Reveal delay={0.15} y={20}><HeroSystem /></Reveal>
+        </section>
+      ))}
+
+      {/* ═══ The stack, read top to bottom (scroll drives the trace) ═══ */}
+      <section id="platform" className="relative s-black overflow-hidden border-t border-[#151A24] scroll-mt-16">
+        <Guides dark />
+        <div className={`${WRAP} relative py-20 md:py-28`}>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-14">
+            <h2 className="md:col-span-6 m-0 t-wide font-[250] text-[40px] md:text-[60px] leading-[1] tracking-[-0.035em] text-[#ECEEF1]">One ecosystem. Multiple capabilities.</h2>
+            <p className="md:col-span-4 md:col-start-8 m-0 text-[15px] leading-relaxed text-[#A9B8D0] self-end">Workspace, institutions, skills, security operations and intelligence. Each product stands on its own and gets stronger next to the others.</p>
+          </div>
+          <PlatformTrace />
         </div>
       </section>
 
-      {/* ── 02 Products ── */}
-      <section id="platform" className="scroll-mt-20 bg-white border-t border-[#E6E9EF] overflow-hidden">
-        <div className={`${WRAP} pt-10 pb-20 md:pb-28`}>
-          <SectionMarker index={2} total={SECTIONS} label="Products" />
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-4 md:gap-16 mb-12">
-            <RevealText className={H2}>One platform, five products.</RevealText>
-            <p className="m-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[60ch] md:pt-2">Each product stands on its own, and each gets more useful next to the others. Pick one to see how it is used day to day.</p>
-          </div>
-          <ProductTabs />
-        </div>
-      </section>
-
-      {/* ── 03 Intelligence layer + incident (dark) ── */}
-      <section className="relative cs-char text-[#DCE1FB] overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent)]" aria-hidden="true" />
-        <div className={`${WRAP} relative pt-10 pb-20 md:pb-28`}>
-          <SectionMarker index={3} total={SECTIONS} label="Architecture" dark />
-          <div className="mt-12"><IntelligenceLayer /></div>
-        </div>
-        <div className="relative border-t border-[#1A2236]">
-          <VantaNet className="absolute inset-0 opacity-70" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,15,28,0.94)_25%,rgba(10,15,28,0.5)_80%)]" aria-hidden="true" />
-          <div className={`${WRAP} relative py-16 md:py-24`}>
-            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] gap-4 lg:gap-16 mb-12">
-              <RevealText className={`${H2} text-white max-w-[18ch]`}>What happens when something goes wrong at 3am.</RevealText>
-              <p className="m-0 text-[16px] leading-relaxed text-[#AEB6C8] max-w-[58ch] lg:pt-2">A credential phishing case as it moves through the platform. Times are from a representative incident; the products involved are the ones that handle each step.</p>
-            </div>
-            <ol className="m-0 p-0 list-none grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 border-t border-[#2A3247]">
-              {TIMELINE.map((s, i) => (
-                <li key={i} className="relative pt-5 pb-6 md:pr-6 border-b md:border-b-0 border-[#1E2638]">
-                  <span className="absolute -top-[5px] left-0 w-[9px] h-[9px] rotate-45 bg-[#0A0F1C] border border-[#44D8F1]" aria-hidden="true" />
-                  <Reveal delay={i * 0.06} y={8}>
-                    <div className="cs-mono text-[13px] text-white">{s.t}</div>
-                    <div className="mt-1 cs-meta text-[#44D8F1]">{s.who}</div>
-                    <p className="m-0 mt-2 text-[14px] leading-relaxed text-[#C9D0DD]">{s.what}</p>
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 04 Principles ── */}
-      <section className="cs-paper">
-        <div className={`${WRAP} pt-10 pb-20 md:pb-28`}>
-          <SectionMarker index={4} total={SECTIONS} label="Principles" />
-          <div className="mt-12 grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 lg:gap-16">
-            <div>
-              <RevealText className={H2}>How we build security products.</RevealText>
-              <p className="mt-4 mb-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[44ch]">Four rules we hold every release to, written by the people who would be on call if we got them wrong.</p>
-            </div>
-            <dl className="m-0 border-t border-[#0C1324]">
-              {PRINCIPLES.map((p, i) => (
-                <Reveal key={p.t} delay={i * 0.05} className="grid grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-1 sm:gap-8 py-5 border-b border-[#DCE0E7]">
+      {/* ═══ Research and principles ═══ */}
+      <section className="relative s-off tx-dot overflow-hidden">
+        <Guides />
+        <div className={`${WRAP} relative py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-14`}>
+          <div className={posts.length ? 'lg:col-span-5' : 'lg:col-span-12'}>
+            <h2 className="m-0 t-wide font-[250] text-[36px] md:text-[48px] leading-[1.02] tracking-[-0.03em]">How we build.</h2>
+            <dl className={`m-0 mt-10 border-t border-[#07090D] ${posts.length ? '' : 'lg:grid lg:grid-cols-2 lg:gap-x-12'}`}>
+              {PRINCIPLES.map((p) => (
+                <div key={p.t} className="py-5 border-b border-[rgba(7,9,13,0.14)]">
                   <dt className="text-[17px] font-medium tracking-[-0.01em]">{p.t}</dt>
-                  <dd className="m-0 text-[15px] leading-relaxed text-[#3E4555]">{p.d}</dd>
-                </Reveal>
+                  <dd className="m-0 mt-1.5 text-[15px] leading-relaxed text-[#3E4555]">{p.d}</dd>
+                </div>
               ))}
             </dl>
           </div>
-        </div>
-      </section>
-
-      {/* ── 05 Services (from the live site) ── */}
-      <section className="bg-white border-y border-[#E6E9EF]">
-        <div className={`${WRAP} pt-10 pb-20 md:pb-28`}>
-          <SectionMarker index={5} total={SECTIONS} label="Services" />
-          <div className="mt-12 grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 lg:gap-16">
-            <div>
-              <RevealText className={H2}>Services.</RevealText>
-              <p className="mt-4 mb-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[44ch]">Our consultants still take on hands-on engagements: assessments, testing, secure development and training. Many clients start here and later move onto a platform.</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-              {SERVICE_GROUPS.map((g) => (
-                <nav key={g.title} aria-label={g.title} className="flex flex-col">
-                  <Link to={g.to} className="cs-row-link flex items-center justify-between pb-3 mb-1 border-b border-[#0C1324] text-[16px] font-medium">
-                    <span className="cs-row-title transition-colors">{g.title}</span>
-                    <svg className="cs-btn-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" /></svg>
-                  </Link>
-                  {g.items.map((it) => (
-                    <Link key={it.to} to={it.to} className="py-2.5 border-b border-[#E6E9EF] text-[15px] text-[#3E4555] hover:text-[#1D4ED8] transition-colors">{it.name}</Link>
-                  ))}
-                </nav>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 06 Company (from the live site) ── */}
-      <section className="cs-paper">
-        <div className={`${WRAP} pt-10 pb-20 md:pb-28`}>
-          <SectionMarker index={6} total={SECTIONS} label="Company" />
-          <div className="mt-12 grid grid-cols-1 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] gap-10 lg:gap-16 items-center">
-            <Parallax className="relative overflow-hidden rounded-[3px]" distance={18}>
-              <img alt="CyberSage server room" loading="lazy" className="w-full aspect-[4/3] object-cover grayscale scale-[1.08]"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuChfg-CdjjDpS1V3Svxlir1JeTLMiHW3_hSB04KZupS0bfaHH6j2JbNo6XBqaGQHUBqVJXMxF6HZb_RRAbRntT0LSogZyyQdiDG22jTcr3wHD1Byq5cDcZxAJrwMZ4YQ9fNulESpaFM4210qwWz199Zee8_4IrykD95rJh82mqsl7n5tQICal_O0s_icHMHHvwgip69B-RuotebJYrQDXblW_QnPd7CIzsvYwiWAAXGWtSYSfjvhCNDjUjfNETILm6bM5kBWoMuNuY" />
-            </Parallax>
-            <div className="flex flex-col gap-5 max-w-[56ch]">
-              <RevealText className={H2}>Founded by people who work incidents.</RevealText>
-              <p className="m-0 text-[16px] leading-relaxed text-[#3E4555]">CyberSage was started by security researchers, investigators and developers who spent years responding to breaches with tools that did not talk to each other. We set out to give organisations back control of their own security, without needing a twenty-person SOC to get it.</p>
-              <p className="m-0 text-[16px] leading-relaxed text-[#3E4555]">The same team still runs client engagements and teaches in Vault, which is how the products stay honest about what works.</p>
-              <div className="flex flex-wrap gap-x-6 gap-y-3 pt-1">
-                <MagneticLink to="/core-team" variant="secondary">Meet the core team</MagneticLink>
-                <Link to="/about" className="cs-link self-center text-[15px] font-medium">About CyberSage</Link>
+          {posts.length > 0 && (
+            <div className="lg:col-span-6 lg:col-start-7">
+              <div className="flex items-baseline justify-between">
+                <h2 className="m-0 t-wide font-[250] text-[36px] md:text-[48px] leading-[1.02] tracking-[-0.03em]">Research.</h2>
+                <Link to="/blog" className="cs-link text-[14px]">All writing</Link>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Clients and partners (live data) ── */}
-      {clients.length > 0 && (
-        <section className="bg-white border-y border-[#E6E9EF]">
-          <div className={`${WRAP} py-14 md:py-16`}>
-            <h2 className="m-0 mb-8 cs-meta text-[#5F6676]">Clients and partners</h2>
-            <ul className="m-0 p-0 list-none grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-l border-[#E6E9EF]">
-              {clients.map((client, idx) => (
-                <li key={idx} className="h-24 border-r border-b border-[#E6E9EF] flex items-center justify-center p-5">
-                  {client.logo
-                    ? <img src={client.logo} alt={client.name} className="max-w-full max-h-full object-contain grayscale opacity-80" loading="lazy" />
-                    : <span className="text-[15px] font-medium text-center">{client.name}</span>}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
-
-      {/* ── Testimonials (live data) ── */}
-      {featured && (
-        <section className={`${WRAP} py-16 md:py-24 grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] gap-12 lg:gap-16`}>
-          <figure className="m-0">
-            <blockquote className="m-0 text-[24px] md:text-[30px] leading-snug font-medium tracking-[-0.02em]">&ldquo;{featured.content}&rdquo;</blockquote>
-            <figcaption className="mt-6 text-[15px]"><span className="font-medium">{featured.name}</span><span className="text-[#5F6676]">{featured.role ? `, ${featured.role}` : ''}{featured.company ? `, ${featured.company}` : ''}</span></figcaption>
-          </figure>
-          {moreQuotes.length > 0 && (
-            <div className="border-t border-[#0C1324]">
-              {moreQuotes.slice(0, 4).map((t, i) => (
-                <figure key={i} className="m-0 py-5 border-b border-[#DCE0E7]">
-                  <blockquote className="m-0 text-[15px] leading-relaxed text-[#3E4555]">&ldquo;{t.content}&rdquo;</blockquote>
-                  <figcaption className="mt-2 text-[13px]"><span className="font-medium">{t.name}</span><span className="text-[#5F6676]">{t.company ? `, ${t.company}` : ''}</span></figcaption>
-                </figure>
-              ))}
+              <ul className="m-0 mt-10 p-0 list-none border-t border-[#07090D]">
+                {posts.map((post) => (
+                  <li key={post.slug}>
+                    <Link to={`/blog/${post.slug}`} className="cs-row-link block py-6 border-b border-[rgba(7,9,13,0.14)]">
+                      {post.category && <div className="cs-meta text-[#5B6575]">{post.category}</div>}
+                      <div className="cs-row-title mt-2 text-[22px] leading-snug tracking-[-0.015em] transition-colors">{post.title}</div>
+                      {post.excerpt && <p className="m-0 mt-2 text-[15px] leading-relaxed text-[#3E4555] line-clamp-2">{post.excerpt}</p>}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
-        </section>
-      )}
+        </div>
+      </section>
 
-      {/* ── Contact ── */}
-      <section className="bg-white border-t border-[#E6E9EF] cs-grid-faint">
-        <div className={`${WRAP} py-16 md:py-24 grid grid-cols-1 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] gap-8 md:gap-16 items-end`}>
-          <div>
-            <div className="cs-meta text-[#5F6676]">Next step</div>
-            <RevealText className={`${H2} mt-4`}>Talk to the people who build it.</RevealText>
-            <p className="mt-4 mb-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[56ch]">A 30-minute call with an engineer, not a sales script. Tell us what you are protecting and we will show you the parts of the platform that matter for it.</p>
+      {/* ═══ Company ═══ */}
+      <section className="relative s-paper overflow-hidden">
+        <Guides />
+        <div className={`${WRAP} relative py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end`}>
+          <Parallax className="lg:col-span-7 relative overflow-hidden" distance={30}>
+            <div className="relative tx-grain">
+              <img alt="A security engineering workspace at dusk" loading="lazy" className="w-full aspect-[16/10] object-cover saturate-[.55] contrast-[1.05] scale-110" src="/brand/photo/studio.webp" />
+              <div className="absolute inset-0 bg-[#0B1220] mix-blend-multiply opacity-25" />
+            </div>
+          </Parallax>
+          <div className="lg:col-span-4 lg:col-start-9 flex flex-col gap-5">
+            <h2 className="m-0 t-wide font-[250] text-[36px] md:text-[44px] leading-[1.02] tracking-[-0.03em]">Intelligence. Simulation. Resilience.</h2>
+            <p className="m-0 text-[16px] leading-relaxed text-[#3E4555]">CyberSage is a cybersecurity technology company building intelligent platforms for training, detection and collaboration. Alongside the products, our consultants take on hands-on security, development and training engagements.</p>
+            <div className="flex flex-wrap gap-x-6 gap-y-3 pt-2">
+              <MagneticLink to="/core-team" variant="secondary">Meet the core team</MagneticLink>
+              <Link to="/about" className="cs-link self-center text-[15px]">About CyberSage</Link>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-3 md:justify-end">
-            <MagneticLink to="/contact">Book a demo</MagneticLink>
-            <MagneticLink to="/security-services" variant="secondary" arrow={false}>Browse services</MagneticLink>
+        </div>
+
+        {/* clients and testimonials (live data) */}
+        {(clients.length > 0 || featured) && (
+          <div className={`${WRAP} relative pb-20 md:pb-28`}>
+            {clients.length > 0 && (
+              <ul className="m-0 p-0 list-none grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-l border-[rgba(7,9,13,0.14)]">
+                {clients.map((client, idx) => (
+                  <li key={idx} className="h-24 border-r border-b border-[rgba(7,9,13,0.14)] flex items-center justify-center p-5">
+                    {client.logo
+                      ? <img src={client.logo} alt={client.name} className="max-w-full max-h-full object-contain grayscale opacity-75" loading="lazy" />
+                      : <span className="text-[15px] font-medium text-center">{client.name}</span>}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {featured && (
+              <div className="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <figure className="m-0 lg:col-span-7">
+                  <blockquote className="m-0 t-wide font-[250] text-[26px] md:text-[34px] leading-[1.2] tracking-[-0.02em]">&ldquo;{featured.content}&rdquo;</blockquote>
+                  <figcaption className="mt-6 text-[15px]"><span className="font-medium">{featured.name}</span><span className="text-[#5B6575]">{featured.role ? `, ${featured.role}` : ''}{featured.company ? `, ${featured.company}` : ''}</span></figcaption>
+                </figure>
+                {moreQuotes.length > 0 && (
+                  <div className="lg:col-span-4 lg:col-start-9 border-t border-[#07090D]">
+                    {moreQuotes.slice(0, 3).map((t, i) => (
+                      <figure key={i} className="m-0 py-5 border-b border-[rgba(7,9,13,0.14)]">
+                        <blockquote className="m-0 text-[15px] leading-relaxed text-[#3E4555]">&ldquo;{t.content}&rdquo;</blockquote>
+                        <figcaption className="mt-2 text-[13px]"><span className="font-medium">{t.name}</span><span className="text-[#5B6575]">{t.company ? `, ${t.company}` : ''}</span></figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+
+      {/* ═══ Services (from the live site) ═══ */}
+      <section className="relative bg-white overflow-hidden border-t border-[rgba(7,9,13,0.08)]">
+        <Guides />
+        <div className={`${WRAP} relative py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-12`}>
+          <div className="lg:col-span-4">
+            <h2 className="m-0 t-wide font-[250] text-[36px] md:text-[48px] leading-[1.02] tracking-[-0.03em]">Services.</h2>
+            <p className="mt-5 mb-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[40ch]">Our consultants still take on hands-on engagements: assessments, testing, secure development and training.</p>
+          </div>
+          <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-10">
+            {SERVICE_GROUPS.map((g) => (
+              <nav key={g.title} aria-label={g.title} className="flex flex-col">
+                <Link to={g.to} className="cs-row-link flex items-center justify-between pb-3 mb-1 border-b border-[#07090D] text-[17px] font-medium">
+                  <span className="cs-row-title transition-colors">{g.title}</span>
+                  <svg className="cs-btn-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M1 8h13M9 3l5 5-5 5" /></svg>
+                </Link>
+                {g.items.map((it) => (
+                  <Link key={it.to} to={it.to} className="py-2.5 border-b border-[rgba(7,9,13,0.1)] text-[15px] text-[#3E4555] hover:text-[#2563EB] transition-colors">{it.name}</Link>
+                ))}
+              </nav>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ Contact ═══ */}
+      <section className="relative s-black tx-grain overflow-hidden">
+        <Guides dark />
+        <div className={`${WRAP} relative py-24 md:py-36`}>
+          <Reveal>
+            <h2 className="m-0 t-expanded font-[200] text-[48px] sm:text-[80px] lg:text-[120px] leading-[0.92] tracking-[-0.04em] text-[#ECEEF1]">Talk to an engineer.</h2>
+          </Reveal>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+            <p className="md:col-span-5 m-0 text-[16px] leading-relaxed text-[#A9B8D0]">Tell us what you are protecting and we will show you the parts of the platform that matter for it.</p>
+            <div className="md:col-span-4 md:col-start-8 flex flex-wrap gap-3">
+              <MagneticLink to="/contact" variant="primary">Book a demo</MagneticLink>
+              <MagneticLink to="/security-services" variant="ghost-dark" arrow={false}>Browse services</MagneticLink>
+            </div>
           </div>
         </div>
       </section>
