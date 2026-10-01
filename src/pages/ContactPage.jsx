@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Mail, MessageSquare } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
+import { PageHero, Guides } from "../components/site/ServiceTemplates";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const WRAP = "max-w-[1400px] mx-auto px-6 md:px-10";
+const FIELD = "w-full bg-white border border-[rgba(7,9,13,0.25)] rounded-[1px] px-4 py-3 text-[15px] text-[#07090D] placeholder:text-[#8B95A5] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]";
+const LABEL = "block text-[14px] font-medium mb-2";
+
+const gmail = (to) => `https://mail.google.com/mail/?view=cm&fs=1&to=${to}`;
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +17,7 @@ const ContactPage = () => {
     enquiry: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState(null); // { ok: boolean, text: string }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,6 +27,7 @@ const ContactPage = () => {
   const submitContactForm = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setStatus(null);
     try {
       const res = await fetch(`${BACKEND_URL}/api/contact`, {
         method: "POST",
@@ -30,166 +35,101 @@ const ContactPage = () => {
         body: JSON.stringify(formData),
       });
       if (res.ok) {
-        alert("✅ Enquiry sent!");
+        setStatus({ ok: true, text: "Thank you. Your enquiry has been sent and the team will reply by email." });
         setFormData({ firstName: "", lastName: "", email: "", phone: "", enquiry: "" });
       } else {
-        alert("❌ Failed to send enquiry, missing fields or server error");
+        setStatus({ ok: false, text: "We could not send your enquiry. Please check the required fields and try again." });
       }
     } catch {
-      alert("❌ Failed to send enquiry");
+      setStatus({ ok: false, text: "We could not send your enquiry. Please try again, or email us directly." });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
-      {/* Header */}
-      <section className="relative py-20 px-4 md:py-32">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent mb-6">
-            Get in Touch
-          </h1>
-          <p className="text-xl text-slate-400">Have questions? Our team is here to help.</p>
-        </div>
-      </section>
+    <main className="cs-sans text-[#07090D]">
+      <PageHero
+        crumbs={[{ label: "CyberSage", to: "/" }, { label: "Contact" }]}
+        word="CONTACT"
+        title="Talk to the team."
+        intro="Questions about a product, a service or a training course? Send us a message or email us directly."
+      />
 
-      {/* Contact Section */}
-      <section className="relative py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* Email + Business Enquiries */}
-            <div className="space-y-8">
-              <Card className="bg-slate-900/60 border-slate-700">
-                <CardContent className="pt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <Mail className="w-6 h-6 text-amber-400" />
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-white mb-2 sm:mb-0">Email</h3>
-                    <Button
-                      className="border-gray-700 text-white hover:bg-gray-800 w-full sm:w-auto flex items-center justify-center gap-2"
-                      onClick={() =>
-                        window.open(
-                          "https://mail.google.com/mail/?view=cm&fs=1&to=cybersageuk@gmail.com",
-                          "_blank"
-                        )
-                      }
-                    >
-                      <MessageSquare className="w-4 h-4" />
-                      cybersageuk@gmail.com
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Business Enquiries Card */}
-              <Card className="bg-slate-900/60 border-slate-700">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-white text-base font-semibold uppercase tracking-wider text-slate-300">
-                    Business Enquiries
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-2">
-                  <div className="flex items-center gap-5">
-                    <img
-                      src="/manish.jpg"
-                      alt="Manish — Business Manager"
-                      className="w-24 h-24 rounded-xl object-cover object-top border border-slate-700 shrink-0"
-                      onError={(e) => { e.currentTarget.style.display = "none"; }}
-                    />
-                    <div className="min-w-0">
-                      <h3 className="text-xl font-bold text-white leading-tight">Mr Manish</h3>
-                      <p className="text-sm text-cyan-400 font-medium mt-0.5">Business Manager</p>
-                      <p className="text-slate-400 text-sm mt-2">Business and partnership enquiries</p>
-                      <p className="text-slate-300 text-sm mt-2 font-medium">
-                        <a href="tel:+918797670011" className="hover:text-white transition-colors">+91 8797670011</a>
-                      </p>
-                    </div>
-                  </div>
-                  <Button
-                    className="mt-5 border-gray-700 text-white hover:bg-gray-800 w-full sm:w-auto flex items-center justify-center gap-2"
-                    onClick={() =>
-                      window.open(
-                        "https://mail.google.com/mail/?view=cm&fs=1&to=mkumar@cybersage.uk",
-                        "_blank"
-                      )
-                    }
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    mkumar@cybersage.uk
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Contact Form */}
+      <section className="relative s-paper overflow-hidden">
+        <Guides />
+        <div className={`${WRAP} relative py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-12`}>
+          {/* Direct contacts */}
+          <div className="lg:col-span-4 flex flex-col gap-10">
             <div>
-              <Card className="bg-slate-900/60 border-slate-700">
-                <CardHeader>
-                  <CardTitle className="text-white">Send Message</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={submitContactForm} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        required
-                        placeholder="First Name"
-                        className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded text-white"
-                      />
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        required
-                        placeholder="Last Name"
-                        className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded text-white"
-                      />
-                    </div>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      placeholder="Email"
-                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded text-white"
-                    />
-                    <input
-                      type="text"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="Phone (optional)"
-                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded text-white"
-                    />
-                    <textarea
-                      name="enquiry"
-                      value={formData.enquiry}
-                      onChange={handleChange}
-                      required
-                      rows="5"
-                      placeholder="Your enquiry..."
-                      className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded text-white resize-none"
-                    />
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-cyan-600 hover:bg-cyan-700 text-white"
-                    >
-                      {isSubmitting ? "Sending..." : "Send"}
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
+              <h2 className="m-0 t-wide font-[250] text-[28px] md:text-[36px] leading-[1.05] tracking-[-0.03em]">Email</h2>
+              <dl className="m-0 mt-6 border-t border-[#07090D]">
+                <div className="py-4 border-b border-[rgba(7,9,13,0.14)]">
+                  <dt className="cs-meta text-[#5B6575]">General enquiries</dt>
+                  <dd className="m-0 mt-1.5"><a href={gmail("cybersageuk@gmail.com")} target="_blank" rel="noopener noreferrer" className="cs-link text-[17px]">cybersageuk@gmail.com</a></dd>
+                </div>
+              </dl>
             </div>
+
+            <div>
+              <h2 className="m-0 t-wide font-[250] text-[28px] md:text-[36px] leading-[1.05] tracking-[-0.03em]">Business enquiries</h2>
+              <div className="mt-6 pt-6 border-t border-[#07090D] flex items-start gap-5">
+                <img
+                  src="/manish.jpg"
+                  alt="Manish, Business Manager"
+                  className="w-24 h-28 object-cover object-top shrink-0 bg-[#E6E9ED]"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
+                <div className="min-w-0">
+                  <div className="text-[18px] font-medium">Mr Manish</div>
+                  <div className="text-[14px] text-[#5B6575]">Business Manager</div>
+                  <p className="m-0 mt-2 text-[14px] text-[#3E4555]">Business and partnership enquiries</p>
+                  <div className="mt-3 flex flex-col gap-1.5 text-[15px]">
+                    <a href="tel:+918797670011" className="cs-link w-fit">+91 8797670011</a>
+                    <a href={gmail("mkumar@cybersage.uk")} target="_blank" rel="noopener noreferrer" className="cs-link w-fit">mkumar@cybersage.uk</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Form */}
+          <div className="lg:col-span-7 lg:col-start-6">
+            <h2 className="m-0 t-wide font-[250] text-[28px] md:text-[36px] leading-[1.05] tracking-[-0.03em]">Send a message</h2>
+            <form onSubmit={submitContactForm} className="mt-6 pt-6 border-t border-[#07090D] grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label htmlFor="c-first" className={LABEL}>First name</label>
+                <input id="c-first" type="text" name="firstName" value={formData.firstName} onChange={handleChange} required autoComplete="given-name" className={FIELD} />
+              </div>
+              <div>
+                <label htmlFor="c-last" className={LABEL}>Last name</label>
+                <input id="c-last" type="text" name="lastName" value={formData.lastName} onChange={handleChange} required autoComplete="family-name" className={FIELD} />
+              </div>
+              <div>
+                <label htmlFor="c-email" className={LABEL}>Email</label>
+                <input id="c-email" type="email" name="email" value={formData.email} onChange={handleChange} required autoComplete="email" className={FIELD} />
+              </div>
+              <div>
+                <label htmlFor="c-phone" className={LABEL}>Phone <span className="text-[#5B6575] font-normal">(optional)</span></label>
+                <input id="c-phone" type="text" name="phone" value={formData.phone} onChange={handleChange} autoComplete="tel" className={FIELD} />
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="c-enquiry" className={LABEL}>Your enquiry</label>
+                <textarea id="c-enquiry" name="enquiry" value={formData.enquiry} onChange={handleChange} required rows="6" className={`${FIELD} resize-y`} />
+              </div>
+              <div className="sm:col-span-2 flex flex-col sm:flex-row sm:items-center gap-4">
+                <button type="submit" disabled={isSubmitting} className="cs-btn cs-btn-primary w-full sm:w-auto justify-center disabled:opacity-60">
+                  {isSubmitting ? "Sending…" : "Send enquiry"}
+                </button>
+                <p role="status" aria-live="polite" className={`m-0 text-[14px] ${status ? (status.ok ? "border-l-2 border-[#2563EB] pl-3 text-[#07090D]" : "text-[#C93C40]") : ""}`}>
+                  {status ? status.text : ""}
+                </p>
+              </div>
+            </form>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

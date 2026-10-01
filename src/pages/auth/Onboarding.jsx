@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Code, Server, Search, CheckCircle2, Loader2 } from 'lucide-react';
+import AuthShell from '../../components/site/AuthShell';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Onboarding = () => {
@@ -90,81 +90,35 @@ const Onboarding = () => {
     }
   };
 
-  const iconMap = {
-    1: Shield,
-    2: Search,
-    3: Server,
-    4: Code,
-  };
-
   return (
-    <div className="min-h-screen bg-[#06080A] flex flex-col justify-center items-center p-4 py-12">
-      <div className="w-full max-w-3xl">
-        {/* Header */}
-        <div className="mb-10 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-3">
-            Welcome, {userName}!
-          </h1>
-          <p className="text-slate-400 text-lg">
-            Let's customize your CyberSage experience. Select the services you want to activate.
-          </p>
-        </div>
-
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          {availableServices.map((service) => {
-            const isSelected = selected.includes(service._id);
-            const Icon = iconMap[service.serviceId] || Shield;
-
-            return (
-              <div
-                key={service._id}
-                onClick={() => toggleService(service._id)}
-                className={`relative p-6 rounded-2xl border cursor-pointer transition-all duration-200 ${
-                  isSelected
-                    ? 'bg-blue-600/10 border-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.15)]'
-                    : 'bg-[#13192B] border-[#2A3441] hover:border-slate-500'
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`p-3 rounded-xl ${isSelected ? 'bg-blue-500/20 text-blue-400' : 'bg-slate-800 text-slate-400'}`}>
-                    <Icon className="w-6 h-6" />
-                  </div>
-
-                  <div className="flex-1">
-                    <h3 className={`text-lg font-bold mb-1 ${isSelected ? 'text-white' : 'text-slate-200'}`}>
-                      {service.name}
-                    </h3>
-                    <p className="text-sm text-slate-400">{service.description}</p>
-                  </div>
-                </div>
-
-                {isSelected && (
-                  <div className="absolute top-4 right-4 text-blue-500">
-                    <CheckCircle2 className="w-6 h-6 fill-blue-500/20" />
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between border-t border-[#1C212E] pt-6">
-          <p className="text-slate-400 text-sm">
-            You have selected <span className="font-bold text-white">{selected.length}</span> services.
-          </p>
-
-          <button
-            onClick={handleCreateAccount}
-            disabled={selected.length === 0 || isLoading}
-            className="w-48 h-12 flex justify-center items-center bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all shadow-lg hover:shadow-blue-500/25"
-          >
-            {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Create Account'}
-          </button>
-        </div>
+    <AuthShell wide word="SERVICES" title={`Welcome, ${userName}.`} intro="Choose the services you want to activate. You can change this later.">
+      <h2 className="m-0 t-wide font-[250] text-[30px] leading-[1.05] tracking-[-0.03em]">Select services</h2>
+      <ul className="m-0 mt-8 p-0 list-none border-t border-[#07090D]">
+        {availableServices.map((service) => {
+          const isSelected = selected.includes(service._id);
+          return (
+            <li key={service._id}>
+              <button type="button" role="checkbox" aria-checked={isSelected} onClick={() => toggleService(service._id)}
+                className={`w-full grid grid-cols-[28px_minmax(0,1fr)] gap-4 items-start text-left py-5 px-1 border-b border-[rgba(7,9,13,0.14)] bg-transparent transition-colors ${isSelected ? 'bg-[#EEF3FE]' : 'hover:bg-white'}`}>
+                <span aria-hidden="true" className={`mt-0.5 w-5 h-5 border flex items-center justify-center ${isSelected ? 'bg-[#2563EB] border-[#2563EB]' : 'border-[rgba(7,9,13,0.35)] bg-white'}`}>
+                  {isSelected && <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2.5 6.2l2.2 2.2 4.8-5" fill="none" stroke="#fff" strokeWidth="1.8" /></svg>}
+                </span>
+                <span>
+                  <span className="block text-[17px] font-medium">{service.name}</span>
+                  {service.description && <span className="block mt-1 text-[14px] leading-relaxed text-[#3E4555]">{service.description}</span>}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      <div className="mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <p className="m-0 text-[15px] text-[#3E4555]"><span className="font-medium text-[#07090D]">{selected.length}</span> selected</p>
+        <button type="button" onClick={handleCreateAccount} disabled={selected.length === 0 || isLoading} className="cs-btn cs-btn-primary justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+          {isLoading ? 'Creating account…' : 'Create account'}
+        </button>
       </div>
-    </div>
+    </AuthShell>
   );
 };
 

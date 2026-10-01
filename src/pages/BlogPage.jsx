@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
-import { Calendar, User, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { PageHero, Guides } from '../components/site/ServiceTemplates';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
 
 const BlogPage = () => {
-  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +26,7 @@ const BlogPage = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('en-GB', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -37,100 +34,54 @@ const BlogPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-      {/* Hero */}
-      <div className="relative py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/30 mb-6">
-            <span className="text-sm text-amber-300 font-medium">CYBERSAGE BLOG</span>
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Latest Insights &amp; Updates
-          </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Stay informed with the latest cybersecurity news, development tips, and industry insights
-          </p>
-        </div>
-      </div>
+    <main className="cs-sans text-[#07090D]">
+      <PageHero
+        crumbs={[{ label: 'CyberSage', to: '/' }, { label: 'Blog' }]}
+        word="RESEARCH"
+        title="Research, guides and company news."
+        intro="Writing from the CyberSage team on security, development and the products we build."
+      />
 
-      {/* Posts grid */}
-      <div className="max-w-7xl mx-auto px-4 pb-20">
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-slate-900/60 border border-slate-700 rounded-lg overflow-hidden animate-pulse">
-                <div className="aspect-video bg-slate-800" />
-                <div className="p-6 space-y-3">
-                  <div className="h-4 bg-slate-700 rounded w-1/4" />
-                  <div className="h-5 bg-slate-700 rounded w-3/4" />
-                  <div className="h-4 bg-slate-700 rounded w-full" />
-                  <div className="h-4 bg-slate-700 rounded w-2/3" />
+      <section className="relative s-paper overflow-hidden">
+        <Guides />
+        <div className={`${WRAP} relative py-16 md:py-20`}>
+          {loading ? (
+            <div aria-busy="true" aria-label="Loading posts" className="border-t border-[#07090D]">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="py-8 border-b border-[rgba(7,9,13,0.14)] grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)_260px] gap-6">
+                  <div className="h-3 bg-[#E6E9ED] w-24" /><div className="space-y-3"><div className="h-5 bg-[#E6E9ED] w-3/4" /><div className="h-4 bg-[#E6E9ED] w-full" /></div><div className="hidden md:block aspect-[16/10] bg-[#E6E9ED]" />
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : posts.length === 0 ? (
-          <Card className="bg-slate-900/50 border-slate-700">
-            <CardContent className="py-20 text-center">
-              <p className="text-slate-400 text-lg">No blog posts yet. Check back soon!</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
-              <Card
-                key={post.id || post._id}
-                className="bg-slate-900/60 border-slate-700 hover:border-amber-500/50 transition-all duration-300 cursor-pointer group"
-                onClick={() => navigate(`/blog/${post.slug}`)}
-              >
-                {post.featured_image && (
-                  <div className="aspect-video overflow-hidden">
-                    <img
-                      src={post.featured_image}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                )}
-                <CardHeader>
-                  <div className="flex items-center gap-2 mb-3 flex-wrap">
-                    <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
-                      {post.category}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-xl text-white group-hover:text-amber-400 transition-colors">
-                    {post.title}
-                  </CardTitle>
-                  <CardDescription className="text-slate-400 line-clamp-2">
-                    {post.excerpt}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col sm:flex-row justify-between text-sm text-slate-500 gap-2">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      <span>{post.author}</span>
+              ))}
+            </div>
+          ) : posts.length === 0 ? (
+            <p className="m-0 py-10 border-t border-[#07090D] text-[16px] text-[#3E4555]">No posts have been published yet. Check back soon.</p>
+          ) : (
+            <ul className="m-0 p-0 list-none border-t border-[#07090D]">
+              {posts.map((post) => (
+                <li key={post.id || post._id}>
+                  <Link to={`/blog/${post.slug}`} className="cs-row-link grid grid-cols-1 md:grid-cols-[200px_minmax(0,1fr)_280px] gap-x-8 gap-y-3 py-8 border-b border-[rgba(7,9,13,0.14)]">
+                    <div className="flex md:flex-col gap-x-4 gap-y-1.5">
+                      {post.category && <span className="cs-meta text-[#2563EB]">{post.category}</span>}
+                      {post.created_at && <span className="cs-meta text-[#5B6575]">{formatDate(post.created_at)}</span>}
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      <span>{formatDate(post.created_at)}</span>
+                    <div className="min-w-0">
+                      <h2 className="cs-row-title m-0 text-[24px] md:text-[28px] leading-[1.15] font-normal tracking-[-0.02em] transition-colors">{post.title}</h2>
+                      {post.excerpt && <p className="m-0 mt-3 text-[16px] leading-relaxed text-[#3E4555] line-clamp-3">{post.excerpt}</p>}
+                      {post.author && <p className="m-0 mt-4 text-[14px] text-[#5B6575]">By {post.author}</p>}
                     </div>
-                  </div>
-                  <div className="mt-4">
-                    <Button
-                      variant="ghost"
-                      className="w-full text-amber-400 hover:bg-amber-500/10 flex justify-center items-center"
-                    >
-                      Read More <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+                    {post.featured_image && (
+                      <div className="aspect-[16/10] overflow-hidden bg-[#E6E9ED] order-first md:order-none">
+                        <img src={post.featured_image} alt="" loading="lazy" className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+    </main>
   );
 };
 

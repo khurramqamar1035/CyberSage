@@ -283,7 +283,7 @@ const LandingPage = () => {
       </section>
 
       {/* ═══ Services (from the live site) ═══ */}
-      <section className="relative bg-white overflow-hidden border-t border-[rgba(7,9,13,0.08)]">
+      <section id="services" className="relative bg-white overflow-hidden scroll-mt-16 border-t border-[rgba(7,9,13,0.08)]">
         <Guides />
         <div className={`${WRAP} relative py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-12`}>
           <div className="lg:col-span-4">

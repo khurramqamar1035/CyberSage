@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Card, CardContent } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
-import { Calendar, User, ArrowLeft } from 'lucide-react';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Guides } from '../components/site/ServiceTemplates';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
 
 const BlogDetailPage = () => {
-  const navigate = useNavigate();
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -32,101 +29,88 @@ const BlogDetailPage = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('en-GB', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block w-8 h-8 border-4 border-amber-400 border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 mt-4">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  const crumbs = (
+    <nav aria-label="Breadcrumb" className="cs-meta text-[#5B6575] flex flex-wrap items-center gap-2.5">
+      <Link to="/" className="hover:text-[#ECEEF1] transition-colors">CyberSage</Link><span aria-hidden="true">/</span>
+      <Link to="/blog" className="hover:text-[#ECEEF1] transition-colors">Blog</Link>
+    </nav>
+  );
 
-  if (!post) {
+  if (loading || !post) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-4 text-center">
-        <div>
-          <p className="text-slate-400 text-lg mb-4">Blog post not found</p>
-          <Button onClick={() => navigate('/blog')} className="bg-amber-500 hover:bg-amber-600">
-            Back to Blog
-          </Button>
-        </div>
-      </div>
+      <main className="cs-sans">
+        <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1] min-h-[60vh]">
+          <Guides dark />
+          <div className={`${WRAP} relative pt-10 md:pt-14 pb-20`}>
+            {crumbs}
+            {loading ? (
+              <div aria-busy="true" aria-label="Loading post" className="mt-12 max-w-[760px] space-y-4">
+                <div className="h-3 bg-[#1A1F2A] w-32" /><div className="h-10 bg-[#1A1F2A] w-full" /><div className="h-10 bg-[#1A1F2A] w-2/3" />
+              </div>
+            ) : (
+              <div className="mt-12">
+                <h1 className="m-0 t-wide font-[250] text-[34px] md:text-[48px] leading-[1.05] tracking-[-0.035em]">Post not found.</h1>
+                <p className="m-0 mt-4 text-[16px] text-[#A9B8D0]">It may have been moved or removed.</p>
+                <Link to="/blog" className="cs-btn cs-btn-on-dark mt-8">Back to the blog</Link>
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-      {/* Back button */}
-      <div className="max-w-4xl mx-auto px-4 pt-6">
-        <Button
-          onClick={() => navigate('/blog')}
-          variant="ghost"
-          className="text-slate-400 hover:text-white flex items-center gap-2"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Blog
-        </Button>
-      </div>
+    <main className="cs-sans text-[#07090D]">
+      <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">
+        <Guides dark />
+        <div className={`${WRAP} relative pt-10 md:pt-14 pb-14 md:pb-20`}>
+          {crumbs}
+          <div className="mt-12 max-w-[920px]">
+            {post.category && <div className="cs-meta text-[#A9B8D0]">{post.category}</div>}
+            <h1 className="m-0 mt-4 t-wide font-[250] text-[34px] sm:text-[46px] lg:text-[58px] leading-[1.04] tracking-[-0.035em]">{post.title}</h1>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-[15px] text-[#A9B8D0]">
+              {post.author && <span>By {post.author}</span>}
+              {post.created_at && <time dateTime={post.created_at}>{formatDate(post.created_at)}</time>}
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 pb-20">
-        <Card className="bg-slate-900/50 border-slate-700">
+      <article className="relative s-paper overflow-hidden">
+        <Guides />
+        <div className={`${WRAP} relative py-14 md:py-20`}>
           {post.featured_image && (
-            <div className="aspect-video w-full overflow-hidden rounded-t-lg">
-              <img
-                src={post.featured_image}
-                alt={post.title}
-                className="w-full h-full object-cover"
-              />
+            <div className="max-w-[1100px] aspect-[16/9] overflow-hidden bg-[#E6E9ED] -mt-2 mb-12 md:mb-16">
+              <img src={post.featured_image} alt="" className="w-full h-full object-cover" />
+            </div>
+          )}
+          <div className="max-w-[68ch] text-[17px] leading-[1.75] text-[#1F2430] whitespace-pre-wrap">
+            {post.content}
+          </div>
+
+          {post.tags && post.tags.length > 0 && (
+            <div className="max-w-[68ch] mt-12 pt-6 border-t border-[#07090D] flex flex-wrap gap-x-5 gap-y-2">
+              {post.tags.map((tag, index) => <span key={index} className="cs-meta text-[#5B6575]">#{tag}</span>)}
             </div>
           )}
 
-          <CardContent className="pt-8">
-            <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 mb-4">
-              {post.category}
-            </Badge>
-
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-              {post.title}
-            </h1>
-
-            <div className="flex flex-col sm:flex-row flex-wrap gap-4 text-slate-400 mb-8 pb-8 border-b border-slate-700">
-              <div className="flex items-center gap-2">
-                <User className="w-4 h-4" />
-                <span>{post.author}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                <span>{formatDate(post.created_at)}</span>
-              </div>
-            </div>
-
-            <div className="text-slate-300 leading-relaxed whitespace-pre-wrap">
-              {post.content}
-            </div>
-
-            {post.tags && post.tags.length > 0 && (
-              <div className="mt-8 pt-8 border-t border-slate-700 flex flex-wrap gap-2">
-                {post.tags.map((tag, index) => (
-                  <Badge key={index} variant="outline" className="bg-slate-800 text-slate-300">
-                    #{tag}
-                  </Badge>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+          <div className="max-w-[68ch] mt-12">
+            <Link to="/blog" className="cs-row-link inline-flex items-center gap-3 text-[15px] font-medium">
+              <svg className="cs-btn-arrow rotate-180" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M1 8h13M9 3l5 5-5 5" /></svg>
+              <span className="cs-row-title transition-colors">All posts</span>
+            </Link>
+          </div>
+        </div>
+      </article>
+    </main>
   );
 };
 

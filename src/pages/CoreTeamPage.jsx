@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../components/ui/dialog';
+import { MagneticLink, Reveal } from '../components/site/motion';
 
 const BACKEND_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 const CACHE_KEY   = 'cs_team';
 const CACHE_TTL   = 5 * 60 * 1000;
+
+const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
+const Guides = ({ dark }) => <div className={`cs-guides ${dark ? 'on-dark' : ''}`} aria-hidden="true"><div /></div>;
 
 function readCache() {
   try {
@@ -19,29 +25,18 @@ function writeCache(data) {
 
 function MemberCard({ member, onClick }) {
   return (
-    <button
-      onClick={onClick}
-      className="glass-card p-0 overflow-hidden group text-left w-full tactical-glow transition-all duration-300 hover:ring-1 hover:ring-primary/40 hover:-translate-y-1"
-    >
-      <div className="aspect-square bg-surface-container-lowest overflow-hidden relative">
+    <button type="button" onClick={onClick} className="group w-full text-left bg-transparent p-0">
+      <span className="block aspect-[4/5] overflow-hidden bg-[#E6E9ED]">
         <img
           alt={member.name}
           src={member.image}
-          className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+          loading="lazy"
+          className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-focus-visible:grayscale-0 transition-[filter] duration-300"
           onError={(e) => { e.currentTarget.style.display = 'none'; }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-surface/80 via-transparent to-transparent" />
-        <div className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span className="font-label text-[9px] uppercase tracking-widest text-primary border border-primary/40 bg-surface/80 px-2 py-1">
-            View Profile ↗
-          </span>
-        </div>
-      </div>
-      <div className="p-6">
-        <h4 className="font-headline text-lg font-bold text-white leading-tight mb-1">{member.name}</h4>
-        <p className="font-label text-[10px] text-tertiary uppercase tracking-widest mb-3">{member.position}</p>
-        <p className="text-on-surface-variant text-xs leading-relaxed line-clamp-2">{member.bio}</p>
-      </div>
+      </span>
+      <span className="block mt-3 text-[16px] font-semibold text-[#07090D] group-hover:text-[#2563EB] transition-colors">{member.name}</span>
+      <span className="block text-[14px] text-[#5B6575]">{member.position}</span>
     </button>
   );
 }
@@ -75,153 +70,130 @@ export default function CoreTeamPage() {
   }, []);
 
   return (
-    <main className="pt-32 pb-24 blueprint-grid min-h-screen">
-      <div className="max-w-[1440px] mx-auto px-8 md:px-12">
-
-        {/* ── Page header ── */}
-        <header className="mb-20">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-container/10 border border-primary/20 mb-6">
-            <span className="font-label text-[10px] uppercase tracking-[0.2em] text-primary">
-              Personnel Directory // v2.04
-            </span>
+    <main className="cs-sans text-[#07090D]">
+      {/* ── Hero ── */}
+      <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">
+        <Guides dark />
+        <div className={`${WRAP} relative pt-10 md:pt-14 pb-14 md:pb-20`}>
+          <nav aria-label="Breadcrumb" className="cs-meta text-[#8B95A5] flex flex-wrap items-center gap-2.5">
+            <Link to="/" className="hover:text-[#ECEEF1] transition-colors">CyberSage</Link><span aria-hidden="true">/</span>
+            <Link to="/about" className="hover:text-[#ECEEF1] transition-colors">About</Link><span aria-hidden="true">/</span>
+            <span aria-current="page" className="text-[#ECEEF1]">Core team</span>
+          </nav>
+          <div className="relative overflow-hidden -mx-6 md:-mx-10 px-6 md:px-10 mt-8" aria-hidden="true">
+            <div className="t-expanded font-[200] leading-[0.8] tracking-[-0.03em] whitespace-nowrap text-[40px] sm:text-[64px] lg:text-[88px]">TEAM</div>
           </div>
-          <h1 className="font-headline text-5xl md:text-7xl font-black tracking-tighter leading-none mb-6">
-            The Sovereign <br />
-            <span className="text-primary">Intelligence Team.</span>
-          </h1>
-          <p className="max-w-2xl text-on-surface-variant text-lg leading-relaxed">
-            Architecting the digital vanguard. Our command structure comprises industry-leading
-            threat researchers, strategic architects, and operational experts dedicated to absolute
-            network sovereignty.
-          </p>
-        </header>
-
-        {/* ── Loading skeleton ── */}
-        {loading && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-pulse">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="glass-card p-0 overflow-hidden">
-                <div className="aspect-square bg-surface-container-high" />
-                <div className="p-6 space-y-3">
-                  <div className="h-5 bg-surface-container-high rounded w-3/4" />
-                  <div className="h-3 bg-surface-container-high rounded w-1/2" />
-                  <div className="h-3 bg-surface-container-high rounded w-full" />
-                </div>
+          <div className="mt-10 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-end">
+            <h1 className="lg:col-span-7 m-0 t-wide font-[250] text-[34px] sm:text-[46px] lg:text-[56px] leading-[1.04] tracking-[-0.035em] max-w-[18ch]">The people behind CyberSage.</h1>
+            <div className="lg:col-span-4 lg:col-start-9 flex flex-col gap-6">
+              <p className="m-0 text-[16px] leading-relaxed text-[#A9B8D0]">The people who build CyberSage’s products and deliver its services. Select anyone to read more.</p>
+              <div className="flex flex-wrap gap-3">
+                <MagneticLink to="/contact" variant="on-dark">Contact the team</MagneticLink>
               </div>
-            ))}
-          </div>
-        )}
-
-        {/* ── Empty state ── */}
-        {!loading && members.length === 0 && (
-          <div className="text-center py-24">
-            <span className="material-symbols-outlined text-6xl text-on-surface-variant/30 mb-4 block">
-              group
-            </span>
-            <p className="text-on-surface-variant text-lg">No team members found.</p>
-          </div>
-        )}
-
-        {/* ── Team grid ── */}
-        {members.length > 0 && (
-          <>
-            <div className="flex items-center gap-4 mb-12">
-              <span className="h-[1px] w-12 bg-primary" />
-              <h2 className="font-label text-sm uppercase tracking-[0.3em] text-primary">
-                Departmental Operations
-              </h2>
-            </div>
-
-            {/* First 2 founders — large 2-col row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-              {members.slice(0, 2).map((member) => (
-                <MemberCard key={member._id || member.teamid} member={member} onClick={() => setSelected(member)} />
-              ))}
-            </div>
-
-            {/* Remaining members — up to 4 per row */}
-            {members.length > 2 && (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {members.slice(2).map((member) => (
-                  <MemberCard key={member._id || member.teamid} member={member} onClick={() => setSelected(member)} />
-                ))}
-              </div>
-            )}
-          </>
-        )}
-      </div>
-
-      {/* ── Popup Modal ── */}
-      {selected && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
-          onClick={() => setSelected(null)}
-        >
-          <div
-            className="relative w-full max-w-xl bg-[#0d1526] border border-outline-variant/30 shadow-2xl founder-glow overflow-hidden"
-            style={{ maxHeight: '90vh', overflowY: 'auto' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close */}
-            <button
-              onClick={() => setSelected(null)}
-              className="absolute top-3 right-3 z-20 w-8 h-8 flex items-center justify-center bg-[#0d1526]/90 border border-outline-variant/40 text-on-surface-variant hover:text-white transition-all"
-            >
-              <span className="material-symbols-outlined text-sm">close</span>
-            </button>
-
-            {/* Photo banner — full width, fixed height */}
-            <div className="w-full h-64 bg-surface-container-lowest relative overflow-hidden flex-shrink-0">
-              <img
-                alt={selected.name}
-                src={selected.image}
-                className="w-full h-full object-cover object-top"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0d1526] via-[#0d1526]/30 to-transparent" />
-              {/* Name overlay on photo */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-primary-container/20 border border-primary/30 mb-2">
-                  <span className="font-label text-[9px] uppercase tracking-[0.2em] text-primary">Team Profile</span>
-                </div>
-                <h3 className="font-headline text-2xl font-bold text-white leading-tight">{selected.name}</h3>
-                <p className="font-label text-xs text-primary uppercase tracking-widest mt-1">{selected.position}</p>
-              </div>
-            </div>
-
-            {/* Content below photo */}
-            <div className="p-6 space-y-5">
-              {/* Bio */}
-              <p className="text-on-surface-variant text-sm leading-relaxed">{selected.bio}</p>
-
-              {/* Education */}
-              {selected.education && (
-                <div>
-                  <p className="font-label text-[9px] uppercase tracking-[0.2em] text-tertiary mb-1">Education</p>
-                  <p className="text-on-surface-variant text-sm">{selected.education}</p>
-                </div>
-              )}
-
-              {/* Expertise */}
-              {selected.expertise && selected.expertise.length > 0 && (
-                <div>
-                  <p className="font-label text-[9px] uppercase tracking-[0.2em] text-tertiary mb-3">Expertise</p>
-                  <div className="flex flex-wrap gap-2">
-                    {selected.expertise.map((skill, i) => (
-                      <span
-                        key={i}
-                        className="px-3 py-1 bg-primary-container/10 border border-primary/20 text-primary text-xs font-label tracking-wide"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
-      )}
+      </section>
+
+      {/* ── Team (live data) ── */}
+      <section className="relative s-paper overflow-hidden">
+        <Guides />
+        <div className={`${WRAP} relative py-16 md:py-20`}>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-10 border-b border-[#07090D] pb-5">
+            <h2 className="m-0 t-wide font-[250] text-[30px] md:text-[44px] leading-[1.04] tracking-[-0.03em]">Core team</h2>
+            {!loading && members.length > 0 && (
+              <span className="cs-meta text-[#5B6575]">{String(members.length).padStart(2, '0')} people</span>
+            )}
+          </div>
+
+          {/* Loading skeleton */}
+          {loading && (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10" aria-busy="true" aria-label="Loading team">
+              {[...Array(4)].map((_, i) => (
+                <div key={i}>
+                  <div className="aspect-[4/5] bg-[#E6E9ED]" />
+                  <div className="mt-3 h-4 bg-[#E6E9ED] w-3/4" />
+                  <div className="mt-2 h-3 bg-[#E6E9ED] w-1/2" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Empty state */}
+          {!loading && members.length === 0 && (
+            <p className="m-0 py-10 text-[16px] text-[#3E4555]">No team members found. <Link to="/contact" className="cs-link">Get in touch</Link> if you want to reach the team directly.</p>
+          )}
+
+          {/* Team grid */}
+          {members.length > 0 && (
+            <Reveal>
+              <ul className="m-0 p-0 list-none grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-10">
+                {members.map((member, i) => (
+                  <li key={member._id || member.teamid || i}>
+                    <MemberCard member={member} onClick={() => setSelected(member)} />
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          )}
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">
+        <Guides dark />
+        <div className={`${WRAP} relative py-20 md:py-28 grid grid-cols-1 md:grid-cols-12 gap-8 items-end`}>
+          <h2 className="md:col-span-7 m-0 t-expanded font-[200] text-[44px] sm:text-[64px] lg:text-[88px] leading-[0.92] tracking-[-0.04em]">Work with us.</h2>
+          <div className="md:col-span-4 md:col-start-9 flex flex-col gap-5">
+            <p className="m-0 text-[16px] leading-relaxed text-[#A9B8D0]">Ask about an engagement, or apply for the next internship cohort.</p>
+            <div className="flex flex-wrap gap-3">
+              <Link to="/contact" className="cs-btn cs-btn-on-dark">Contact us</Link>
+              <Link to="/training/internship" className="cs-btn cs-btn-ghost-dark">Internships</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Profile dialog ── */}
+      <Dialog open={!!selected} onOpenChange={(open) => { if (!open) setSelected(null); }}>
+        {selected && (
+          <DialogContent className="cs-sans bg-white border-[rgba(7,9,13,0.14)] text-[#07090D] w-[95%] sm:max-w-2xl max-h-[90vh] overflow-y-auto rounded-[1px] p-0 gap-0">
+            <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+              <div className="aspect-[4/5] sm:aspect-auto sm:min-h-full bg-[#E6E9ED] overflow-hidden">
+                <img
+                  alt={selected.name}
+                  src={selected.image}
+                  className="w-full h-full object-cover object-top"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              </div>
+              <div className="p-6 sm:p-8">
+                <DialogHeader className="text-left space-y-1">
+                  <DialogTitle className="t-wide font-[300] text-[26px] leading-tight tracking-[-0.02em]">{selected.name}</DialogTitle>
+                  <DialogDescription className="text-[15px] text-[#5B6575]">{selected.position}</DialogDescription>
+                </DialogHeader>
+                {selected.bio && <p className="mt-5 mb-0 text-[15px] leading-relaxed text-[#3E4555]">{selected.bio}</p>}
+                {(selected.education || (selected.expertise && selected.expertise.length > 0)) && (
+                  <dl className="m-0 mt-6 border-t border-[#07090D] text-[15px]">
+                    {selected.education && (
+                      <div className="py-4 border-b border-[rgba(7,9,13,0.14)]">
+                        <dt className="cs-meta text-[#5B6575]">Education</dt>
+                        <dd className="m-0 mt-1.5 text-[#3E4555]">{selected.education}</dd>
+                      </div>
+                    )}
+                    {selected.expertise && selected.expertise.length > 0 && (
+                      <div className="py-4 border-b border-[rgba(7,9,13,0.14)]">
+                        <dt className="cs-meta text-[#5B6575]">Expertise</dt>
+                        <dd className="m-0 mt-1.5 text-[#3E4555]">{selected.expertise.join(', ')}</dd>
+                      </div>
+                    )}
+                  </dl>
+                )}
+              </div>
+            </div>
+          </DialogContent>
+        )}
+      </Dialog>
     </main>
   );
 }

@@ -1,10 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { PageHero, Guides } from '../components/site/ServiceTemplates';
 
 const API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 
 const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year', 'Masters', 'PhD', 'Graduate'];
 const MAX_SKILLS = 12;
+const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
+const FIELD = 'w-full bg-white border border-[rgba(7,9,13,0.25)] rounded-[1px] px-4 py-3 text-[15px] text-[#07090D] placeholder:text-[#8B95A5] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]';
+const LABEL = 'block text-[14px] font-medium mb-2';
+const PERKS = [
+  'Hands-on experience with live security projects',
+  'Mentorship from experienced professionals',
+  'Certificate of completion when you finish the internship',
+  'Remote-first, with flexible working hours',
+];
+const CRUMBS = [{ label: 'CyberSage', to: '/' }, { label: 'Training', to: '/training' }, { label: 'Internship' }];
+const Req = () => <span className="text-[#C93C40]" aria-hidden="true"> *</span>;
 
 export default function InternshipPage() {
   const navigate = useNavigate();
@@ -121,8 +133,8 @@ export default function InternshipPage() {
   /* ── Loading enrollment status ── */
   if (enrollmentOpen === null) {
     return (
-      <main className="min-h-screen blueprint-grid flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-tertiary border-t-transparent rounded-full animate-spin" />
+      <main className="cs-sans">
+        <PageHero crumbs={CRUMBS} word="INTERNSHIP" title="The CyberSage internship programme." intro="Checking whether applications are open…" />
       </main>
     );
   }
@@ -130,302 +142,133 @@ export default function InternshipPage() {
   /* ── Enrollment closed ── */
   if (!enrollmentOpen) {
     return (
-      <main className="min-h-screen blueprint-grid flex items-center justify-center px-6 pt-32 pb-24">
-        <div className="w-full max-w-lg text-center">
-          <div className="glass-card p-12">
-            {/* Lock icon */}
-            <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-6">
-              <span className="material-symbols-outlined text-3xl text-amber-400"
-                style={{ fontVariationSettings: "'FILL' 1" }}>
-                lock
-              </span>
+      <main className="cs-sans text-[#07090D]">
+        <PageHero crumbs={CRUMBS} word="INTERNSHIP" title="Applications are closed for now." intro="We are not accepting new applications at the moment. Leave your email and we will let you know as soon as the next intake opens." />
+        <section className="relative s-paper overflow-hidden">
+          <Guides />
+          <div className={`${WRAP} relative py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10`}>
+            <div className="lg:col-span-5">
+              <h2 className="m-0 t-wide font-[250] text-[28px] md:text-[36px] leading-[1.05] tracking-[-0.03em]">Join the waitlist</h2>
+              {waitlistStatus === 'success' ? (
+                <p role="status" className="m-0 mt-6 border-l-2 border-[#2563EB] pl-4 text-[16px]">{waitlistMsg}</p>
+              ) : (
+                <form onSubmit={handleWaitlistSubmit} className="mt-6 pt-6 border-t border-[#07090D] flex flex-col gap-4">
+                  <div>
+                    <label htmlFor="wl-email" className={LABEL}>Email address</label>
+                    <input id="wl-email" type="email" value={waitlistEmail} onChange={(e) => setWaitlistEmail(e.target.value)} required autoComplete="email" className={FIELD} />
+                  </div>
+                  {waitlistStatus === 'error' && <p role="alert" className="m-0 text-[14px] text-[#C93C40]">{waitlistMsg}</p>}
+                  <button type="submit" disabled={waitlistSubmitting} className="cs-btn cs-btn-primary w-full sm:w-fit justify-center disabled:opacity-60">
+                    {waitlistSubmitting ? 'Submitting…' : 'Notify me when it opens'}
+                  </button>
+                </form>
+              )}
+              <button type="button" onClick={() => navigate('/training')} className="mt-8 bg-transparent cs-link text-[15px]">Back to training</button>
             </div>
-
-            <h2 className="font-headline text-3xl font-bold text-white mb-3">
-              Enrollments Are Closed
-            </h2>
-            <p className="text-on-surface-variant leading-relaxed mb-8">
-              We are not accepting new applications at this time. Please wait for the
-              next intake — enter your email below and we'll notify you the moment
-              enrollment opens again.
-            </p>
-
-            {/* Waitlist form */}
-            {waitlistStatus === 'success' ? (
-              <div className="bg-green-500/10 border border-green-500/20 rounded-xl px-6 py-5">
-                <span className="material-symbols-outlined text-3xl text-green-400 mb-2 block"
-                  style={{ fontVariationSettings: "'FILL' 1" }}>
-                  check_circle
-                </span>
-                <p className="text-green-400 font-medium text-sm">{waitlistMsg}</p>
-              </div>
-            ) : (
-              <form onSubmit={handleWaitlistSubmit} className="flex flex-col gap-3">
-                <input
-                  type="email"
-                  value={waitlistEmail}
-                  onChange={(e) => setWaitlistEmail(e.target.value)}
-                  required
-                  placeholder="Enter your email address"
-                  className="w-full bg-surface-container border border-outline-variant/40 text-white text-sm px-4 py-3 focus:outline-none focus:border-tertiary/50 placeholder-on-surface-variant/40 transition-colors"
-                />
-                {waitlistStatus === 'error' && (
-                  <p className="text-red-400 text-xs text-left">{waitlistMsg}</p>
-                )}
-                <button
-                  type="submit"
-                  disabled={waitlistSubmitting}
-                  className="w-full bg-tertiary text-on-tertiary py-3 font-label text-sm uppercase tracking-widest font-bold hover:brightness-110 disabled:opacity-50 transition-all"
-                >
-                  {waitlistSubmitting ? 'Submitting…' : 'Notify Me When Open'}
-                </button>
-              </form>
-            )}
-
-            <button
-              onClick={() => navigate('/training')}
-              className="mt-6 text-on-surface-variant/50 hover:text-on-surface-variant text-sm transition-colors"
-            >
-              ← Back to Training
-            </button>
           </div>
-        </div>
+        </section>
       </main>
     );
   }
 
   if (success) {
     return (
-      <main className="min-h-screen blueprint-grid flex items-center justify-center px-6 pt-32 pb-24">
-        <div className="w-full max-w-lg text-center">
-          <div className="glass-card p-12">
-            <span className="material-symbols-outlined text-6xl text-tertiary mb-6 block"
-              style={{ fontVariationSettings: "'FILL' 1" }}>
-              check_circle
-            </span>
-            <h2 className="font-headline text-3xl font-bold text-white mb-3">Application Received!</h2>
-            <p className="text-on-surface-variant mb-8 leading-relaxed">
-              Thank you for applying to the CyberSage Internship Programme. Our team will review
-              your application and reach out within 5–7 business days.
-            </p>
-            <button
-              onClick={() => navigate('/training')}
-              className="bg-primary text-on-primary px-8 py-4 font-label text-[11px] tracking-widest uppercase font-bold hover:brightness-110 transition-all"
-            >
-              Back to Training
-            </button>
-          </div>
-        </div>
+      <main className="cs-sans text-[#07090D]">
+        <PageHero crumbs={CRUMBS} word="INTERNSHIP" title="Application received." intro="Thank you for applying to the CyberSage internship programme. The team will review your application and reach out within 5–7 business days.">
+          <div><button type="button" onClick={() => navigate('/training')} className="cs-btn cs-btn-on-dark">Back to training</button></div>
+        </PageHero>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen blueprint-grid pt-32 pb-24 px-6">
-      <div className="max-w-[1440px] mx-auto">
+    <main className="cs-sans text-[#07090D]">
+      <PageHero crumbs={CRUMBS} word="INTERNSHIP" title="Start your career in cybersecurity."
+        intro="Join the CyberSage team and work alongside our security researchers. Gain real-world experience, build a portfolio and grow your career in cybersecurity and development." />
 
-        {/* Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-tertiary-container/10 border border-tertiary/20 mb-6">
-              <span className="font-label text-[10px] uppercase tracking-[0.2em] text-tertiary">
-                Internship Programme
-              </span>
-            </div>
-            <h1 className="font-headline font-black text-5xl md:text-6xl tracking-tighter leading-none mb-6">
-              LAUNCH YOUR <br />
-              <span className="text-tertiary">CYBER CAREER.</span>
-            </h1>
-            <p className="text-on-surface-variant text-lg leading-relaxed mb-10 max-w-lg">
-              Join the CyberSage team and work alongside elite security researchers. Gain
-              real-world experience, build an outstanding portfolio, and fast-track your career
-              in cybersecurity and development.
-            </p>
-
-            {/* Perks */}
-            <div className="space-y-5">
-              {[
-                ['bolt',        'Hands-on experience with live security projects'],
-                ['school',      'Mentorship from industry-leading professionals'],
-                ['workspace_premium', 'Certificate of Completion upon successful internship'],
-                ['public',      'Remote-first with flexible working hours'],
-              ].map(([icon, text]) => (
-                <div key={icon} className="flex items-start gap-4">
-                  <span className="material-symbols-outlined text-tertiary text-xl mt-0.5">{icon}</span>
-                  <span className="text-on-surface-variant text-sm">{text}</span>
-                </div>
+      <section className="relative s-paper overflow-hidden">
+        <Guides />
+        <div className={`${WRAP} relative py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-12`}>
+          {/* Programme */}
+          <div className="lg:col-span-4">
+            <h2 className="m-0 t-wide font-[250] text-[28px] md:text-[36px] leading-[1.05] tracking-[-0.03em]">What you get</h2>
+            <ol className="m-0 mt-6 p-0 list-none border-t border-[#07090D]">
+              {PERKS.map((t, i) => (
+                <li key={t} className="grid grid-cols-[40px_minmax(0,1fr)] gap-3 py-4 border-b border-[rgba(7,9,13,0.14)]">
+                  <span className="cs-data text-[#5B6575] pt-0.5">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="text-[16px]">{t}</span>
+                </li>
               ))}
-            </div>
+            </ol>
+            <p className="m-0 mt-6 text-[14px] text-[#5B6575]">Questions first? <Link to="/contact" className="cs-link">Contact us</Link>.</p>
           </div>
 
           {/* Form */}
-          <div className="glass-card p-8 border-l-2 border-l-tertiary/50">
-            <h2 className="font-headline font-bold text-2xl text-white mb-2">Apply Now</h2>
-            <p className="text-on-surface-variant text-sm mb-8">
-              Fill in your details below and we'll be in touch.
-            </p>
+          <div className="lg:col-span-7 lg:col-start-6">
+            <h2 className="m-0 t-wide font-[250] text-[28px] md:text-[36px] leading-[1.05] tracking-[-0.03em]">Apply now</h2>
+            <form onSubmit={handleSubmit} className="mt-6 pt-6 border-t border-[#07090D] grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {error && <p role="alert" className="sm:col-span-2 m-0 text-[14px] text-[#C93C40] border-l-2 border-[#C93C40] pl-3">{error}</p>}
 
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded mb-6">
-                {error}
+              <div className="sm:col-span-2">
+                <label htmlFor="in-name" className={LABEL}>Full name<Req /></label>
+                <input id="in-name" name="name" value={form.name} onChange={handleChange} autoComplete="name" className={FIELD} />
               </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Name */}
               <div>
-                <label className="block text-on-surface-variant text-xs font-label uppercase tracking-widest mb-2">
-                  Full Name <span className="text-red-400">*</span>
-                </label>
-                <input
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="John Smith"
-                  className="w-full bg-surface-container border border-outline-variant/40 text-white text-sm px-4 py-3 focus:outline-none focus:border-tertiary/50 placeholder-on-surface-variant/40 transition-colors"
-                />
+                <label htmlFor="in-email" className={LABEL}>Email address<Req /></label>
+                <input id="in-email" name="email" type="email" value={form.email} onChange={handleChange} autoComplete="email" className={FIELD} />
               </div>
-
-              {/* Email + Phone */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-on-surface-variant text-xs font-label uppercase tracking-widest mb-2">
-                    Email Address <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    name="email"
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="john@university.ac.uk"
-                    className="w-full bg-surface-container border border-outline-variant/40 text-white text-sm px-4 py-3 focus:outline-none focus:border-tertiary/50 placeholder-on-surface-variant/40 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-on-surface-variant text-xs font-label uppercase tracking-widest mb-2">
-                    Phone Number <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    name="phone"
-                    type="tel"
-                    value={form.phone}
-                    onChange={handleChange}
-                    placeholder="+44 7700 000000"
-                    className="w-full bg-surface-container border border-outline-variant/40 text-white text-sm px-4 py-3 focus:outline-none focus:border-tertiary/50 placeholder-on-surface-variant/40 transition-colors"
-                  />
-                </div>
-              </div>
-
-              {/* Degree */}
               <div>
-                <label className="block text-on-surface-variant text-xs font-label uppercase tracking-widest mb-2">
-                  Degree / Course <span className="text-red-400">*</span>
-                </label>
-                <input
-                  name="degree"
-                  value={form.degree}
-                  onChange={handleChange}
-                  placeholder="BSc Computer Science"
-                  className="w-full bg-surface-container border border-outline-variant/40 text-white text-sm px-4 py-3 focus:outline-none focus:border-tertiary/50 placeholder-on-surface-variant/40 transition-colors"
-                />
+                <label htmlFor="in-phone" className={LABEL}>Phone number<Req /></label>
+                <input id="in-phone" name="phone" type="tel" value={form.phone} onChange={handleChange} autoComplete="tel" className={FIELD} />
               </div>
-
-              {/* University + Year */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-on-surface-variant text-xs font-label uppercase tracking-widest mb-2">
-                    University
-                  </label>
-                  <input
-                    name="university"
-                    value={form.university}
-                    onChange={handleChange}
-                    placeholder="University of London"
-                    className="w-full bg-surface-container border border-outline-variant/40 text-white text-sm px-4 py-3 focus:outline-none focus:border-tertiary/50 placeholder-on-surface-variant/40 transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-on-surface-variant text-xs font-label uppercase tracking-widest mb-2">
-                    University Year <span className="text-red-400">*</span>
-                  </label>
-                  <select
-                    name="universityYear"
-                    value={form.universityYear}
-                    onChange={handleChange}
-                    className="w-full bg-surface-container border border-outline-variant/40 text-white text-sm px-4 py-3 focus:outline-none focus:border-tertiary/50 transition-colors appearance-none"
-                  >
-                    <option value="">Select year</option>
-                    {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
-                  </select>
-                </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="in-degree" className={LABEL}>Degree or course<Req /></label>
+                <input id="in-degree" name="degree" value={form.degree} onChange={handleChange} placeholder="e.g. BSc Computer Science" className={FIELD} />
+              </div>
+              <div>
+                <label htmlFor="in-uni" className={LABEL}>University</label>
+                <input id="in-uni" name="university" value={form.university} onChange={handleChange} className={FIELD} />
+              </div>
+              <div>
+                <label htmlFor="in-year" className={LABEL}>University year<Req /></label>
+                <select id="in-year" name="universityYear" value={form.universityYear} onChange={handleChange} className={FIELD}>
+                  <option value="">Select year</option>
+                  {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+                </select>
               </div>
 
               {/* Skills */}
-              <div>
-                <label className="block text-on-surface-variant text-xs font-label uppercase tracking-widest mb-2">
-                  Skills
-                  <span className="ml-2 normal-case text-on-surface-variant/50 tracking-normal font-normal">
-                    (press Enter or comma to add · max {MAX_SKILLS})
-                  </span>
+              <div className="sm:col-span-2">
+                <label htmlFor="in-skills" className={LABEL}>
+                  Skills <span className="text-[#5B6575] font-normal">(press Enter or comma to add, up to {MAX_SKILLS})</span>
                 </label>
-
-                {/* Tag container — click anywhere to focus the input */}
-                <div
-                  onClick={() => skillRef.current?.focus()}
-                  className="min-h-[48px] w-full bg-surface-container border border-outline-variant/40 px-3 py-2 flex flex-wrap gap-2 items-center cursor-text focus-within:border-tertiary/50 transition-colors"
-                >
+                <div onClick={() => skillRef.current?.focus()}
+                  className="min-h-[50px] w-full bg-white border border-[rgba(7,9,13,0.25)] px-3 py-2 flex flex-wrap gap-2 items-center cursor-text focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB]">
                   {skills.map((skill, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex items-center gap-1.5 bg-tertiary/10 border border-tertiary/30 text-tertiary text-xs font-label px-2.5 py-1"
-                    >
+                    <span key={i} className="inline-flex items-center gap-1.5 bg-[#ECEEF1] text-[#07090D] text-[13px] px-2.5 py-1">
                       {skill}
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); removeSkill(i); }}
-                        className="text-tertiary/60 hover:text-tertiary leading-none"
-                        aria-label={`Remove ${skill}`}
-                      >
-                        ×
-                      </button>
+                      <button type="button" onClick={(e) => { e.stopPropagation(); removeSkill(i); }} className="bg-transparent text-[#5B6575] hover:text-[#07090D] leading-none px-1" aria-label={`Remove ${skill}`}>×</button>
                     </span>
                   ))}
-
                   {skills.length < MAX_SKILLS && (
-                    <input
-                      ref={skillRef}
-                      value={skillInput}
-                      onChange={(e) => setSkillInput(e.target.value)}
-                      onKeyDown={handleSkillKeyDown}
-                      onBlur={() => addSkill(skillInput)}
-                      placeholder={skills.length === 0 ? 'e.g. Python, Networking, Linux…' : ''}
-                      className="flex-1 min-w-[140px] bg-transparent text-white text-sm focus:outline-none placeholder-on-surface-variant/40"
-                    />
+                    <input id="in-skills" ref={skillRef} value={skillInput} onChange={(e) => setSkillInput(e.target.value)} onKeyDown={handleSkillKeyDown} onBlur={() => addSkill(skillInput)}
+                      placeholder={skills.length === 0 ? 'e.g. Python, Networking, Linux' : ''}
+                      className="flex-1 min-w-[140px] bg-transparent text-[15px] text-[#07090D] focus:outline-none placeholder:text-[#8B95A5] py-1" />
                   )}
                 </div>
-
-                {skills.length > 0 && (
-                  <p className="text-on-surface-variant/40 text-xs mt-1.5">
-                    {skills.length}/{MAX_SKILLS} skill{skills.length !== 1 ? 's' : ''} added
-                  </p>
-                )}
+                {skills.length > 0 && <p className="m-0 mt-1.5 text-[13px] text-[#5B6575]">{skills.length}/{MAX_SKILLS} skill{skills.length !== 1 ? 's' : ''} added</p>}
               </div>
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full bg-tertiary text-on-tertiary py-4 font-label text-sm uppercase tracking-widest font-bold hover:brightness-110 disabled:opacity-50 transition-all mt-2"
-              >
-                {submitting ? 'Submitting...' : 'Submit Application'}
-              </button>
-
-              <p className="text-on-surface-variant/50 text-xs text-center">
-                By submitting you agree to CyberSage storing your data for recruitment purposes.
-              </p>
+              <div className="sm:col-span-2 flex flex-col gap-3">
+                <button type="submit" disabled={submitting} className="cs-btn cs-btn-primary w-full sm:w-fit justify-center disabled:opacity-60">
+                  {submitting ? 'Submitting…' : 'Submit application'}
+                </button>
+                <p className="m-0 text-[13px] text-[#5B6575]">By submitting you agree to CyberSage storing your data for recruitment purposes.</p>
+              </div>
             </form>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   );
 }
