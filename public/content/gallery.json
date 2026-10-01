@@ -94,5 +94,13 @@
     "height": 900,
     "order": 11,
     "published": true
+  },
+  {
+    "id": "7e57f8c6d4ae",
+    "src": "/content/gallery/7e57f8c6d4ae.jpg",
+    "width": 1600,
+    "height": 1200,
+    "order": 12,
+    "published": true
   }
 ]
