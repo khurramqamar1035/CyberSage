@@ -102,5 +102,13 @@
     "height": 1200,
     "order": 12,
     "published": true
+  },
+  {
+    "id": "f389c05fea56",
+    "src": "/content/gallery/f389c05fea56.jpg",
+    "width": 1600,
+    "height": 900,
+    "order": 13,
+    "published": true
   }
 ]
