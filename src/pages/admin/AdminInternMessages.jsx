@@ -5,8 +5,8 @@ import AdminCollection from './AdminCollection';
 const FIELDS = [
   { name: 'name', label: 'Name', required: true },
   { name: 'message', label: 'Their testimonial', type: 'textarea', rows: 7, required: true, hint: 'Paste what they wrote, in their own words.' },
-  { name: 'role', label: 'Role', placeholder: 'e.g. Security Intern, Client, Partner' },
-  { name: 'cohort', label: 'Batch or organisation', placeholder: 'e.g. Intern 2026, Acme Ltd' },
+  { name: 'role', label: 'Role', placeholder: 'Optional, shown under the name' },
+  { name: 'cohort', label: 'Organisation', placeholder: 'Optional, shown under the name' },
   { name: 'photo', label: 'Photo URL (optional)', type: 'image' },
   { name: 'linkedin', label: 'LinkedIn URL (optional)', placeholder: 'https://www.linkedin.com/in/…' },
   { name: 'order', label: 'Display order', type: 'number', default: 0, hint: 'Lower numbers appear first in the row.' },
@@ -21,7 +21,7 @@ export default function AdminInternMessages() {
       path="intern-messages"
       fields={FIELDS}
       empty="No testimonials added yet"
-      help="Shown in the moving Testimonials row on the Internship and Core team pages, next to the three built in. Add anyone: interns, clients or partners. Adding someone with the same name as a built-in one replaces it. Only add testimonials the person has agreed to share."
+      help="Shown in the moving Testimonials row at the bottom of the home page, next to the three built in. Add anyone. Adding someone with the same name as a built-in one replaces it. Only add testimonials the person has agreed to share."
       renderItem={(it, actions) => (
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">

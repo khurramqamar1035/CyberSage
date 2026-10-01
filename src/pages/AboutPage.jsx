@@ -1,31 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { PRODUCTS } from '../data/ecosystem';
 
 const BACKEND_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
 
 const AboutPage = () => {
-  const [teamMembers, setTeamMembers] = useState([]);
   const [offices, setOffices] = useState([]);
-  const [selectedMember, setSelectedMember] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
-        const [teamRes, officeRes] = await Promise.all([
-          axios.get(`${BACKEND_URL}/api/about/team`),
-          axios.get(`${BACKEND_URL}/api/about/offices`),
-        ]);
-        setTeamMembers(Array.isArray(teamRes.data) ? teamRes.data : []);
+        const officeRes = await axios.get(`${BACKEND_URL}/api/about/offices`);
         setOffices(Array.isArray(officeRes.data) ? officeRes.data : []);
       } catch {
-        // sections below hide when empty
-      } finally {
-        setLoading(false);
+        // the offices section hides when empty
       }
     };
     fetchAboutData();
@@ -54,34 +44,16 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* ── Leadership (live data) ── */}
+      {/* ── Team: photos live on the Core team page only ── */}
       <section className="s-paper border-b border-[rgba(7,9,13,0.08)]">
-        <div className={`${WRAP} py-16 md:py-24`}>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-10">
-            <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em]">Leadership</h2>
-            <Link to="/core-team" className="cs-link text-[15px] font-medium">See the full core team</Link>
-          </div>
-          {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6" aria-busy="true" aria-label="Loading team">
-              {[0, 1, 2, 3].map((i) => <div key={i} className="aspect-[4/5] bg-[#F1F3F6]" />)}
-            </div>
-          ) : teamMembers.length > 0 ? (
-            <ul className="m-0 p-0 list-none grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-              {teamMembers.map((m, i) => (
-                <li key={m._id || i}>
-                  <button type="button" onClick={() => setSelectedMember(m)} className="group w-full text-left bg-transparent">
-                    <span className="block aspect-[4/5] overflow-hidden bg-[#F1F3F6]">
-                      <img src={m.image} alt={m.name} loading="lazy" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-300" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                    </span>
-                    <span className="block mt-3 text-[16px] font-semibold">{m.name}</span>
-                    <span className="block text-[14px] text-[#5F6676]">{m.position}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="m-0 text-[15px] text-[#3E4555]">Team profiles are on the <Link to="/core-team" className="cs-link">core team page</Link>.</p>
-          )}
+        <div className={`${WRAP} py-14 md:py-16`}>
+          <Link to="/core-team" className="cs-row-link flex items-center justify-between gap-6 border-t border-[#07090D] pt-6">
+            <span>
+              <span className="cs-row-title block t-wide font-[250] text-[28px] md:text-[40px] leading-[1.05] tracking-[-0.03em] transition-colors">Meet the core team</span>
+              <span className="block mt-2 text-[16px] text-[#3E4555]">The people who build CyberSage and deliver its services.</span>
+            </span>
+            <svg className="cs-btn-arrow shrink-0" width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M1 8h13M9 3l5 5-5 5" /></svg>
+          </Link>
         </div>
       </section>
 
@@ -114,24 +86,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <Dialog open={!!selectedMember} onOpenChange={() => setSelectedMember(null)}>
-        {selectedMember && (
-          <DialogContent className="cs-sans bg-white border-[#DCE0E7] text-[#07090D] w-[95%] sm:max-w-2xl max-h-[90vh] overflow-y-auto rounded-[1px]">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-semibold">{selectedMember.name}</DialogTitle>
-              <p className="text-[#5F6676]">{selectedMember.position}</p>
-            </DialogHeader>
-            {selectedMember.bio && <p className="text-[#3E4555] mt-4 leading-relaxed">{selectedMember.bio}</p>}
-            {selectedMember.expertise?.length > 0 && (
-              <div className="mt-6">
-                <h4 className="font-semibold mb-2">Expertise</h4>
-                <p className="m-0 text-[#3E4555]">{selectedMember.expertise.join(', ')}</p>
-              </div>
-            )}
-            {selectedMember.education && <p className="text-[#5F6676] mt-4">{selectedMember.education}</p>}
-          </DialogContent>
-        )}
-      </Dialog>
     </main>
   );
 };

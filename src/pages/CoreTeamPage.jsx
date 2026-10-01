@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../components/ui/dialog';
 import { MagneticLink, Reveal } from '../components/site/motion';
-import InternVoices from '../components/site/InternVoices';
 
 const BACKEND_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 const CACHE_KEY   = 'cs_team';
@@ -140,7 +139,6 @@ export default function CoreTeamPage() {
         </div>
       </section>
 
-      <InternVoices />
 
       {/* ── CTA ── */}
       <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">

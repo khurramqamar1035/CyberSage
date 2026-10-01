@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { PRODUCTS, SERVICE_GROUPS, productBySlug } from '../data/ecosystem';
 import SignalField from '../components/site/SignalField';
 import ProductArt from '../components/site/ProductArt';
+import InternVoices from '../components/site/InternVoices';
 import { MagneticLink, Parallax, Reveal } from '../components/site/motion';
 
 const BACKEND_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
@@ -305,6 +306,9 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* ═══ Testimonials (moving row) ═══ */}
+      <InternVoices />
 
       {/* ═══ Contact ═══ */}
       <section className="relative s-black tx-grain overflow-hidden">
