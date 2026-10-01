@@ -78,5 +78,13 @@
     "height": 900,
     "order": 9,
     "published": true
+  },
+  {
+    "id": "fa07110e53f1",
+    "src": "/content/gallery/fa07110e53f1.jpg",
+    "width": 1600,
+    "height": 900,
+    "order": 10,
+    "published": true
   }
 ]
