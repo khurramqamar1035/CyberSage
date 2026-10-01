@@ -71,7 +71,7 @@ export default function GalleryPage() {
             <Link to="/" className="hover:text-[#ECEEF1] transition-colors">CyberSage</Link><span aria-hidden="true">/</span>
             <span aria-current="page" className="text-[#ECEEF1]">Gallery</span>
           </nav>
-          <h1 className="m-0 mt-8 t-expanded font-[200] leading-[0.8] tracking-[-0.03em] text-[40px] sm:text-[64px] lg:text-[88px]">GALLERY</h1>
+          <h1 className="m-0 mt-8 t-expanded font-[200] leading-[0.8] tracking-[-0.03em] text-[min(40px,9vw)] sm:text-[64px] lg:text-[88px]">GALLERY</h1>
         </div>
       </section>
 

@@ -85,21 +85,21 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-[max(12px,env(safe-area-inset-bottom))] right-3 md:bottom-6 md:right-6 z-50">
       {/* Floating toggle button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="w-14 h-14 bg-[#07090D] hover:bg-[#2563EB] text-white flex items-center justify-center shadow-[0_12px_30px_-10px_rgba(7,9,13,0.6)] ring-1 ring-white/10 transition-colors"
+          className="w-11 h-11 md:w-14 md:h-14 bg-[#07090D] hover:bg-[#2563EB] text-white flex items-center justify-center shadow-[0_12px_30px_-10px_rgba(7,9,13,0.6)] ring-1 ring-white/10 transition-colors"
           aria-label="Open chat"
         >
-          <MessageCircle size={28} />
+          <MessageCircle className="w-5 h-5 md:w-7 md:h-7" />
         </button>
       )}
 
       {/* Chat window */}
       {isOpen && (
-        <div className="w-[calc(100vw-48px)] sm:w-96 h-[540px] max-h-[calc(100dvh-96px)] bg-[#0E1117] border border-[rgba(236,238,241,0.12)] rounded-[2px] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] flex flex-col overflow-hidden">
+        <div className="w-[calc(100vw-24px)] sm:w-96 h-[540px] max-h-[calc(100dvh-24px)] md:max-h-[calc(100dvh-96px)] bg-[#0E1117] border border-[rgba(236,238,241,0.12)] rounded-[2px] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] flex flex-col overflow-hidden">
           {/* Header */}
           <div className="px-4 py-3 bg-[#07090D] border-b border-[rgba(236,238,241,0.12)] flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2 text-white">

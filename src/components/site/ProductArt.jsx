@@ -29,8 +29,8 @@ function Stage({ children, label, bg }) {
   useLayoutEffect(() => {
     const el = box.current;
     if (!el) return undefined;
-    // On narrow screens the art stops shrinking at half size and is cropped on the right instead
-    const set = () => setS(Math.max(el.clientWidth / W, 0.5));
+    // Always show the whole composition, scaled to the container width
+    const set = () => setS(el.clientWidth / W);
     set();
     const ro = new ResizeObserver(set);
     ro.observe(el);

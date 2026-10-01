@@ -38,7 +38,7 @@ export function PageHero({ crumbs, word, title, intro, children }) {
           ))}
         </nav>
         {word && (
-          <motion.div aria-hidden="true" className="mt-8 t-expanded font-[200] leading-[0.8] tracking-[-0.03em] whitespace-nowrap text-[40px] sm:text-[64px] lg:text-[88px]"
+          <motion.div aria-hidden="true" className="mt-8 t-expanded font-[200] leading-[0.8] tracking-[-0.03em] whitespace-nowrap text-[min(40px,9vw)] sm:text-[64px] lg:text-[88px]"
             initial={reduce ? false : { x: 24, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.9, ease: EASE }}>
             {word}
           </motion.div>

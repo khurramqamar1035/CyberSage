@@ -48,13 +48,13 @@ function Identifier({ n, name, role, tone = 'dark', outline = false }) {
   const reduce = useReducedMotion();
   const color = tone === 'dark' ? '#07090D' : '#ECEEF1';
   return (
-    <div className="flex items-end justify-between gap-6" aria-hidden="true">
-      <motion.div className="t-expanded font-[200] leading-[0.8] tracking-[-0.03em] whitespace-nowrap select-none text-[40px] sm:text-[64px] lg:text-[88px]"
+    <div className="flex flex-col-reverse items-start gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6" aria-hidden="true">
+      <motion.div className="t-expanded font-[200] leading-[0.8] tracking-[-0.03em] whitespace-nowrap select-none text-[min(40px,9.5vw)] sm:text-[64px] lg:text-[88px]"
         style={outline ? { color: 'transparent', WebkitTextStroke: `1px ${color}` } : { color }}
         initial={reduce ? false : { x: 24, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true, margin: '-10%' }} transition={{ duration: 0.9, ease: EASE }}>
         {name}
       </motion.div>
-      <span className="cs-meta pb-1 text-right" style={{ color: tone === 'dark' ? '#5B6575' : '#8B95A5' }}>{n} / 05<br />{role}</span>
+      <span className="cs-meta sm:pb-1 sm:text-right" style={{ color: tone === 'dark' ? '#5B6575' : '#8B95A5' }}>{n} / 05<span className="sm:hidden"> · </span><br className="hidden sm:inline" />{role}</span>
     </div>
   );
 }
@@ -171,7 +171,7 @@ const LandingPage = () => {
           <div className={`${WRAP} relative py-14 md:py-20`}>
             <Identifier n={`0${i + 1}`} name={c.word} role={productBySlug(c.slug).role} tone={c.tone} outline={c.outline} />
             <div className={`mt-8 md:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center`}>
-              <Parallax className={`lg:col-span-8 ${i % 2 ? 'lg:order-2' : ''}`} distance={14}>
+              <Parallax className={`-mx-6 md:mx-0 lg:col-span-8 ${i % 2 ? 'lg:order-2' : ''}`} distance={14}>
                 <div className={c.tone === 'light' ? 'shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)] ring-1 ring-white/5' : 'shadow-[0_40px_80px_-40px_rgba(7,9,13,0.4)] ring-1 ring-black/5'}>
                   <ProductArt slug={c.slug} />
                 </div>

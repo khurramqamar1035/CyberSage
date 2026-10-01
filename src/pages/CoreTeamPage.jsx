@@ -81,7 +81,7 @@ export default function CoreTeamPage() {
             <span aria-current="page" className="text-[#ECEEF1]">Core team</span>
           </nav>
           <div className="relative overflow-hidden -mx-6 md:-mx-10 px-6 md:px-10 mt-8" aria-hidden="true">
-            <div className="t-expanded font-[200] leading-[0.8] tracking-[-0.03em] whitespace-nowrap text-[40px] sm:text-[64px] lg:text-[88px]">TEAM</div>
+            <div className="t-expanded font-[200] leading-[0.8] tracking-[-0.03em] whitespace-nowrap text-[min(40px,9vw)] sm:text-[64px] lg:text-[88px]">TEAM</div>
           </div>
           <div className="mt-10 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-end">
             <h1 className="lg:col-span-7 m-0 t-wide font-[250] text-[34px] sm:text-[46px] lg:text-[56px] leading-[1.04] tracking-[-0.035em] max-w-[18ch]">The people behind CyberSage.</h1>

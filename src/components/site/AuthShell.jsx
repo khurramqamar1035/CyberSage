@@ -14,7 +14,7 @@ export default function AuthShell({ word, title, intro, children, footer, wide =
           <img src="/brand/wordmark.png" alt="CyberSage" className="h-[15px] w-auto object-contain" />
         </Link>
         <div className="mt-10 lg:mt-0">
-          <div aria-hidden="true" className="t-expanded font-[200] leading-[0.8] tracking-[-0.03em] text-[44px] sm:text-[64px] lg:text-[80px] whitespace-nowrap">{word}</div>
+          <div aria-hidden="true" className="t-expanded font-[200] leading-[0.8] tracking-[-0.03em] text-[min(44px,10vw)] sm:text-[64px] lg:text-[80px] whitespace-nowrap">{word}</div>
           <h1 className="m-0 mt-8 t-wide font-[250] text-[28px] md:text-[38px] leading-[1.05] tracking-[-0.03em] max-w-[16ch]">{title}</h1>
           {intro && <p className="m-0 mt-4 text-[16px] leading-relaxed text-[#A9B8D0] max-w-[44ch]">{intro}</p>}
         </div>
