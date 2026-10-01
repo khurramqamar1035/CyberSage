@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion';
 
 // Product interfaces for each platform. Names, numbers and events are illustrative
 // sample data so visitors can see how each product is used.
@@ -16,11 +17,28 @@ const Window = ({ title, meta, dark, children, className = '' }) => (
   </div>
 );
 
+// Steps through simulated interface states while the interface is on screen.
+// Reduced motion: stays on the first (complete, readable) state.
+function useLoop(ref, steps, ms) {
+  const inView = useInView(ref, { margin: '-10% 0px' });
+  const reduce = useReducedMotion();
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    if (!inView || reduce) return undefined;
+    const t = setInterval(() => setStep((n) => (n + 1) % steps), ms);
+    return () => clearInterval(t);
+  }, [inView, reduce, steps, ms]);
+  return step;
+}
+const ENTER = { initial: { opacity: 0, y: 6 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0 }, transition: { duration: 0.3, ease: [0.23, 1, 0.32, 1] } };
+
 /* ── Nexus: a real workspace ─────────────────────────────────── */
 function Nexus() {
+  const ref = useRef(null);
+  const step = useLoop(ref, 5, 1800); // 0 idle, 1 typing, 2 message, 3 classified, 4 hold
   const channels = [['general', 0], ['q4-planning', 3], ['finance', 0], ['security-notices', 1], ['leadership', 0]];
   return (
-    <Window title="Nexus" meta="Northbridge Group">
+    <div ref={ref}><Window title="Nexus" meta="Northbridge Group">
       <div className="flex min-h-[420px]">
         <aside className="hidden sm:flex w-[180px] shrink-0 flex-col gap-0.5 p-3 bg-[#F7F8FA] border-r border-[#E6E9EF] text-[14px]">
           <div className="px-2 pb-2 text-[12px] text-[#5F6676]">Spaces</div>
@@ -52,6 +70,21 @@ function Nexus() {
               <span className="w-8 h-8 shrink-0 rounded-[3px] bg-[#E3EDE8] grid place-items-center text-[12px] font-semibold text-[#3E4555]">TH</span>
               <div><div className="font-semibold">Tom Hughes <span className="cs-mono font-normal text-[11px] text-[#5F6676]">09:31</span></div><p className="m-0 text-[#3E4555]">Booked the review for Thursday 14:00.</p></div>
             </div>
+            <AnimatePresence initial={false}>
+              {step === 1 && <motion.div key="typing" {...ENTER} className="text-[12px] text-[#5F6676] pl-11">Priya Shah is typing…</motion.div>}
+              {step >= 2 && (
+                <motion.div key="msg" {...ENTER} className="flex gap-3">
+                  <span className="w-8 h-8 shrink-0 rounded-[3px] bg-[#EFE6F3] grid place-items-center text-[12px] font-semibold text-[#3E4555]">PS</span>
+                  <div><div className="font-semibold">Priya Shah <span className="cs-mono font-normal text-[11px] text-[#5F6676]">09:40</span></div>
+                    <p className="m-0 text-[#3E4555]">Vendor contract for review attached.</p>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-2 text-[12px]">
+                      <span className="text-[#3E4555]">vendor-msa-2026.pdf</span>
+                      <AnimatePresence>{step >= 3 && <motion.span key="cls" {...ENTER} className="px-1.5 py-0.5 rounded-[2px] bg-[#FDE8E4] text-[#A33724]">Restricted · applied by policy</motion.span>}</AnimatePresence>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <div className="rounded-[3px] bg-[#F5F6F8] border border-[#E6E9EF] p-3">
               <div className="text-[12px] font-medium text-[#1D4ED8]">Summary by Sage Brain</div>
               <ul className="m-0 mt-1.5 pl-4 text-[13px] text-[#3E4555] space-y-0.5">
@@ -62,26 +95,34 @@ function Nexus() {
           </div>
         </div>
       </div>
-    </Window>
+    </Window></div>
   );
 }
 
 /* ── Sentinel: detections and telemetry ──────────────────────── */
 const SEV = { Critical: 'bg-[#4A1C17] text-[#FFB4AB]', High: 'bg-[#3D2A10] text-[#FFB95F]', Medium: 'bg-[#1E2A44] text-[#B4C5FF]', Low: 'bg-[#1B2433] text-[#AEB6C8]' };
+const INCOMING = [
+  ['03:11:48', 'High', 'New OAuth app granted mail access', 'finance-user-04', 'Investigating'],
+  ['03:12:30', 'Medium', 'Spike in failed logins on VPN gateway', 'vpn-01', 'Triaging'],
+  ['03:14:02', 'Low', 'Unsigned binary on build agent', 'ci-runner-3', 'Ticket raised'],
+];
 function Sentinel() {
-  const rows = [
+  const ref = useRef(null);
+  const step = useLoop(ref, 4, 3200);
+  const base = [
     ['03:07:12', 'Critical', 'Mailbox rule forwards invoices externally', 'finance-user-04', 'Contained'],
     ['03:05:40', 'High', 'Impossible travel: London to Lagos in 17 min', 'finance-user-04', 'Investigating'],
     ['02:58:03', 'Medium', 'Macro-enabled attachment opened', 'LT-2291', 'Isolated'],
     ['02:41:55', 'Medium', 'Lookalike domain in inbound mail', '6 recipients', 'Quarantined'],
     ['01:12:20', 'Low', 'TLS 1.0 still enabled on mail relay', 'mx-02', 'Ticket raised'],
   ];
+  const rows = [...INCOMING.slice(0, step).reverse(), ...base].slice(0, 5);
   const wave = 'M0 40 L20 34 L40 37 L60 30 L80 33 L100 22 L120 28 L140 26 L160 31 L180 18 L200 24 L220 21 L240 29 L260 25 L280 33 L300 27 L320 30 L340 24 L360 28 L380 20 L400 26';
   return (
-    <Window title="Sage Sentinel" meta="Detections" dark>
+    <div ref={ref}><Window title="Sage Sentinel" meta="Detections" dark>
       <div className="p-4 sm:p-5 flex flex-col gap-5">
         <div className="flex flex-wrap gap-x-8 gap-y-3 text-[13px]">
-          {[['Open', '14'], ['Investigating', '3'], ['Closed today', '41'], ['Mean time to contain', '6m 40s']].map(([k, v]) => (
+          {[['Open', String(14 + step)], ['Investigating', String(3 + Math.min(step, 1))], ['Closed today', '41'], ['Mean time to contain', '6m 40s']].map(([k, v]) => (
             <div key={k}><div className="text-[#8D96AA]">{k}</div><div className="cs-tnum text-[20px] font-semibold text-white">{v}</div></div>
           ))}
         </div>
@@ -99,19 +140,19 @@ function Sentinel() {
             <tr className="border-b border-[#1E2638]"><th className="py-2 pr-3 font-normal">Time</th><th className="py-2 pr-3 font-normal">Severity</th><th className="py-2 pr-3 font-normal">Detection</th><th className="py-2 pr-3 font-normal hidden lg:table-cell">Entity</th><th className="py-2 font-normal hidden sm:table-cell">Status</th></tr>
           </thead>
           <tbody>
-            {rows.map((r) => (
-              <tr key={r[0]} className="border-b border-[#161D2D] align-top">
+            {rows.map((r, i) => (
+              <motion.tr key={r[0]} layout="position" initial={{ opacity: 0, backgroundColor: 'rgba(68,216,241,0.12)' }} animate={{ opacity: 1, backgroundColor: 'rgba(68,216,241,0)' }} transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }} className="border-b border-[#161D2D] align-top">
                 <td className="cs-mono py-2.5 pr-3 text-[#8D96AA] whitespace-nowrap">{r[0]}</td>
                 <td className="py-2.5 pr-3"><span className={`text-[11px] px-1.5 py-0.5 rounded-[2px] ${SEV[r[1]]}`}>{r[1]}</span></td>
                 <td className="py-2.5 pr-3 text-[#DCE1FB]">{r[2]}</td>
                 <td className="cs-mono py-2.5 pr-3 text-[#AEB6C8] hidden lg:table-cell whitespace-nowrap">{r[3]}</td>
                 <td className="py-2.5 text-[#AEB6C8] hidden sm:table-cell whitespace-nowrap">{r[4]}</td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
       </div>
-    </Window>
+    </Window></div>
   );
 }
 
@@ -172,14 +213,20 @@ function Brain() {
 }
 
 /* ── Vault: a lab in progress ────────────────────────────────── */
+const CMD = 'sudo ufw deny from 203.0.113.0/24';
 function Vault() {
-  const tasks = [
+  const ref = useRef(null);
+  const step = useLoop(ref, CMD.length + 34, 90); // type, then hold on the result
+  const typed = CMD.slice(0, Math.min(step, CMD.length)) || CMD;
+  const done = step === 0 || step >= CMD.length + 2;
+  const tasks0 = [
     ['Find the account with the most failed logins', true],
     ['Identify the source IP range', true],
     ['Confirm whether any login succeeded', true],
-    ['Block the range on the edge firewall', false],
+    ['Block the range on the edge firewall', 'fw'],
     ['Write a two-line incident summary', false],
   ];
+  const tasks = tasks0.map(([t, d]) => [t, d === 'fw' ? done : d]);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-3">
       <div className="rounded-[4px] border border-[#DCE0E7] bg-white p-4 sm:p-5 flex flex-col gap-4">
@@ -195,9 +242,9 @@ function Vault() {
             </li>
           ))}
         </ol>
-        <div className="text-[13px] text-[#5F6676]">3 of 5 complete. Scored on what you did in the environment, not on quiz answers.</div>
+        <div className="text-[13px] text-[#5F6676]">{done ? 4 : 3} of 5 complete. Scored on what you did in the environment, not on quiz answers.</div>
       </div>
-      <Window title="analyst@vault-lab-03" meta="ubuntu 22.04" dark>
+      <div ref={ref}><Window title="analyst@vault-lab-03" meta="ubuntu 22.04" dark>
         <pre className="cs-mono m-0 p-4 text-[12.5px] leading-[1.7] text-[#C9D2E6] whitespace-pre-wrap break-words min-h-[300px]">
 <span className="text-[#44D8F1]">$</span> grep "Failed password" /var/log/auth.log | wc -l{'\n'}
 <span className="text-white">4127</span>{'\n'}
@@ -205,9 +252,9 @@ function Vault() {
 <span className="text-white">   3982 203.0.113.47{'\n'}     91 203.0.113.52{'\n'}     54 10.0.4.18</span>{'\n'}
 <span className="text-[#44D8F1]">$</span> grep "Accepted" /var/log/auth.log | grep 203.0.113{'\n'}
 <span className="text-[#8D96AA]">(no output)</span>{'\n'}
-<span className="text-[#44D8F1]">$</span> sudo ufw deny from 203.0.113.0/24<span className="cs-caret inline-block w-2 h-4 align-[-2px] ml-0.5 bg-[#DCE1FB]" />
+<span className="text-[#44D8F1]">$</span> {typed}{!done && <span className="cs-caret inline-block w-2 h-4 align-[-2px] ml-0.5 bg-[#DCE1FB]" />}{done && <>{'\n'}<span className="text-white">Rule added</span>{'\n'}<span className="text-[#44D8F1]">$</span> <span className="cs-caret inline-block w-2 h-4 align-[-2px] bg-[#DCE1FB]" /></>}
         </pre>
-      </Window>
+      </Window></div>
     </div>
   );
 }
@@ -271,7 +318,7 @@ export default function ProductVisual({ product, caption = true }) {
   return (
     <figure className="m-0">
       <V />
-      {caption && <figcaption className="mt-3 text-[13px] leading-relaxed text-[#5F6676]">{product.figure} Sample data.</figcaption>}
+      {caption && <figcaption className="mt-4 flex flex-wrap gap-x-5 gap-y-1 items-baseline"><span className="cs-meta text-[#5F6676]">Simulated interface</span><span className="text-[13px] leading-relaxed text-[#5F6676]">{product.figure}</span></figcaption>}
     </figure>
   );
 }

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
+import ProductMark from './ProductMark';
 import { PRODUCTS, SERVICE_GROUPS, COMPANY_LINKS, RESOURCE_LINKS, isLightRoute } from '../../data/ecosystem';
 
 const Chevron = ({ open }) => (
@@ -25,7 +27,7 @@ function ProductsPanel({ onNavigate, light }) {
           <li key={p.slug}>
             <Link to={`/products/${p.slug}`} onClick={onNavigate}
               className={`${light ? 'cs-menu-item' : 'cs-menu-item-dark'} grid grid-cols-[150px_minmax(0,1fr)] gap-4 items-baseline px-3 py-3 rounded-[3px] transition-colors`}>
-              <span className="flex items-center gap-2.5 text-[15px] font-semibold"><span className="w-2 h-2 rounded-[1px]" style={{ background: p.key === '#0C1324' && !light ? '#B4C5FF' : p.key }} />{p.name}</span>
+              <span className="flex items-center gap-2.5 text-[15px] font-semibold"><ProductMark slug={p.slug} size={20} accent={light ? '#2563EB' : '#7FA2FF'} />{p.name}</span>
               <span className={`text-[14px] ${muted}`}>{p.line}</span>
             </Link>
           </li>
@@ -73,6 +75,8 @@ function ListPanel({ links, onNavigate, light }) {
 export default function SiteNav() {
   const location = useLocation();
   const light = isLightRoute(location.pathname);
+  const reduce = useReducedMotion();
+  const [hover, setHover] = useState(null);
   const [open, setOpen] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState(null);
@@ -123,12 +127,18 @@ export default function SiteNav() {
           <img src={light ? '/brand/wordmark-ink.png' : '/brand/wordmark.png'} alt="CyberSage" className="h-[15px] w-auto object-contain" />
         </Link>
 
-        <nav className="hidden lg:flex items-center" aria-label="Primary" onMouseLeave={hoverClose}>
+        <nav className="hidden lg:flex items-center" aria-label="Primary" onMouseLeave={() => { hoverClose(); setHover(null); }}>
           {MENUS.map((m) => (
-            <div key={m.key} className="relative" onMouseEnter={() => hoverOpen(m.key)}>
-              <button type="button" onClick={() => clickToggle(m.key)} aria-expanded={open === m.key} aria-haspopup="true"
-                className={`flex items-center gap-1.5 h-16 px-3.5 text-[15px] bg-transparent border-b-2 -mb-px transition-colors ${isActive(m) ? (light ? 'border-[#0C1324]' : 'border-[#DCE1FB]') : 'border-transparent'} ${light ? 'text-[#0C1324]' : 'text-[#DCE1FB]'}`}>
+            <div key={m.key} className="relative" onMouseEnter={() => { hoverOpen(m.key); setHover(m.key); }}>
+              <button type="button" onClick={() => clickToggle(m.key)} aria-expanded={open === m.key} aria-haspopup="true" aria-current={isActive(m) ? 'page' : undefined}
+                className={`relative flex items-center gap-1.5 h-16 px-3.5 text-[14.5px] bg-transparent transition-colors ${light ? 'text-[#0C1324]' : 'text-[#DCE1FB]'}`}>
+                {/* active section: a small system marker, not just an underline */}
+                {isActive(m) && <span className={`w-1 h-1 ${light ? 'bg-[#2563EB]' : 'bg-[#7FA2FF]'}`} aria-hidden="true" />}
                 {m.label} <Chevron open={open === m.key} />
+                {(open || hover || (MENUS.find(isActive) || {}).key) === m.key && (
+                  <motion.span layoutId="nav-indicator" aria-hidden="true" className={`absolute left-3 right-3 bottom-3 h-px ${light ? 'bg-[#0C1324]' : 'bg-[#DCE1FB]'}`}
+                    transition={reduce ? { duration: 0 } : { type: 'spring', bounce: 0, duration: 0.35 }} />
+                )}
               </button>
               <div className={`cs-pop absolute top-full mt-px ${panelPos[m.key]}`} data-open={open === m.key ? 'true' : 'false'}>
                 <div className={`rounded-[4px] border p-3 ${panel}`}>{panelFor(m.key)}</div>
@@ -139,7 +149,7 @@ export default function SiteNav() {
 
         <div className="flex items-center gap-2">
           <Link to="/login" className={`hidden sm:inline-flex items-center min-h-[40px] px-3 text-[15px] ${light ? 'text-[#3E4555] hover:text-[#0C1324]' : 'text-[#C3C6D7] hover:text-white'}`}>Client portal</Link>
-          <Link to="/contact" className="cs-btn cs-btn-primary hidden sm:inline-flex !min-h-[40px]">Book a demo</Link>
+          <Link to="/contact" className="cs-btn cs-btn-primary hidden sm:inline-flex !min-h-[38px] !px-4">Book a demo<svg className="cs-btn-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" /></svg></Link>
           <button type="button" onClick={() => setMobileOpen((o) => !o)} aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen}
             className={`lg:hidden w-11 h-11 -mr-2 flex items-center justify-center bg-transparent ${light ? 'text-[#0C1324]' : 'text-[#DCE1FB]'}`}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">

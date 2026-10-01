@@ -34,19 +34,20 @@ const AboutPage = () => {
   return (
     <main className="cs-sans text-[#0C1324]">
       {/* ── Who we are ── */}
-      <section className={`${WRAP} pt-14 md:pt-20 pb-16 md:pb-24 grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] gap-10 lg:gap-20`}>
+      <section className="cs-paper"><div className={`${WRAP} pt-14 md:pt-20 pb-16 md:pb-24 grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] gap-10 lg:gap-20`}>
         <div>
-          <h1 className="cs-enter m-0 text-[34px] sm:text-[42px] lg:text-[48px] leading-[1.08] font-medium tracking-[-0.022em] max-w-[20ch]">We are security practitioners who got tired of tools that don&rsquo;t talk to each other.</h1>
+          <div className="cs-meta text-[#5F6676] flex items-center gap-3 mb-6"><span className="w-1.5 h-1.5 bg-[#2563EB]" aria-hidden="true" />Company / About</div>
+          <h1 className="cs-enter m-0 text-[34px] sm:text-[42px] lg:text-[48px] leading-[1.06] font-medium tracking-[-0.032em] max-w-[20ch]">We are security practitioners who got tired of tools that don&rsquo;t talk to each other.</h1>
           <p className="cs-enter cs-enter-2 mt-6 mb-0 text-[17px] leading-relaxed text-[#3E4555] max-w-[60ch]">CyberSage is led by certified investigators and consultants who have worked real incidents and trained real analysts. We build five products that share one platform, and we still run hands-on security, development and training engagements for clients.</p>
         </div>
         <aside className="lg:pt-3">
           <dl className="m-0 border-t border-[#0C1324] text-[14px]">
-            <div className="py-3 border-b border-[#DCE0E7] grid grid-cols-[130px_minmax(0,1fr)] gap-4"><dt className="text-[#5F6676]">Products</dt><dd className="m-0">{PRODUCTS.map((p) => p.name).join(', ')}</dd></div>
-            <div className="py-3 border-b border-[#DCE0E7] grid grid-cols-[130px_minmax(0,1fr)] gap-4"><dt className="text-[#5F6676]">Services</dt><dd className="m-0">Security assessments and testing, secure development, training and internships</dd></div>
-            <div className="py-3 border-b border-[#DCE0E7] grid grid-cols-[130px_minmax(0,1fr)] gap-4"><dt className="text-[#5F6676]">Team credentials</dt><dd className="m-0">CEH, CHFI, Digital Forensics, MSc Cyber Security</dd></div>
+            <div className="py-3 border-b border-[#DCE0E7] grid grid-cols-[130px_minmax(0,1fr)] gap-4"><dt className="cs-meta text-[#5F6676] pt-0.5">Products</dt><dd className="m-0">{PRODUCTS.map((p) => p.name).join(', ')}</dd></div>
+            <div className="py-3 border-b border-[#DCE0E7] grid grid-cols-[130px_minmax(0,1fr)] gap-4"><dt className="cs-meta text-[#5F6676] pt-0.5">Services</dt><dd className="m-0">Security assessments and testing, secure development, training and internships</dd></div>
+            <div className="py-3 border-b border-[#DCE0E7] grid grid-cols-[130px_minmax(0,1fr)] gap-4"><dt className="cs-meta text-[#5F6676] pt-0.5">Team credentials</dt><dd className="m-0">CEH, CHFI, Digital Forensics, MSc Cyber Security</dd></div>
           </dl>
         </aside>
-      </section>
+      </div></section>
 
       {/* ── Leadership (live data) ── */}
       <section className="bg-white border-y border-[#E6E9EF]">
@@ -95,7 +96,7 @@ const AboutPage = () => {
       )}
 
       {/* ── Work with us ── */}
-      <section className="bg-[#0C1324] text-white">
+      <section className="cs-char text-white">
         <div className={`${WRAP} py-14 md:py-16 flex flex-col md:flex-row md:items-center justify-between gap-6`}>
           <div>
             <h2 className="m-0 text-[24px] md:text-[28px] font-medium tracking-[-0.015em]">Work with us</h2>

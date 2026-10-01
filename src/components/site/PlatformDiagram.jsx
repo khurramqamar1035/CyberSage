@@ -1,146 +1,127 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 
-// Figure 1: how signals move through the platform. Dots are events in transit.
-// Desktop gets the full architecture drawing; small screens get a vertical flow.
+// Signature architecture drawing for the dark "One intelligence layer" section.
+// Lines draw themselves once in view; pulses then run along live data paths.
+// `focus` (a product slug) lights that product's node and its connections.
 
-function useReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(mq.matches);
-    const on = (e) => setReduced(e.matches);
-    mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
-    return () => (mq.removeEventListener ? mq.removeEventListener('change', on) : mq.removeListener(on));
-  }, []);
-  return reduced;
-}
+const F = 'Geist, sans-serif';
+const M = 'Geist Mono, monospace';
 
-const SOURCES = ['Endpoints', 'Cloud', 'Identity', 'Email', 'Network'];
-const SRC_Y = [40, 92, 144, 196, 248];
+const SRC = ['Endpoints', 'Cloud', 'Identity', 'Email', 'Network'];
+const SRC_Y = [70, 120, 170, 220, 270];
 
-// [path, packet colour, duration s, label, label x, label y]
-const FLOWS = SRC_Y.map((y, i) => [`M132 ${y + 18} C 182 ${y + 18}, 186 156, 232 156`, '#5F6676', 2.6 + i * 0.35]);
-const LINKS = {
-  down: 'M318 216 L318 296',
-  up: 'M346 296 L346 216',
-  nexusIn: 'M548 92 C 492 92, 484 128, 432 128',
-  eduIn: 'M548 182 C 492 182, 484 176, 432 176',
-  toVault: 'M432 204 C 486 204, 488 352, 548 352',
-  toNexus: 'M432 316 C 500 316, 488 104, 548 104',
+const P = {
+  src: SRC_Y.map((y) => `M150 ${y + 16} C 210 ${y + 16}, 214 196, 262 196`),
+  nexusIn: 'M640 104 C 580 104, 560 160, 482 168',
+  eduIn: 'M640 214 C 580 214, 560 206, 482 204',
+  down: 'M356 252 L356 330',
+  up: 'M388 330 L388 252',
+  toDecision: 'M372 418 L372 470',
+  toVault: 'M482 236 C 560 250, 570 380, 640 384',
+  toNexus: 'M482 374 C 600 374, 560 136, 640 136',
 };
 
-function Box({ x, y, w, h, title, sub, dark, blue, to }) {
-  const fill = blue ? '#2563EB' : dark ? '#0C1324' : '#FFFFFF';
-  const tc = blue || dark ? '#FFFFFF' : '#0C1324';
-  const sc = blue ? '#DBE5FF' : dark ? '#AEB6C8' : '#5F6676';
-  const inner = (
+// which product each path belongs to (for highlighting)
+const OWNER = {
+  nexus: ['nexusIn', 'toNexus'], education: ['eduIn'], vault: ['toVault'],
+  sentinel: ['src', 'down', 'up', 'toVault'], brain: ['down', 'up', 'toDecision', 'toNexus'],
+};
+
+function Path({ d, on, dashed, drawn, delay = 0, reduce }) {
+  return (
+    <motion.path d={d} fill="none" stroke={on ? '#7FA2FF' : '#2E3A57'} strokeWidth={on ? 1.5 : 1.1}
+      strokeDasharray={dashed ? '4 5' : undefined} markerEnd="url(#pd-arrow)"
+      initial={reduce || dashed ? false : { pathLength: 0 }} animate={drawn ? { pathLength: 1 } : undefined}
+      transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1], delay }} style={{ transition: 'stroke 200ms ease' }} />
+  );
+}
+
+function Node({ x, y, w, h, title, sub, tone, on }) {
+  const fill = tone === 'blue' ? '#2563EB' : tone === 'core' ? '#121A2E' : '#0E1526';
+  const stroke = on ? '#7FA2FF' : tone === 'blue' ? '#2563EB' : '#2A3654';
+  return (
     <g>
-      <rect x={x} y={y} width={w} height={h} rx="3" fill={fill} stroke={blue || dark ? fill : '#C5CBD6'} />
-      <text x={x + 14} y={y + (sub ? 24 : h / 2 + 5)} fill={tc} fontSize="14" fontWeight="600" fontFamily="IBM Plex Sans, sans-serif">{title}</text>
-      {sub && <text x={x + 14} y={y + 42} fill={sc} fontSize="12" fontFamily="IBM Plex Sans, sans-serif">{sub}</text>}
+      <rect x={x} y={y} width={w} height={h} rx="3" fill={fill} stroke={stroke} style={{ transition: 'stroke 200ms ease' }} />
+      <text x={x + 14} y={y + 22} fill="#FFFFFF" fontSize="13" fontFamily={M} letterSpacing="1">{title.toUpperCase()}</text>
+      {sub && <text x={x + 14} y={y + 40} fill={tone === 'blue' ? '#DBE5FF' : '#8D96AA'} fontSize="12" fontFamily={F}>{sub}</text>}
     </g>
   );
-  return to ? <Link to={to} aria-label={title}>{inner}</Link> : inner;
 }
 
-function Desktop({ animate }) {
-  const line = { fill: 'none', stroke: '#C5CBD6', strokeWidth: 1.25 };
-  const packet = (d, color, dur, delay = 0) => animate && (
-    <circle r="3" fill={color}>
-      <animateMotion dur={`${dur}s`} begin={`${delay}s`} repeatCount="indefinite" path={d} />
-    </circle>
+export default function PlatformDiagram({ focus = null }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '0px 0px -15% 0px' });
+  const reduce = useReducedMotion();
+  const [drawn, setDrawn] = useState(false);
+  const [running, setRunning] = useState(false);
+  useEffect(() => { if (inView) { setDrawn(true); const t = setTimeout(() => setRunning(true), 1300); return () => clearTimeout(t); } return undefined; }, [inView]);
+  const pulses = running && !reduce;
+  const lit = (key) => !!focus && (OWNER[focus] || []).includes(key);
+  const pulse = (d, color, dur, begin = 0) => pulses && (
+    <circle r="2.6" fill={color}><animateMotion dur={`${dur}s`} begin={`${begin}s`} repeatCount="indefinite" path={d} /></circle>
   );
+
   return (
-    <svg viewBox="0 0 680 420" className="w-full h-auto" role="img"
-      aria-label="Architecture: endpoints, cloud, identity, email and network events flow into Sage Sentinel. Sentinel sends signals to Sage Brain and Brain returns decisions. Nexus and Sage Education send activity to Sentinel. Sentinel turns incidents into Sage Vault scenarios and Brain sends summaries to Nexus.">
-      <defs>
-        <marker id="cs-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#8B92A1" /></marker>
-      </defs>
-      <text x="0" y="24" fill="#5F6676" fontSize="12" fontFamily="IBM Plex Sans, sans-serif">Your estate</text>
-      <text x="548" y="24" fill="#5F6676" fontSize="12" fontFamily="IBM Plex Sans, sans-serif">Platforms</text>
+    <figure className="m-0" ref={ref}>
+      <svg viewBox="0 0 780 500" className="w-full h-auto" role="img"
+        aria-label="Architecture. Events from endpoints, cloud, identity, email and network flow into Sage Sentinel. Nexus and Sage Education also send activity to Sentinel. Sentinel sends signals to Sage Brain, which returns decisions and produces actions for a person to approve. Brain sends summaries to Nexus and Sentinel turns incidents into Sage Vault labs.">
+        <defs>
+          <marker id="pd-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#4A5878" /></marker>
+        </defs>
 
-      {FLOWS.map(([d], i) => <path key={i} d={d} {...line} markerEnd="url(#cs-arrow)" />)}
-      <path d={LINKS.down} {...line} markerEnd="url(#cs-arrow)" />
-      <path d={LINKS.up} {...line} markerEnd="url(#cs-arrow)" />
-      <path d={LINKS.nexusIn} {...line} markerEnd="url(#cs-arrow)" />
-      <path d={LINKS.eduIn} {...line} markerEnd="url(#cs-arrow)" />
-      <path d={LINKS.toVault} {...line} markerEnd="url(#cs-arrow)" strokeDasharray="4 4" />
-      <path d={LINKS.toNexus} {...line} markerEnd="url(#cs-arrow)" strokeDasharray="4 4" />
+        <text x="0" y="44" fill="#5D6B88" fontSize="10.5" fontFamily={M} letterSpacing="1">YOUR ESTATE</text>
+        <text x="640" y="72" fill="#5D6B88" fontSize="10.5" fontFamily={M} letterSpacing="1">PLATFORMS</text>
 
-      <text x="292" y="262" fill="#5F6676" fontSize="11" textAnchor="end" fontFamily="IBM Plex Sans, sans-serif">signals</text>
-      <text x="372" y="262" fill="#5F6676" fontSize="11" fontFamily="IBM Plex Sans, sans-serif">decisions</text>
-      <text x="548" y="318" fill="#5F6676" fontSize="11" fontFamily="IBM Plex Sans, sans-serif">incidents become labs</text>
+        {P.src.map((d, i) => <Path key={i} d={d} on={lit('src')} drawn={drawn} delay={i * 0.06} reduce={reduce} />)}
+        <Path d={P.nexusIn} on={lit('nexusIn')} drawn={drawn} delay={0.3} reduce={reduce} />
+        <Path d={P.eduIn} on={lit('eduIn')} drawn={drawn} delay={0.35} reduce={reduce} />
+        <Path d={P.down} on={lit('down')} drawn={drawn} delay={0.5} reduce={reduce} />
+        <Path d={P.up} on={lit('up')} drawn={drawn} delay={0.55} reduce={reduce} />
+        <Path d={P.toDecision} on={lit('toDecision')} drawn={drawn} delay={0.7} reduce={reduce} />
+        <Path d={P.toVault} on={lit('toVault')} dashed drawn={drawn} reduce={reduce} />
+        <Path d={P.toNexus} on={lit('toNexus')} dashed drawn={drawn} reduce={reduce} />
 
-      {SOURCES.map((s, i) => (
-        <g key={s}>
-          <rect x="0" y={SRC_Y[i]} width="132" height="36" rx="3" fill="#FFFFFF" stroke="#DCE0E7" />
-          <text x="12" y={SRC_Y[i] + 23} fill="#3E4555" fontSize="13" fontFamily="IBM Plex Sans, sans-serif">{s}</text>
+        <text x="340" y="296" fill="#6F7C98" fontSize="10.5" fontFamily={M} textAnchor="end" letterSpacing="0.6">SIGNALS</text>
+        <text x="404" y="296" fill="#6F7C98" fontSize="10.5" fontFamily={M} letterSpacing="0.6">DECISIONS</text>
+        <text x="640" y="350" fill="#6F7C98" fontSize="10.5" fontFamily={M} letterSpacing="0.6">INCIDENTS → LABS</text>
+
+        {SRC.map((s, i) => (
+          <g key={s}>
+            <rect x="0" y={SRC_Y[i]} width="150" height="32" rx="3" fill="#0E1526" stroke={lit('src') ? '#3D5A8A' : '#1E2840'} />
+            <text x="14" y={SRC_Y[i] + 20.5} fill="#AEB6C8" fontSize="12.5" fontFamily={F}>{s}</text>
+          </g>
+        ))}
+
+        <Node x={262} y={140} w={220} h={112} title="Sage Sentinel" sub="SIEM · XDR · SOAR" tone="core" on={focus === 'sentinel'} />
+        <text x="276" y="212" fill="#6F7C98" fontSize="10.5" fontFamily={M}>detect → investigate</text>
+        <text x="276" y="232" fill="#6F7C98" fontSize="10.5" fontFamily={M}>→ respond</text>
+        {pulses && <circle cx="464" cy="158" r="3" fill="#44D8F1" className="cs-live" />}
+
+        <Node x={262} y={330} w={220} h={88} title="Sage Brain" sub="Context and decisions" tone="blue" on={focus === 'brain'} />
+
+        <g>
+          <rect x="316" y="470" width="112" height="28" rx="3" fill="#0A0F1C" stroke={lit('toDecision') ? '#44D8F1' : '#2A3654'} />
+          <text x="372" y="488" fill="#44D8F1" fontSize="10.5" fontFamily={M} textAnchor="middle" letterSpacing="1">DECISION</text>
         </g>
-      ))}
+        <text x="440" y="488" fill="#6F7C98" fontSize="11" fontFamily={F}>approved by a person</text>
 
-      <Box x={232} y={96} w={200} h={120} title="Sage Sentinel" sub="SIEM, XDR and SOAR" dark to="/products/sentinel" />
-      <text x="246" y="170" fill="#AEB6C8" fontSize="11" fontFamily="IBM Plex Mono, monospace">detect</text>
-      <text x="300" y="170" fill="#AEB6C8" fontSize="11" fontFamily="IBM Plex Mono, monospace">investigate</text>
-      <text x="246" y="194" fill="#AEB6C8" fontSize="11" fontFamily="IBM Plex Mono, monospace">respond</text>
-      <circle cx="414" cy="114" r="3.5" fill="#44D8F1" className="cs-live" />
+        <Node x={640} y={84} w={140} h={56} title="Nexus" sub="Workspace" on={focus === 'nexus'} />
+        <Node x={640} y={186} w={140} h={56} title="Education" sub="Institutions" on={focus === 'education'} />
+        <Node x={640} y={360} w={140} h={56} title="Vault" sub="Skills" on={focus === 'vault'} />
 
-      <Box x={232} y={296} w={200} h={72} title="Sage Brain" sub="Context and decisions" blue to="/products/brain" />
-
-      <Box x={548} y={68} w={132} h={52} title="Nexus" sub="Workspace" to="/products/nexus" />
-      <Box x={548} y={158} w={132} h={52} title="Sage Education" sub="Institutions" to="/products/education" />
-      <Box x={548} y={328} w={132} h={52} title="Sage Vault" sub="Skills" to="/products/vault" />
-
-      {FLOWS.map(([d, , dur], i) => <React.Fragment key={`p${i}`}>{packet(d, '#2563EB', dur, i * 0.4)}</React.Fragment>)}
-      {packet(LINKS.down, '#2563EB', 1.8)}
-      {packet(LINKS.up, '#0C1324', 1.8, 0.9)}
-      {packet(LINKS.nexusIn, '#2563EB', 2.8, 0.5)}
-      {packet(LINKS.eduIn, '#0E9AB0', 3.2, 1.2)}
-      {packet(LINKS.toVault, '#B76E00', 4.2, 1.6)}
-      {packet(LINKS.toNexus, '#0C1324', 4.6, 2.2)}
-    </svg>
-  );
-}
-
-function Mobile() {
-  const Step = ({ title, sub, tone = 'light', to }) => {
-    const cls = tone === 'dark' ? 'bg-[#0C1324] text-white' : tone === 'blue' ? 'bg-[#2563EB] text-white' : 'bg-white border border-[#DCE0E7] text-[#0C1324]';
-    const subCls = tone === 'light' ? 'text-[#5F6676]' : 'text-[#C9D2E6]';
-    return (
-      <Link to={to} className={`block rounded-[3px] px-4 py-3 ${cls}`}>
-        <span className="block text-[15px] font-semibold">{title}</span>
-        <span className={`block text-[13px] ${subCls}`}>{sub}</span>
-      </Link>
-    );
-  };
-  const Arrow = ({ label }) => (
-    <div className="flex items-center gap-3 py-2 pl-4 text-[12px] text-[#5F6676]"><span className="h-5 w-px bg-[#C5CBD6]" />{label}</div>
-  );
-  return (
-    <div>
-      <div className="rounded-[3px] border border-dashed border-[#C5CBD6] px-4 py-3 text-[13px] text-[#3E4555]">Your estate: endpoints, cloud, identity, email, network</div>
-      <Arrow label="events" />
-      <Step title="Sage Sentinel" sub="Detects, investigates and responds" tone="dark" to="/products/sentinel" />
-      <Arrow label="signals up, decisions back" />
-      <Step title="Sage Brain" sub="Context and decisions" tone="blue" to="/products/brain" />
-      <Arrow label="summaries, scenarios, records" />
-      <div className="grid grid-cols-3 gap-2">
-        <Step title="Nexus" sub="Workspace" to="/products/nexus" />
-        <Step title="Education" sub="Institutions" to="/products/education" />
-        <Step title="Vault" sub="Skills" to="/products/vault" />
-      </div>
-    </div>
-  );
-}
-
-export default function PlatformDiagram() {
-  const reduced = useReducedMotion();
-  return (
-    <figure className="m-0">
-      <div className="hidden md:block"><Desktop animate={!reduced} /></div>
-      <div className="md:hidden"><Mobile /></div>
-      <figcaption className="mt-4 text-[13px] leading-relaxed text-[#5F6676] max-w-[52ch]">
-        Figure 1. How signals move through the CyberSage platform.<span className="hidden md:inline"> Solid lines carry live data; dashed lines are outputs Brain and Sentinel hand to other products.</span>
+        {P.src.map((d, i) => <React.Fragment key={`ps${i}`}>{pulse(d, '#7FA2FF', 3 + i * 0.4, i * 0.5)}</React.Fragment>)}
+        {pulse(P.nexusIn, '#B4C5FF', 3.2, 0.4)}
+        {pulse(P.eduIn, '#44D8F1', 3.6, 1.1)}
+        {pulse(P.down, '#B4C5FF', 1.8)}
+        {pulse(P.up, '#FFFFFF', 1.8, 0.9)}
+        {pulse(P.toDecision, '#44D8F1', 2.2, 0.4)}
+        {pulse(P.toVault, '#FFB95F', 4.6, 1.6)}
+        {pulse(P.toNexus, '#B4C5FF', 5, 2.4)}
+      </svg>
+      <figcaption className="mt-4 flex flex-wrap gap-x-6 gap-y-1">
+        <span className="cs-meta text-[#5D6B88]">Fig. 02 / Platform architecture</span>
+        <span className="text-[13px] text-[#8D96AA]">Solid lines carry live data. Dashed lines are hand-offs to other products.</span>
       </figcaption>
     </figure>
   );
