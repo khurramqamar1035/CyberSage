@@ -1,11 +1,30 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { PageHero, Guides } from '../components/site/ServiceTemplates';
-import Certificate, { CERT_TEMPLATES, certDate } from '../components/certificate/Certificate';
+import Certificate, { CERT_TEMPLATES, certDate, resolveCertificate } from '../components/certificate/Certificate';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
 const FIELD = 'w-full bg-white border border-[rgba(7,9,13,0.25)] rounded-[1px] px-4 py-3 text-[17px] tracking-[0.04em] uppercase text-[#07090D] placeholder:normal-case placeholder:tracking-normal placeholder:text-[#8B95A5] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] cs-mono';
+
+// LinkedIn "Add to profile" (Licenses & certifications). Set LINKEDIN_ORG_ID to CyberSage's
+// numeric LinkedIn company ID to show the company logo on the entry; otherwise the name is used.
+const LINKEDIN_ORG_ID = '';
+const titleCase = (s) => String(s || '').toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase());
+function linkedInUrl(rec, code) {
+  const c = resolveCertificate(rec);
+  const issued = new Date(`${String(c.to || c.createdAt || new Date().toISOString()).slice(0, 10)}T00:00:00`);
+  const q = new URLSearchParams({
+    startTask: 'CERTIFICATION_NAME',
+    name: `${titleCase(c.title)} Certificate`,
+    ...(LINKEDIN_ORG_ID ? { organizationId: LINKEDIN_ORG_ID } : { organizationName: 'CyberSage' }),
+    issueYear: String(issued.getFullYear()),
+    issueMonth: String(issued.getMonth() + 1),
+    certId: code,
+    certUrl: `https://cybersage.uk/verify?code=${encodeURIComponent(code)}`,
+  });
+  return `https://www.linkedin.com/profile/add?${q.toString()}`;
+}
 
 const normalise = (s) => (s || '').trim().toUpperCase().replace(/\s+/g, '');
 
@@ -145,8 +164,12 @@ export default function VerifyPage() {
                 ))}
               </dl>
               <div className="md:col-span-4 md:col-start-9 flex flex-col gap-3 items-start">
-                <button type="button" onClick={() => window.print()} className="cs-btn cs-btn-primary">Print or save as PDF</button>
-                <p className="m-0 text-[14px] text-[#5B6575]">Share this page’s link to let anyone confirm the certificate.</p>
+                <a href={linkedInUrl(record, checked)} target="_blank" rel="noopener noreferrer" className="cs-btn cs-btn-primary">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" /></svg>
+                  Add to LinkedIn profile
+                </a>
+                <button type="button" onClick={() => window.print()} className="cs-btn cs-btn-secondary">Print or save as PDF</button>
+                <p className="m-0 text-[14px] text-[#5B6575]">LinkedIn will open with the certificate, ID and verification link filled in. Share this page’s link to let anyone confirm the certificate.</p>
               </div>
             </div>
           </div>
