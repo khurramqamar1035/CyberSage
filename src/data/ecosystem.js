@@ -115,6 +115,14 @@ export const PRODUCTS = [
 
 export const productBySlug = (slug) => PRODUCTS.find((p) => p.slug === slug);
 
+// How CyberSage builds (shown on the home and About pages)
+export const PRINCIPLES = [
+  { t: 'Built natively', d: 'We build each capability ourselves instead of stitching third-party tools together, so the products share one design and one way of working.' },
+  { t: 'Evidence before action', d: 'Recommendations come with the evidence behind them, so a person can check the reasoning.' },
+  { t: 'People approve what matters', d: 'Routine containment can run on its own. Actions on critical systems wait for an analyst.' },
+  { t: 'Practice should feel real', d: 'Vault simulations generate a new company and attack every session, so nobody can learn the answers by heart.' },
+];
+
 // Existing service pages (kept from the live site)
 export const SERVICE_GROUPS = [
   {

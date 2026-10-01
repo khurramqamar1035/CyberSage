@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { PRODUCTS, SERVICE_GROUPS, productBySlug } from '../data/ecosystem';
+import { PRODUCTS, SERVICE_GROUPS, PRINCIPLES, productBySlug } from '../data/ecosystem';
 import SignalField from '../components/site/SignalField';
 import ProductArt from '../components/site/ProductArt';
 import InternVoices from '../components/site/InternVoices';
@@ -42,12 +42,6 @@ const CHAPTERS = [
   { slug: 'brain', word: 'BRAIN', surface: 's-navy tx-grain', tone: 'light' },
 ];
 
-const PRINCIPLES = [
-  { t: 'Built natively', d: 'We build each capability ourselves instead of stitching third-party tools together, so the products share one design and one way of working.' },
-  { t: 'Evidence before action', d: 'Recommendations come with the evidence behind them, so a person can check the reasoning.' },
-  { t: 'People approve what matters', d: 'Routine containment can run on its own. Actions on critical systems wait for an analyst.' },
-  { t: 'Practice should feel real', d: 'Vault simulations generate a new company and attack every session, so nobody can learn the answers by heart.' },
-]
 
 /* Chapter header: index and the product name set large in expanded type */
 function Identifier({ n, name, role, tone = 'dark', outline = false }) {
@@ -117,11 +111,16 @@ const LandingPage = () => {
       {/* ═══ HERO: statement over the Signal Field ═══ */}
       <section className="relative s-black tx-grain overflow-hidden">
         <Guides dark />
-        <div className={`${WRAP} pt-14 md:pt-20`}>
-          <motion.h1 className="m-0 font-light text-[#ECEEF1] text-[40px] sm:text-[56px] lg:text-[72px] xl:text-[84px] leading-[0.98] tracking-[-0.035em] max-w-[16ch]"
+        <div className={`${WRAP} pt-14 md:pt-20 grid grid-cols-1 md:grid-cols-12 gap-8 items-center`}>
+          <motion.h1 className="md:col-span-8 m-0 font-light text-[#ECEEF1] text-[40px] sm:text-[56px] lg:text-[72px] xl:text-[84px] leading-[0.98] tracking-[-0.035em] max-w-[16ch]"
             initial={reduce ? false : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease: EASE }}>
             Security infrastructure for organisations that cannot afford to guess.
           </motion.h1>
+          <motion.div className="hidden md:flex md:col-span-4 justify-end relative" aria-hidden="true"
+            initial={reduce ? false : { opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.4, delay: 0.2, ease: EASE }}>
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[260px] lg:w-[380px] xl:w-[440px] aspect-square rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.24),transparent_62%)] blur-2xl" />
+            <img src="/brand/emblem-light.svg" alt="" className="relative w-[220px] lg:w-[320px] xl:w-[380px] h-auto" />
+          </motion.div>
         </div>
         <div className="relative mt-8 md:mt-10 tx-scan">
           <SignalField lines={32} theme="dark" labels={HERO_LABELS} eventX={0.58} className="h-[240px] md:h-[340px]"
