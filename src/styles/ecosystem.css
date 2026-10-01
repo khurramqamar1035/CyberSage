@@ -111,3 +111,13 @@
   .cs-swap, .cs-drift, .cs-live, .cs-caret { animation: none !important; }
   .cs-pop, .cs-sheet, .cs-btn, .cs-btn .cs-btn-arrow { transition: none !important; }
 }
+
+/* Printing a verified certificate: only the certificate, landscape */
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  body * { visibility: hidden !important; }
+  .cert-print-area, .cert-print-area * { visibility: visible !important; }
+  .cert-print-area { position: absolute; inset: 0; background: #fff !important; }
+  .cert-print-area > div { padding: 0 !important; max-width: none !important; }
+  .cert-print-area .cs-guides, .cert-no-print { display: none !important; }
+}

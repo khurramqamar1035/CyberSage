@@ -16,6 +16,7 @@ import BlogDetailPage from './pages/BlogDetailPage';
 import FAQPage from './pages/FAQPage';
 import AboutPage from './pages/AboutPage';
 import ProductPage from './pages/products/ProductPage';
+import VerifyPage from './pages/VerifyPage';
 
 // Security sub-pages
 import AiSecurityAudit from './pages/services/AiSecurityAudit';
@@ -58,6 +59,7 @@ import AdminLayout from './pages/admin/AdminLayout';
 import AdminCompanies from './pages/admin/AdminCompanies';
 import AdminCompanyDetail from './pages/admin/AdminCompanyDetail';
 import AdminBlogs from './pages/admin/AdminBlogs';
+import AdminCertificates from './pages/admin/AdminCertificates';
 import AdminFAQs from './pages/admin/AdminFAQs';
 import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminClients from './pages/admin/AdminClients';
@@ -122,6 +124,8 @@ function App() {
           <Route path="blog/:slug" element={<BlogDetailPage />} />
           <Route path="FAQ" element={<FAQPage />} />
           <Route path="about" element={<AboutPage />} />
+          <Route path="verify" element={<VerifyPage />} />
+          <Route path="verify/:code" element={<VerifyPage />} />
 
           {/* Legacy redirect shims */}
           <Route path="security" element={<Navigate to="/security-services" replace />} />
@@ -168,6 +172,7 @@ function App() {
           <Route path="testimonials" element={<AdminTestimonials />} />
           <Route path="clients" element={<AdminClients />} />
           <Route path="interns" element={<AdminInterns />} />
+          <Route path="certificates" element={<AdminCertificates />} />
         </Route>
       </Routes>
 

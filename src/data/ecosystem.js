@@ -162,6 +162,7 @@ export const RESOURCE_LINKS = [
   { name: 'Blog', to: '/blog', note: 'Research, guides and company news' },
   { name: 'FAQ', to: '/FAQ', note: 'Answers to common questions' },
   { name: 'Demo report', to: '/demo-report', note: 'A sample security assessment report' },
+  { name: 'Verify a certificate', to: '/verify', note: 'Check a CyberSage certificate ID' },
 ];
 
 // Routes built in the new light design. Everything else keeps the original dark theme.
