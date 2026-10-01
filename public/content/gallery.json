@@ -14,5 +14,13 @@
     "height": 900,
     "order": 1,
     "published": true
+  },
+  {
+    "id": "d176be37d92a",
+    "src": "/content/gallery/d176be37d92a.jpg",
+    "width": 1600,
+    "height": 900,
+    "order": 2,
+    "published": true
   }
 ]
