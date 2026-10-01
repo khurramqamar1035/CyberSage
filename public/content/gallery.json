@@ -54,5 +54,13 @@
     "height": 1200,
     "order": 6,
     "published": true
+  },
+  {
+    "id": "bec74acadb34",
+    "src": "/content/gallery/bec74acadb34.jpg",
+    "width": 1600,
+    "height": 1200,
+    "order": 7,
+    "published": true
   }
 ]
