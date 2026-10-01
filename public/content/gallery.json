@@ -86,5 +86,13 @@
     "height": 900,
     "order": 10,
     "published": true
+  },
+  {
+    "id": "8fdaf2247002",
+    "src": "/content/gallery/8fdaf2247002.jpg",
+    "width": 1600,
+    "height": 900,
+    "order": 11,
+    "published": true
   }
 ]
