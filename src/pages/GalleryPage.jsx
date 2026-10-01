@@ -1,24 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Guides } from '../components/site/ServiceTemplates';
+import { loadContent, published } from '../lib/content';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
-const CACHE_KEY = 'cs_gallery';
-const CACHE_TTL = 5 * 60 * 1000;
-
-function readCache() {
-  try {
-    const raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    const { data, ts } = JSON.parse(raw);
-    if (Date.now() - ts > CACHE_TTL) return null;
-    return data;
-  } catch { return null; }
-}
-function writeCache(data) {
-  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() })); } catch {}
-}
 
 function Lightbox({ items, index, onClose, onMove }) {
   const item = items[index];
@@ -44,7 +29,7 @@ function Lightbox({ items, index, onClose, onMove }) {
         </button>
       </div>
       <div className="relative flex-1 min-h-0 flex items-center justify-center px-4 md:px-20" onClick={(e) => e.stopPropagation()}>
-        <img src={item.imageUrl} alt="" className="max-w-full max-h-full object-contain" />
+        <img src={item.src} alt="" className="max-w-full max-h-full object-contain" />
         {items.length > 1 && (
           <>
             <button type="button" onClick={() => onMove(-1)} aria-label="Previous photo" className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-[#07090D]/60 border border-[rgba(236,238,241,0.2)] text-white">
@@ -62,15 +47,13 @@ function Lightbox({ items, index, onClose, onMove }) {
 }
 
 export default function GalleryPage() {
-  const cached = readCache();
-  const [items, setItems] = useState(cached || []);
-  const [loading, setLoading] = useState(!cached);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(-1);
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/gallery`)
-      .then((r) => (r.ok ? r.json() : []))
-      .then((data) => { const list = Array.isArray(data) ? data : []; setItems(list); writeCache(list); })
+    loadContent('gallery')
+      .then((list) => setItems(published(list)))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -107,7 +90,7 @@ export default function GalleryPage() {
                 <li key={item._id || item.id || i} className="mb-3 md:mb-4 break-inside-avoid">
                   <button type="button" onClick={() => setOpen(i)} className="group block w-full text-left bg-transparent p-0">
                     <span className="block overflow-hidden bg-[#E6E9ED]">
-                      <img src={item.imageUrl} alt="" loading="lazy" className="w-full h-auto block transition-transform duration-500 ease-out group-hover:scale-[1.03]" />
+                      <img src={item.src} alt="" loading="lazy" className="w-full h-auto block transition-transform duration-500 ease-out group-hover:scale-[1.03]" />
                     </span>
                   </button>
                 </li>

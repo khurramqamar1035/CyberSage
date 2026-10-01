@@ -1,31 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { TESTIMONIALS } from '../../data/testimonials';
+import { loadContent, published } from '../../lib/content';
 
-// Testimonials as a continuously moving row. Sources: the list in data/testimonials.js
-// plus anything published in Admin > Testimonials (scrolling); an admin entry with the
-// same name replaces the built-in one. Pauses on hover/focus; static row for reduced motion.
+// Testimonials as a continuously moving row, from public/content/testimonials.json
+// (managed in Admin > Testimonials). Pauses on hover/focus; static row for reduced motion.
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
-const CACHE_KEY = 'cs_intern_messages';
-const key = (n) => String(n || '').trim().toLowerCase();
 
 function useTestimonials() {
-  const [remote, setRemote] = useState(() => {
-    try { const c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); return c && Date.now() - c.ts < 300000 ? c.data : []; } catch { return []; }
-  });
+  const [list, setList] = useState([]);
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/intern-messages`)
-      .then((r) => (r.ok ? r.json() : []))
-      .then((d) => {
-        const data = Array.isArray(d) ? d.filter((m) => m.published !== false) : [];
-        setRemote(data);
-        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() })); } catch {}
-      })
-      .catch(() => {});
+    loadContent('testimonials').then((l) => setList(published(l))).catch(() => {});
   }, []);
-  const names = new Set(remote.map((m) => key(m.name)));
-  return [...remote, ...TESTIMONIALS.filter((t) => !names.has(key(t.name)))];
+  return list;
 }
 
 const initials = (n) => String(n || '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();

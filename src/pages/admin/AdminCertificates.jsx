@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Award, Plus, Pencil, Trash2, Loader2, X, Check, Copy, RefreshCw, Search } from 'lucide-react';
+import { Award, Plus, Pencil, Trash2, Loader2, X, Check, RefreshCw, Search } from 'lucide-react';
+import ContentKeyGate from './ContentKeyGate';
+import { contentApi, SAVED_NOTE } from './contentApi';
 import Certificate, { CERT_TEMPLATES, certDate } from '../../components/certificate/Certificate';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
-const VERIFY_URL = 'https://cybersage.uk/verify';
 const PREFIX = { completion: 'CS-INT', best: 'CS-BP', custom: 'CS-CERT' };
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
@@ -20,11 +20,17 @@ const templateFields = (type) => {
 };
 
 const emptyForm = () => ({ code: '', name: '', type: 'completion', ...templateFields('completion'), from: '', to: '' });
-const idOf = (c) => c.id || c._id;
+const idOf = (c) => c.hash;
 const input = 'w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500/60 placeholder-slate-600';
 const label = 'block text-slate-400 text-sm font-medium mb-1.5';
 
 export default function AdminCertificates() {
+  return <ContentKeyGate>{({ resetKey }) => <Editor resetKey={resetKey} />}</ContentKeyGate>;
+}
+
+// Certificates live in public/content/certificates.json. IDs are stored only as a SHA-256
+// fingerprint, so this list shows a masked ID; copy the full ID when you issue a certificate.
+function Editor({ resetKey }) {
   const [certs, setCerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -36,10 +42,6 @@ export default function AdminCertificates() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [query, setQuery] = useState('');
-  const [copied, setCopied] = useState('');
-
-  const token = localStorage.getItem('adminToken');
-  const auth = { Authorization: `Bearer ${token}` };
 
   useEffect(() => {
     fetchCerts();
@@ -50,18 +52,17 @@ export default function AdminCertificates() {
     setIsLoading(true);
     setLoadError('');
     try {
-      const res = await fetch(`${API_URL}/api/certificates`, { headers: auth });
-      if (!res.ok) throw new Error(res.status === 404 ? 'The certificates API is not installed on the backend yet.' : 'Could not load certificates.');
-      const data = await res.json();
+      const data = await contentApi('certificates', 'list');
       setCerts(Array.isArray(data) ? data : []);
     } catch (err) {
+      if (err.needsKey) { resetKey(); return; }
       setLoadError(err.message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const flash = (msg) => { setSuccess(msg); setTimeout(() => setSuccess(''), 3000); };
+  const flash = (msg) => { setSuccess(msg); setTimeout(() => setSuccess(''), 8000); };
 
   const openCreate = () => {
     setEditing(null);
@@ -74,7 +75,7 @@ export default function AdminCertificates() {
   const openEdit = (c) => {
     setEditing(c);
     setForm({
-      code: c.code || '', name: c.name || '', type: c.type || 'completion',
+      code: c.hint || '', name: c.name || '', type: c.type || 'completion',
       ...templateFields(c.type || 'completion'),
       ...Object.fromEntries(['title', 'leadIn', 'body', 'durationLabel'].filter((k) => c[k]).map((k) => [k, c[k]])),
       from: (c.from || '').slice(0, 10), to: (c.to || '').slice(0, 10),
@@ -108,16 +109,14 @@ export default function AdminCertificates() {
     }
     setSaving(true);
     try {
-      const res = await fetch(`${API_URL}/api/certificates${editing ? `/${idOf(editing)}` : ''}`, {
-        method: editing ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json', ...auth },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || data.message || 'Failed to save');
+      // keep the stored record lean: wording equal to the template default is not saved
+      const t = templateFields(form.type);
+      const payload = { ...form };
+      ['title', 'leadIn', 'body', 'durationLabel'].forEach((k) => { if (payload[k] === t[k]) delete payload[k]; });
+      const data = await contentApi('certificates', editing ? 'update' : 'create', editing ? { ...payload, hash: editing.hash } : payload);
+      setCerts(data.items || []);
       setShowModal(false);
-      flash(editing ? 'Certificate updated.' : 'Certificate issued. It can now be verified.');
-      fetchCerts();
+      flash(editing ? `Certificate updated. ${SAVED_NOTE}` : `Certificate ${form.code} issued. ${SAVED_NOTE} Verify link: cybersage.uk/verify?code=${form.code}`);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -126,13 +125,12 @@ export default function AdminCertificates() {
   };
 
   const handleDelete = async (c) => {
-    if (!window.confirm(`Revoke certificate ${c.code}? It will no longer verify.`)) return;
+    if (!window.confirm(`Revoke certificate ${c.hint} (${c.name})? It will no longer verify.`)) return;
     setDeletingId(idOf(c));
     try {
-      const res = await fetch(`${API_URL}/api/certificates/${idOf(c)}`, { method: 'DELETE', headers: auth });
-      if (!res.ok) throw new Error('Failed to delete');
-      setCerts((prev) => prev.filter((x) => idOf(x) !== idOf(c)));
-      flash('Certificate revoked.');
+      const data = await contentApi('certificates', 'delete', { hash: c.hash });
+      setCerts(data.items || []);
+      flash(`Certificate revoked. ${SAVED_NOTE}`);
     } catch (err) {
       alert(err.message);
     } finally {
@@ -140,18 +138,10 @@ export default function AdminCertificates() {
     }
   };
 
-  const copyLink = async (code) => {
-    try {
-      await navigator.clipboard.writeText(`${VERIFY_URL}?code=${code}`);
-      setCopied(code);
-      setTimeout(() => setCopied(''), 2000);
-    } catch { /* clipboard blocked */ }
-  };
-
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return certs;
-    return certs.filter((c) => `${c.code} ${c.name}`.toLowerCase().includes(q));
+    return certs.filter((c) => `${c.hint} ${c.name}`.toLowerCase().includes(q));
   }, [certs, query]);
 
   return (
@@ -168,7 +158,7 @@ export default function AdminCertificates() {
       </div>
 
       <p className="text-slate-400 text-sm max-w-3xl">
-        Only certificates listed here verify at <span className="text-slate-200">cybersage.uk/verify</span>. Enter the ID exactly as printed on the certificate (the QR code links to the same ID). Deleting a certificate revokes it.
+        Only certificates listed here verify at <span className="text-slate-200">cybersage.uk/verify</span>. Enter the ID exactly as printed on the certificate (the QR code links to the same ID). Deleting a certificate revokes it. For privacy, IDs are stored as a fingerprint, so this list only shows the end of each ID: copy the full ID when you issue one. Changes go live in about 1–2 minutes.
       </p>
 
       {success && (
@@ -207,16 +197,12 @@ export default function AdminCertificates() {
             <tbody>
               {filtered.map((c) => (
                 <tr key={idOf(c)} className="border-b border-[#1C212E] last:border-0 hover:bg-white/[0.02]">
-                  <td className="px-5 py-3 font-mono text-slate-200 whitespace-nowrap">{c.code}</td>
+                  <td className="px-5 py-3 font-mono text-slate-200 whitespace-nowrap">{c.hint}</td>
                   <td className="px-5 py-3 text-white">{c.name}</td>
                   <td className="px-5 py-3 text-slate-400">{(CERT_TEMPLATES[c.type] || {}).label || c.type}</td>
                   <td className="px-5 py-3 text-slate-400 whitespace-nowrap">{c.from && c.to ? `${certDate(c.from)} – ${certDate(c.to)}` : '—'}</td>
                   <td className="px-5 py-3">
                     <div className="flex items-center justify-end gap-1">
-                      <button onClick={() => copyLink(c.code)} className="p-2 text-slate-500 hover:text-slate-200 rounded-lg" title="Copy verify link">
-                        {copied === c.code ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                      </button>
-                      <a href={`/verify?code=${encodeURIComponent(c.code)}`} target="_blank" rel="noopener noreferrer" className="px-2 py-1 text-xs text-slate-400 hover:text-white">View</a>
                       <button onClick={() => openEdit(c)} className="p-2 text-slate-500 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg" title="Edit"><Pencil className="w-4 h-4" /></button>
                       <button onClick={() => handleDelete(c)} disabled={deletingId === idOf(c)} className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg disabled:opacity-50" title="Revoke">
                         {deletingId === idOf(c) ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
@@ -252,7 +238,7 @@ export default function AdminCertificates() {
                 <div>
                   <label className={label}>Certificate ID <span className="text-red-400">*</span></label>
                   <div className="flex gap-2">
-                    <input name="code" value={form.code} onChange={handleChange} placeholder="CS-INT-2026-XXXXXX" className={`${input} font-mono`} />
+                    <input name="code" value={form.code} onChange={handleChange} disabled={!!editing} placeholder="CS-INT-2026-XXXXXX" className={`${input} font-mono disabled:opacity-60`} />
                     {!editing && (
                       <button type="button" onClick={() => setForm((p) => ({ ...p, code: randomCode(p.type) }))} title="Generate a new ID" className="px-3 rounded-xl border border-[#1C212E] text-slate-400 hover:text-white">
                         <RefreshCw className="w-4 h-4" />

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, Loader2, X, Check } from 'lucide-react';
 
-// Generic admin list + create/edit/delete screen for a simple REST collection
-// (GET/POST /api/<path>, PUT/DELETE /api/<path>/:id), in the existing admin style.
+import ContentKeyGate from './ContentKeyGate';
+import { contentApi, SAVED_NOTE } from './contentApi';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+// Generic admin list + create/edit/delete screen for repo-stored content
+// (public/content/<collection>.json), saved through the /api/content Vercel function.
 const input = 'w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600';
-const idOf = (x) => x.id || x._id;
+const idOf = (x) => x.id;
 
 function Field({ f, value, onChange }) {
   const set = (v) => onChange(f.name, v);
@@ -30,7 +31,11 @@ function Field({ f, value, onChange }) {
   return <input type={f.type || 'text'} value={value} onChange={(e) => set(f.type === 'number' ? Number(e.target.value) : e.target.value)} placeholder={f.placeholder} list={f.suggestions ? `${f.name}-list` : undefined} className={input} />;
 }
 
-export default function AdminCollection({ title, icon: Icon, path, fields, empty, renderItem, grid = false, help }) {
+export default function AdminCollection(props) {
+  return <ContentKeyGate>{({ resetKey }) => <Editor {...props} resetKey={resetKey} />}</ContentKeyGate>;
+}
+
+function Editor({ title, icon: Icon, collection, fields, empty, renderItem, grid = false, help, resetKey }) {
   const blank = () => Object.fromEntries(fields.map((f) => [f.name, f.default !== undefined ? f.default : (f.type === 'checkbox' ? false : '')]));
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,18 +48,14 @@ export default function AdminCollection({ title, icon: Icon, path, fields, empty
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const token = localStorage.getItem('adminToken');
-  const auth = { Authorization: `Bearer ${token}` };
-
   const fetchItems = async () => {
     setIsLoading(true);
     setLoadError('');
     try {
-      const res = await fetch(`${API_URL}/api/${path}?all=1`, { headers: auth });
-      if (!res.ok) throw new Error(res.status === 404 ? `The ${title.toLowerCase()} API is not installed on the backend yet.` : 'Could not load items.');
-      const data = await res.json();
+      const data = await contentApi(collection, 'list');
       setItems(Array.isArray(data) ? data : []);
     } catch (err) {
+      if (err.needsKey) { resetKey(); return; }
       setLoadError(err.message);
     } finally {
       setIsLoading(false);
@@ -63,7 +64,7 @@ export default function AdminCollection({ title, icon: Icon, path, fields, empty
 
   useEffect(() => { fetchItems(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const flash = (m) => { setSuccess(m); setTimeout(() => setSuccess(''), 3000); };
+  const flash = (m) => { setSuccess(m); setTimeout(() => setSuccess(''), 6000); };
 
   const openCreate = () => { setEditing(null); setForm(blank()); setError(''); setShowModal(true); };
   const openEdit = (it) => {
@@ -84,16 +85,10 @@ export default function AdminCollection({ title, icon: Icon, path, fields, empty
     if (missing.length) { setError(`Please fill in: ${missing.join(', ')}.`); return; }
     setSaving(true);
     try {
-      const res = await fetch(`${API_URL}/api/${path}${editing ? `/${idOf(editing)}` : ''}`, {
-        method: editing ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json', ...auth },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || data.message || 'Failed to save');
+      const data = await contentApi(collection, editing ? 'update' : 'create', editing ? { ...form, id: idOf(editing) } : form);
+      setItems(data.items || []);
       setShowModal(false);
-      flash(editing ? 'Saved.' : 'Added.');
-      fetchItems();
+      flash(SAVED_NOTE);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -105,10 +100,9 @@ export default function AdminCollection({ title, icon: Icon, path, fields, empty
     if (!window.confirm('Delete this item? This cannot be undone.')) return;
     setDeletingId(idOf(it));
     try {
-      const res = await fetch(`${API_URL}/api/${path}/${idOf(it)}`, { method: 'DELETE', headers: auth });
-      if (!res.ok) throw new Error('Failed to delete');
-      setItems((p) => p.filter((x) => idOf(x) !== idOf(it)));
-      flash('Deleted.');
+      const data = await contentApi(collection, 'delete', { id: idOf(it) });
+      setItems(data.items || []);
+      flash(SAVED_NOTE);
     } catch (err) {
       alert(err.message);
     } finally {

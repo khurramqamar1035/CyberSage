@@ -7,8 +7,7 @@ const FIELDS = [
   { name: 'message', label: 'Their testimonial', type: 'textarea', rows: 7, required: true, hint: 'Paste what they wrote, in their own words.' },
   { name: 'role', label: 'Role', placeholder: 'Optional, shown under the name' },
   { name: 'cohort', label: 'Organisation', placeholder: 'Optional, shown under the name' },
-  { name: 'photo', label: 'Photo URL (optional)', type: 'image' },
-  { name: 'linkedin', label: 'LinkedIn URL (optional)', placeholder: 'https://www.linkedin.com/in/…' },
+    { name: 'linkedin', label: 'LinkedIn URL (optional)', placeholder: 'https://www.linkedin.com/in/…' },
   { name: 'order', label: 'Display order', type: 'number', default: 0, hint: 'Lower numbers appear first in the row.' },
   { name: 'published', label: 'Published', type: 'checkbox', checkboxLabel: 'Show on the website', default: true },
 ];
@@ -18,10 +17,10 @@ export default function AdminInternMessages() {
     <AdminCollection
       title="Testimonials (scrolling)"
       icon={MessageSquareQuote}
-      path="intern-messages"
+      collection="testimonials"
       fields={FIELDS}
       empty="No testimonials added yet"
-      help="Shown in the moving Testimonials row at the bottom of the home page, next to the three built in. Add anyone. Adding someone with the same name as a built-in one replaces it. Only add testimonials the person has agreed to share."
+      help="Shown in the moving Testimonials row at the bottom of the home page. Only add testimonials the person has agreed to share."
       renderItem={(it, actions) => (
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">

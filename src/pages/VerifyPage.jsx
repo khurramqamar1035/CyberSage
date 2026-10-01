@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { PageHero, Guides } from '../components/site/ServiceTemplates';
+import { loadContent, sha256Hex } from '../lib/content';
 import Certificate, { CERT_TEMPLATES, certDate, resolveCertificate } from '../components/certificate/Certificate';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const WRAP = 'max-w-[1400px] mx-auto px-6 md:px-10';
 const FIELD = 'w-full bg-white border border-[rgba(7,9,13,0.25)] rounded-[1px] px-4 py-3 text-[17px] tracking-[0.04em] uppercase text-[#07090D] placeholder:normal-case placeholder:tracking-normal placeholder:text-[#8B95A5] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] cs-mono';
 
@@ -28,20 +28,11 @@ function linkedInUrl(rec, code) {
 
 const normalise = (s) => (s || '').trim().toUpperCase().replace(/\s+/g, '');
 
-// Certificates are issued from the admin panel; only codes stored there verify.
-// Returns the record, null when the code is unknown, or throws when the service is unreachable.
+// Certificates are issued from the admin panel and stored in public/content/certificates.json,
+// keyed by a SHA-256 fingerprint of the ID. Returns the record, or null for an unknown ID.
 async function lookup(code) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), 60000); // the API host can take a while to wake up
-  try {
-    const res = await fetch(`${BACKEND_URL}/api/certificates/verify/${encodeURIComponent(code)}`, { signal: ctrl.signal });
-    if (res.status === 404) return null;
-    if (!res.ok) throw new Error('unavailable');
-    const d = await res.json();
-    return d && d.name ? d : null;
-  } finally {
-    clearTimeout(t);
-  }
+  const [list, hash] = await Promise.all([loadContent('certificates'), sha256Hex(code)]);
+  return list.find((c) => c.hash === hash) || null;
 }
 
 export default function VerifyPage() {
@@ -125,7 +116,7 @@ export default function VerifyPage() {
             {state === 'error' && (
               <div className="border-t-2 border-[#C93C40] pt-6">
                 <div className="text-[20px] font-medium">We could not check this certificate right now.</div>
-                <p className="m-0 mt-3 text-[16px] leading-relaxed text-[#3E4555]">The verification service did not respond. Please try again in a minute.</p>
+                <p className="m-0 mt-3 text-[16px] leading-relaxed text-[#3E4555]">Please check your connection and try again.</p>
                 <button type="button" onClick={() => verify(checked)} className="cs-btn cs-btn-secondary mt-5">Try again</button>
               </div>
             )}
