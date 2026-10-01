@@ -88,17 +88,11 @@ const Guides = ({ dark }) => <div className={`cs-guides ${dark ? 'on-dark' : ''}
 
 const LandingPage = () => {
   // Seed from cache immediately so data shows on first paint
-  const [testimonials, setTestimonials] = useState(() => readCache('cs_testimonials') || []);
   const [clients, setClients] = useState(() => readCache('cs_clients') || []);
   const [posts, setPosts] = useState(() => readCache('cs_blogs') || []);
   const reduce = useReducedMotion();
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/testimonials`)
-      .then((res) => res.json())
-      .then((data) => { const list = Array.isArray(data) ? data : []; setTestimonials(list); writeCache('cs_testimonials', list); })
-      .catch(() => {});
-
     fetch(`${BACKEND_URL}/api/clients`)
       .then((res) => res.json())
       .then((data) => { const list = Array.isArray(data) ? data : []; setClients(list); writeCache('cs_clients', list); })
@@ -117,7 +111,6 @@ const LandingPage = () => {
       .catch(() => {});
   }, []);
 
-  const [featured, ...moreQuotes] = testimonials;
 
   return (
     <main className="cs-sans">
@@ -247,8 +240,8 @@ const LandingPage = () => {
           </div>
         </div>
 
-        {/* clients and testimonials (live data) */}
-        {(clients.length > 0 || featured) && (
+        {/* clients (live data) */}
+        {clients.length > 0 && (
           <div className={`${WRAP} relative pb-20 md:pb-28`}>
             {clients.length > 0 && (
               <ul className="m-0 p-0 list-none grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-l border-[rgba(7,9,13,0.14)]">
@@ -260,24 +253,6 @@ const LandingPage = () => {
                   </li>
                 ))}
               </ul>
-            )}
-            {featured && (
-              <div className="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
-                <figure className="m-0 lg:col-span-7">
-                  <blockquote className="m-0 t-wide font-[250] text-[26px] md:text-[34px] leading-[1.2] tracking-[-0.02em]">&ldquo;{featured.content}&rdquo;</blockquote>
-                  <figcaption className="mt-6 text-[15px]"><span className="font-medium">{featured.name}</span><span className="text-[#5B6575]">{featured.role ? `, ${featured.role}` : ''}{featured.company ? `, ${featured.company}` : ''}</span></figcaption>
-                </figure>
-                {moreQuotes.length > 0 && (
-                  <div className="lg:col-span-4 lg:col-start-9 border-t border-[#07090D]">
-                    {moreQuotes.slice(0, 3).map((t, i) => (
-                      <figure key={i} className="m-0 py-5 border-b border-[rgba(7,9,13,0.14)]">
-                        <blockquote className="m-0 text-[15px] leading-relaxed text-[#3E4555]">&ldquo;{t.content}&rdquo;</blockquote>
-                        <figcaption className="mt-2 text-[13px]"><span className="font-medium">{t.name}</span><span className="text-[#5B6575]">{t.company ? `, ${t.company}` : ''}</span></figcaption>
-                      </figure>
-                    ))}
-                  </div>
-                )}
-              </div>
             )}
           </div>
         )}
