@@ -150,5 +150,13 @@
     "height": 1200,
     "order": 18,
     "published": true
+  },
+  {
+    "id": "713bbda6bfb8",
+    "src": "/content/gallery/713bbda6bfb8.jpg",
+    "width": 1600,
+    "height": 900,
+    "order": 19,
+    "published": true
   }
 ]
