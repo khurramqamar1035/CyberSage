@@ -1,24 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import SiteNav from './site/SiteNav';
 import SiteFooter from './site/SiteFooter';
+import SmoothScroll from './site/SmoothScroll';
+import { isLightRoute } from '../data/ecosystem';
 
 export default function PublicLayout() {
-  const { pathname, hash } = useLocation();
-
-  // New page → top; hash links → scroll to the section
-  useEffect(() => {
-    if (hash) {
-      const el = document.getElementById(hash.slice(1));
-      if (el) { el.scrollIntoView({ block: 'start' }); return; }
-    }
-    window.scrollTo(0, 0);
-  }, [pathname, hash]);
+  const { pathname } = useLocation();
+  const light = isLightRoute(pathname);
 
   return (
-    <div className="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-white min-h-screen flex flex-col">
+    <div className={`min-h-screen flex flex-col ${light ? 'bg-[#F5F6F8] text-[#0C1324] cs-sans' : 'bg-surface text-on-surface font-body selection:bg-primary-container selection:text-white'}`}>
+      <SmoothScroll />
       <SiteNav />
-      <div className="relative flex-grow flex flex-col pt-[72px]">
+      <div className="relative flex-grow flex flex-col pt-16">
         <Outlet />
       </div>
       <SiteFooter />

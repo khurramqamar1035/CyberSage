@@ -3,13 +3,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { PRODUCTS } from '../data/ecosystem';
-import Reveal from '../components/site/Reveal';
 
 const BACKEND_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
-
-const Arrow = ({ size = 16 }) => (
-  <svg className="cs-arrow" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-);
+const WRAP = 'max-w-[1320px] mx-auto px-5 md:px-8';
 
 const AboutPage = () => {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -27,7 +23,7 @@ const AboutPage = () => {
         setTeamMembers(Array.isArray(teamRes.data) ? teamRes.data : []);
         setOffices(Array.isArray(officeRes.data) ? officeRes.data : []);
       } catch {
-        // silently fail — sections below hide when empty
+        // sections below hide when empty
       } finally {
         setLoading(false);
       }
@@ -36,108 +32,97 @@ const AboutPage = () => {
   }, []);
 
   return (
-    <main className="relative overflow-x-hidden">
-      {/* ── Story ── */}
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-16 lg:pt-24 flex flex-col lg:flex-row gap-10 lg:gap-20 lg:items-end">
-        <h1 className="cs-rise cs-d1 cs-display lg:w-[760px] text-[48px] sm:text-[64px] lg:text-[76px] leading-[0.98] font-semibold tracking-[-0.04em]">Born from passion, driven by innovation.</h1>
-        <div className="cs-rise cs-d3 flex-1 flex flex-col gap-5">
-          <p className="text-[18px] leading-relaxed text-on-surface-variant">CyberSage is led by certified investigators and security consultants. We have worked real incidents, trained real analysts and seen how disconnected tools slow both down. So we built one connected ecosystem instead.</p>
-          <div className="flex flex-wrap gap-2">
-            {['CEH', 'CHFI', 'MSc Cyber Security', 'Digital Forensics'].map((c) => (
-              <span key={c} className="cs-mono px-2.5 py-1.5 rounded bg-surface-container border border-surface-container-highest text-[12px]">{c}</span>
-            ))}
-          </div>
+    <main className="cs-sans text-[#0C1324]">
+      {/* ── Who we are ── */}
+      <section className={`${WRAP} pt-14 md:pt-20 pb-16 md:pb-24 grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] gap-10 lg:gap-20`}>
+        <div>
+          <h1 className="cs-enter m-0 text-[34px] sm:text-[42px] lg:text-[48px] leading-[1.08] font-medium tracking-[-0.022em] max-w-[20ch]">We are security practitioners who got tired of tools that don&rsquo;t talk to each other.</h1>
+          <p className="cs-enter cs-enter-2 mt-6 mb-0 text-[17px] leading-relaxed text-[#3E4555] max-w-[60ch]">CyberSage is led by certified investigators and consultants who have worked real incidents and trained real analysts. We build five products that share one platform, and we still run hands-on security, development and training engagements for clients.</p>
         </div>
-      </section>
-
-      {/* ── What we build ── */}
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-20">
-        <div className="border-t border-outline-variant grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
-          {PRODUCTS.map((p, i) => (
-            <Link key={p.slug} to={`/products/${p.slug}`} className={`cs-hover-arrow flex flex-col gap-2 py-6 border-b lg:border-b-0 border-surface-container-high ${i < 4 ? 'lg:border-r lg:pr-6' : ''} ${i > 0 ? 'lg:pl-6' : ''}`}>
-              <span className="flex justify-between items-center"><span className="cs-mono text-[12px] text-outline">{p.num} {p.layer}</span><span className="text-primary"><Arrow size={14} /></span></span>
-              <span className="cs-display text-[21px] font-semibold">{p.name}</span>
-              <span className="text-[14px] leading-snug text-on-surface-variant">{p.line}</span>
-            </Link>
-          ))}
-        </div>
+        <aside className="lg:pt-3">
+          <dl className="m-0 border-t border-[#0C1324] text-[14px]">
+            <div className="py-3 border-b border-[#DCE0E7] grid grid-cols-[130px_minmax(0,1fr)] gap-4"><dt className="text-[#5F6676]">Products</dt><dd className="m-0">{PRODUCTS.map((p) => p.name).join(', ')}</dd></div>
+            <div className="py-3 border-b border-[#DCE0E7] grid grid-cols-[130px_minmax(0,1fr)] gap-4"><dt className="text-[#5F6676]">Services</dt><dd className="m-0">Security assessments and testing, secure development, training and internships</dd></div>
+            <div className="py-3 border-b border-[#DCE0E7] grid grid-cols-[130px_minmax(0,1fr)] gap-4"><dt className="text-[#5F6676]">Team credentials</dt><dd className="m-0">CEH, CHFI, Digital Forensics, MSc Cyber Security</dd></div>
+          </dl>
+        </aside>
       </section>
 
       {/* ── Leadership (live data) ── */}
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-24 lg:pt-32">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-          <h2 className="cs-display text-[36px] lg:text-[44px] leading-[1.05] font-semibold tracking-[-0.03em]">Leadership team</h2>
-          <Link to="/core-team" className="cs-hover-arrow inline-flex items-center gap-2 min-h-[44px] font-medium text-tertiary">Meet the full core team <Arrow size={14} /></Link>
+      <section className="bg-white border-y border-[#E6E9EF]">
+        <div className={`${WRAP} py-16 md:py-24`}>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-10">
+            <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em]">Leadership</h2>
+            <Link to="/core-team" className="cs-link text-[15px] font-medium">See the full core team</Link>
+          </div>
+          {loading ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6" aria-busy="true" aria-label="Loading team">
+              {[0, 1, 2, 3].map((i) => <div key={i} className="aspect-[4/5] bg-[#F1F3F6]" />)}
+            </div>
+          ) : teamMembers.length > 0 ? (
+            <ul className="m-0 p-0 list-none grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+              {teamMembers.map((m, i) => (
+                <li key={m._id || i}>
+                  <button type="button" onClick={() => setSelectedMember(m)} className="group w-full text-left bg-transparent">
+                    <span className="block aspect-[4/5] overflow-hidden bg-[#F1F3F6]">
+                      <img src={m.image} alt={m.name} loading="lazy" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-300" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                    </span>
+                    <span className="block mt-3 text-[16px] font-semibold">{m.name}</span>
+                    <span className="block text-[14px] text-[#5F6676]">{m.position}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="m-0 text-[15px] text-[#3E4555]">Team profiles are on the <Link to="/core-team" className="cs-link">core team page</Link>.</p>
+          )}
         </div>
-        {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5" aria-busy="true">
-            {[0, 1, 2, 3].map((i) => <div key={i} className="aspect-[4/5] rounded-lg bg-surface-container-low animate-pulse" />)}
-          </div>
-        ) : teamMembers.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {teamMembers.map((m, i) => (
-              <Reveal key={m._id || i} delay={(i % 4) * 60}>
-                <button type="button" onClick={() => setSelectedMember(m)} className="cs-press group w-full text-left flex flex-col gap-3">
-                  <span className="block aspect-[4/5] rounded-lg overflow-hidden bg-surface-container-low border border-surface-container-high">
-                    <img src={m.image} alt={m.name} loading="lazy" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-[filter] duration-500" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                  </span>
-                  <span className="flex flex-col gap-0.5"><span className="cs-display text-[18px] font-semibold">{m.name}</span><span className="text-[14px] text-outline">{m.position}</span></span>
-                </button>
-              </Reveal>
-            ))}
-          </div>
-        ) : (
-          <p className="text-on-surface-variant">Team profiles are on the <Link to="/core-team" className="text-tertiary underline">core team page</Link>.</p>
-        )}
       </section>
 
       {/* ── Offices (live data) ── */}
       {offices.length > 0 && (
-        <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-24 lg:pt-32">
-          <h2 className="cs-display text-[36px] lg:text-[44px] leading-[1.05] font-semibold tracking-[-0.03em] mb-10">Our offices</h2>
-          <div className="border-t border-outline-variant">
+        <section className={`${WRAP} py-16 md:py-24 grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 lg:gap-16`}>
+          <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em]">Offices</h2>
+          <ul className="m-0 p-0 list-none border-t border-[#0C1324]">
             {offices.map((o, i) => (
-              <Reveal key={o._id || i} className="grid grid-cols-1 md:grid-cols-[160px_1fr_1fr] gap-2 md:gap-8 py-6 border-b border-surface-container-high">
-                <span className="cs-mono text-[12px] text-secondary self-center">{o.type}</span>
-                <span className="cs-display text-[24px] font-semibold">{o.city}<span className="text-outline font-normal">, {o.country}</span></span>
-                <span className="text-[15px] text-on-surface-variant self-center">{o.address}</span>
-              </Reveal>
+              <li key={o._id || i} className="grid grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-1 sm:gap-8 py-5 border-b border-[#DCE0E7]">
+                <div><div className="text-[17px] font-semibold">{o.city}, {o.country}</div><div className="text-[13px] text-[#5F6676]">{o.type}</div></div>
+                <div className="text-[15px] text-[#3E4555]">{o.address}</div>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       )}
 
-      {/* ── CTA ── */}
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-24 lg:pt-32 pb-24">
-        <Reveal className="rounded-lg bg-surface-container-low border border-surface-container-high px-6 py-9 sm:px-12 sm:py-11 flex flex-col md:flex-row gap-6 md:items-center justify-between">
-          <div className="flex flex-col gap-2"><h2 className="cs-display text-[30px] lg:text-[36px] font-semibold tracking-[-0.03em]">Work with us.</h2><p className="text-[16px] text-on-surface-variant">Book a demo, ask about services, or join an internship cohort.</p></div>
-          <div className="flex flex-wrap gap-3">
-            <Link to="/contact" className="cs-press cs-btn-blue inline-flex items-center min-h-[52px] px-6 rounded-md bg-primary-container text-white font-semibold">Contact us</Link>
-            <Link to="/training/internship" className="cs-press cs-btn-line inline-flex items-center min-h-[52px] px-5 rounded-md border border-outline-variant font-medium">Internships</Link>
+      {/* ── Work with us ── */}
+      <section className="bg-[#0C1324] text-white">
+        <div className={`${WRAP} py-14 md:py-16 flex flex-col md:flex-row md:items-center justify-between gap-6`}>
+          <div>
+            <h2 className="m-0 text-[24px] md:text-[28px] font-medium tracking-[-0.015em]">Work with us</h2>
+            <p className="mt-2 mb-0 text-[15px] text-[#AEB6C8]">Book a demo, ask about an engagement, or apply for the next internship cohort.</p>
           </div>
-        </Reveal>
+          <div className="flex flex-wrap gap-3">
+            <Link to="/contact" className="cs-btn cs-btn-on-dark">Contact us</Link>
+            <Link to="/training/internship" className="cs-btn cs-btn-ghost-dark">Internships</Link>
+          </div>
+        </div>
       </section>
 
-      {/* ── Member dialog ── */}
       <Dialog open={!!selectedMember} onOpenChange={() => setSelectedMember(null)}>
         {selectedMember && (
-          <DialogContent className="bg-surface-container-low border-surface-container-highest w-[95%] sm:max-w-2xl max-h-[90vh] overflow-y-auto text-on-surface">
+          <DialogContent className="cs-sans bg-white border-[#DCE0E7] text-[#0C1324] w-[95%] sm:max-w-2xl max-h-[90vh] overflow-y-auto rounded-[4px]">
             <DialogHeader>
-              <DialogTitle className="cs-display text-2xl">{selectedMember.name}</DialogTitle>
-              <p className="text-tertiary">{selectedMember.position}</p>
+              <DialogTitle className="text-2xl font-semibold">{selectedMember.name}</DialogTitle>
+              <p className="text-[#5F6676]">{selectedMember.position}</p>
             </DialogHeader>
-            {selectedMember.bio && <p className="text-on-surface-variant mt-4 leading-relaxed">{selectedMember.bio}</p>}
+            {selectedMember.bio && <p className="text-[#3E4555] mt-4 leading-relaxed">{selectedMember.bio}</p>}
             {selectedMember.expertise?.length > 0 && (
               <div className="mt-6">
                 <h4 className="font-semibold mb-2">Expertise</h4>
-                <div className="flex flex-wrap gap-2">
-                  {selectedMember.expertise.map((skill, i) => (
-                    <span key={i} className="cs-mono text-[12px] px-2.5 py-1 rounded bg-surface-container-high">{skill}</span>
-                  ))}
-                </div>
+                <p className="m-0 text-[#3E4555]">{selectedMember.expertise.join(', ')}</p>
               </div>
             )}
-            {selectedMember.education && <p className="text-outline mt-4">{selectedMember.education}</p>}
+            {selectedMember.education && <p className="text-[#5F6676] mt-4">{selectedMember.education}</p>}
           </DialogContent>
         )}
       </Dialog>

@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { PRODUCTS, SERVICE_GROUPS } from '../data/ecosystem';
-import EcosystemOrbit from '../components/site/EcosystemOrbit';
-import Reveal from '../components/site/Reveal';
+import { PRODUCTS, SERVICE_GROUPS, productBySlug } from '../data/ecosystem';
+import PlatformDiagram from '../components/site/PlatformDiagram';
+import ProductVisual from '../components/site/ProductVisual';
+import VantaNet from '../components/site/VantaNet';
 
 const BACKEND_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 
@@ -23,9 +25,98 @@ function writeCache(key, data) {
   try { localStorage.setItem(key, JSON.stringify({ data, ts: Date.now() })); } catch {}
 }
 
-const Arrow = ({ size = 16 }) => (
-  <svg className="cs-arrow" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-);
+const WRAP = 'max-w-[1320px] mx-auto px-5 md:px-8';
+
+// The sequence of a real incident, end to end
+const TIMELINE = [
+  { t: '02:41', who: 'Nexus', what: 'A lookalike invoice email reaches six people in finance.' },
+  { t: '03:05', who: 'Sentinel', what: 'One of them signs in from a second country 17 minutes after the first.' },
+  { t: '03:07', who: 'Sentinel', what: 'A playbook revokes the session and removes a new forwarding rule.' },
+  { t: '03:09', who: 'Brain', what: 'Brain links the login to the email and drafts a recommendation.' },
+  { t: '08:30', who: 'Analyst', what: 'The on-call analyst reviews the evidence and approves four resets.' },
+  { t: 'Next week', who: 'Vault', what: 'Finance works through the same attack as a guided investigation.' },
+];
+
+const PRINCIPLES = [
+  { t: 'Evidence before action', d: 'Every recommendation from Sage Brain shows the events and sources behind it. An analyst should be able to check the reasoning in under a minute.' },
+  { t: 'People approve what matters', d: 'Automated playbooks handle routine containment. Changes to accounts, money or production systems wait for a named person.' },
+  { t: 'One platform, not five tools', d: 'The products share identity and context, so an incident in Sentinel, a message in Nexus and a lab in Vault are part of the same record.' },
+  { t: 'Practise on what really happens', d: 'Vault exercises are built from the kinds of incidents our own investigators work, not from textbook examples.' },
+];
+
+// Product switcher. Adapted from 21st.dev "Animated Tabs" (educalvolpz): roving tabindex,
+// arrow/Home/End keys, and a spring underline shared via layoutId.
+function ProductTabs() {
+  const [active, setActive] = useState('sentinel');
+  const tabRefs = useRef({});
+  const stripRef = useRef(null);
+  const reduce = useReducedMotion();
+
+  // Keep the selected tab in view inside the horizontally scrolling strip (mobile)
+  useEffect(() => {
+    const el = tabRefs.current[active]; const strip = stripRef.current;
+    if (el && strip && strip.scrollWidth > strip.clientWidth) strip.scrollTo({ left: Math.max(el.offsetLeft - 20, 0), behavior: reduce ? 'auto' : 'smooth' });
+  }, [active, reduce]);
+  const product = productBySlug(active);
+
+  const onKey = (e, i) => {
+    let n = i;
+    if (e.key === 'ArrowRight') n = (i + 1) % PRODUCTS.length;
+    else if (e.key === 'ArrowLeft') n = (i - 1 + PRODUCTS.length) % PRODUCTS.length;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = PRODUCTS.length - 1;
+    else return;
+    e.preventDefault();
+    const next = PRODUCTS[n].slug;
+    setActive(next);
+    tabRefs.current[next]?.focus();
+  };
+
+  return (
+    <>
+      <div ref={stripRef} className="relative cs-scroll-x -mx-5 px-5 md:mx-0 md:px-0 border-b border-[#DCE0E7]">
+        <div role="tablist" aria-label="CyberSage products" className="flex min-w-max">
+          {PRODUCTS.map((p, i) => {
+            const on = active === p.slug;
+            return (
+              <button key={p.slug} ref={(el) => { tabRefs.current[p.slug] = el; }} role="tab" type="button" id={`tab-${p.slug}`}
+                aria-selected={on} aria-controls="product-panel" tabIndex={on ? 0 : -1}
+                onClick={() => setActive(p.slug)} onKeyDown={(e) => onKey(e, i)}
+                className={`relative text-left mr-8 md:mr-12 pb-4 pt-1 bg-transparent transition-colors ${on ? 'text-[#0C1324]' : 'text-[#5F6676] hover:text-[#0C1324]'}`}>
+                <span className="block text-[13px]">{p.role}</span>
+                <span className="block text-[17px] font-semibold">{p.name}</span>
+                {on && (
+                  <motion.span layoutId="product-tab-underline" aria-hidden="true"
+                    className="absolute left-0 right-0 -bottom-px h-[2px] bg-[#0C1324]"
+                    transition={reduce ? { duration: 0 } : { type: 'spring', bounce: 0.05, duration: 0.3 }} />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div id="product-panel" role="tabpanel" aria-labelledby={`tab-${active}`} key={active}
+        className="cs-swap pt-10 grid grid-cols-1 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] gap-10 lg:gap-14">
+        <div className="flex flex-col gap-4 lg:pt-2">
+          <h3 className="m-0 text-[24px] font-semibold tracking-[-0.01em]">{product.name}</h3>
+          <p className="m-0 text-[18px] leading-snug text-[#0C1324]">{product.line}</p>
+          <p className="m-0 text-[15px] leading-relaxed text-[#3E4555] max-w-[46ch]">{product.summary}</p>
+          <dl className="m-0 mt-2 border-t border-[#DCE0E7]">
+            {product.caps.map((c) => (
+              <div key={c.t} className="py-2.5 border-b border-[#DCE0E7] flex flex-col gap-0.5">
+                <dt className="text-[14px] font-semibold">{c.t}</dt>
+                <dd className="m-0 text-[14px] text-[#5F6676] leading-snug">{c.d}</dd>
+              </div>
+            ))}
+          </dl>
+          <Link to={`/products/${product.slug}`} className="cs-link text-[15px] font-medium mt-1 w-fit">Read about {product.name}</Link>
+        </div>
+        <ProductVisual product={product} />
+      </div>
+    </>
+  );
+}
 
 const LandingPage = () => {
   // Seed from cache immediately so data shows on first paint
@@ -50,180 +141,172 @@ const LandingPage = () => {
       .catch(() => {});
   }, []);
 
-  return (
-    <main className="relative overflow-x-hidden">
-      <div className="cs-grid-bg absolute inset-x-0 top-0 h-[900px] opacity-50 pointer-events-none" aria-hidden="true" />
+  const [featured, ...moreQuotes] = testimonials;
 
-      {/* ── Hero ── */}
-      <section className="relative max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-12 lg:pt-16 flex flex-col lg:flex-row items-center gap-10">
-        <div className="flex-1 flex flex-col w-full">
-          <h1 className="cs-display font-semibold tracking-[-0.045em] leading-[0.96] text-[52px] sm:text-[72px] xl:text-[96px]">
-            <span className="cs-rise cs-d1 block">One ecosystem.</span>
-            <span className="cs-rise cs-d2 block text-primary">Multiple</span>
-            <span className="cs-rise cs-d3 block text-primary">capabilities.</span>
+  return (
+    <main className="cs-sans text-[#0C1324]">
+      {/* ── Hero: what we do, and how it fits together ── */}
+      <section className={`${WRAP} pt-14 md:pt-20 pb-16 md:pb-24 grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-12 lg:gap-16 items-start`}>
+        <div className="lg:pt-6">
+          <h1 className="cs-enter m-0 text-[36px] sm:text-[44px] lg:text-[52px] leading-[1.08] font-medium tracking-[-0.022em] max-w-[16ch]">
+            Security infrastructure for organisations that cannot afford to guess.
           </h1>
-          <p className="cs-rise cs-d4 mt-8 max-w-[560px] text-[18px] sm:text-[20px] leading-relaxed text-on-surface-variant">
-            From everyday collaboration and education to hands-on cyber training and autonomous security operations, CyberSage builds intelligent platforms designed to work together.
+          <p className="cs-enter cs-enter-2 mt-6 mb-0 text-[17px] md:text-[18px] leading-relaxed text-[#3E4555] max-w-[54ch]">
+            CyberSage builds five products that work as one platform. Sage Sentinel watches your estate and responds to threats. Sage Brain connects what it sees and proposes decisions. Nexus, Sage Education and Sage Vault give your people a secure place to work, run an institution and practise real security.
           </p>
-          <div className="cs-rise cs-d5 mt-9 flex flex-wrap gap-3">
-            <Link to="/contact" className="cs-press cs-btn-blue cs-hover-arrow inline-flex items-center gap-2.5 min-h-[54px] px-6 rounded-md bg-primary-container text-white text-[16px] font-semibold">Book a demo <Arrow /></Link>
-            <a href="#ecosystem" className="cs-press cs-btn-line inline-flex items-center min-h-[54px] px-5 rounded-md border border-outline-variant text-[16px] font-medium">How it connects</a>
+          <div className="cs-enter cs-enter-3 mt-8 flex flex-wrap gap-3">
+            <Link to="/contact" className="cs-btn cs-btn-primary">Book a demo</Link>
+            <a href="#platform" className="cs-btn cs-btn-secondary">Explore the platform</a>
           </div>
+          <p className="mt-8 mb-0 text-[13px] leading-relaxed text-[#5F6676] max-w-[46ch]">
+            Designed and run by certified security practitioners: CEH, CHFI, Digital Forensics, MSc Cyber Security.
+          </p>
         </div>
-        <EcosystemOrbit />
+        <div className="lg:pl-6 lg:border-l lg:border-[#DCE0E7]">
+          <PlatformDiagram />
+        </div>
       </section>
 
-      {/* ── Product rail ── */}
-      <nav aria-label="Platforms" className="relative max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 mt-12 lg:mt-16">
-        <div className="border-t border-outline-variant grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
-          {PRODUCTS.map((p, i) => (
-            <Link key={p.slug} to={`/products/${p.slug}`}
-              className={`cs-rise cs-d6 cs-hover-arrow group flex flex-col gap-2.5 py-6 border-b lg:border-b-0 border-surface-container-high ${i < 4 ? 'lg:border-r lg:pr-6' : ''} ${i > 0 ? 'lg:pl-6' : ''}`}>
-              <span className="flex justify-between items-center"><span className="cs-mono text-[12px] text-outline">{p.num} {p.layer}</span><span className="text-primary"><Arrow /></span></span>
-              <span className="cs-display text-[25px] font-semibold tracking-tight">{p.name}</span>
-              <span className="text-[15px] leading-snug text-on-surface-variant">{p.line}</span>
-              <span className="h-0.5 w-8" style={{ background: p.color }} />
-            </Link>
-          ))}
-        </div>
-      </nav>
-
-      {/* ── Ecosystem hierarchy ── */}
-      <section id="ecosystem" className="scroll-mt-24 max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-28 lg:pt-36 flex flex-col lg:flex-row gap-12 lg:gap-14">
-        <Reveal className="lg:w-[380px] flex flex-col gap-5">
-          <h2 className="cs-display text-[40px] lg:text-[50px] leading-[1.02] font-semibold tracking-[-0.035em]">From workspace to intelligence.</h2>
-          <p className="text-[18px] leading-relaxed text-on-surface-variant">Each layer adds a capability. Sage Brain sits underneath all of them, reading signals and sending context back up. Start with one platform and add the rest when you need them.</p>
-        </Reveal>
-        <div className="flex-1 relative">
-          <svg className="hidden xl:block absolute right-0 top-0" width="110" height="500" viewBox="0 0 110 500" fill="none" aria-hidden="true">
-            <path className="cs-flow" d="M40 440 V 40" stroke="#44D8F1" strokeWidth="1.5" strokeDasharray="4 6" />
-            <path d="M32 50 L40 38 L48 50" stroke="#44D8F1" strokeWidth="1.5" />
-            <text x="62" y="240" fill="#8D90A0" fontFamily="IBM Plex Mono, monospace" fontSize="12" transform="rotate(90 62 240)" textAnchor="middle">signals and context</text>
-          </svg>
-          <div className="flex flex-col gap-2.5 xl:pr-28">
-            {PRODUCTS.map((p, i) => {
-              const brain = p.slug === 'brain';
-              return (
-                <Reveal key={p.slug} delay={i * 70} className={['', 'xl:ml-12', 'xl:ml-24', 'xl:ml-36', 'xl:mt-3'][i]}>
-                  <Link to={`/products/${p.slug}`}
-                    className={`cs-lift flex items-center gap-4 sm:gap-5 px-5 sm:px-6 rounded-lg border ${brain ? 'py-7 bg-primary-container border-primary-container text-white xl:max-w-[844px]' : 'py-5 bg-surface-container-low border-surface-container-high xl:max-w-[700px]'}`}>
-                    <span className={`cs-mono w-6 text-[12px] ${brain ? 'text-primary-fixed' : 'text-outline'}`}>{p.num}</span>
-                    {brain ? <img src="/brand/emblem.png" alt="" className="w-[22px] h-[22px] object-contain" /> : <span className="w-2.5 h-2.5 rounded-[2px]" style={{ background: p.color }} />}
-                    <span className="cs-display w-[150px] sm:w-[190px] text-[19px] sm:text-[21px] font-semibold">{p.name}</span>
-                    <span className={`hidden sm:block text-[15px] ${brain ? 'text-[#EEEFFF]' : 'text-on-surface-variant'}`}>{p.short}</span>
-                  </Link>
-                </Reveal>
-              );
-            })}
+      {/* ── The products, one at a time ── */}
+      <section id="platform" className="scroll-mt-20 bg-white border-y border-[#E6E9EF]">
+        <div className={`${WRAP} py-16 md:py-24`}>
+          <div className="grid grid-cols-1 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-4 md:gap-16 mb-10 md:mb-12">
+            <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em]">One platform, five products</h2>
+            <p className="m-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[60ch] md:pt-1.5">Each product stands on its own, and each gets more useful next to the others. Pick one to see how it is used day to day.</p>
           </div>
+          <ProductTabs />
         </div>
+      </section>
+
+      {/* ── A real incident, minute by minute ── */}
+      <section className="relative overflow-hidden bg-[#0C1324] text-[#DCE1FB]">
+        <VantaNet className="absolute inset-0" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,19,36,0.92)_20%,rgba(12,19,36,0.35)_75%)]" aria-hidden="true" />
+        <div className={`${WRAP} relative py-16 md:py-24`}>
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-4 lg:gap-16 mb-12">
+            <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em] text-white max-w-[20ch]">What happens when something goes wrong at 3am</h2>
+            <p className="m-0 text-[16px] leading-relaxed text-[#AEB6C8] max-w-[58ch] lg:pt-1.5">A credential phishing case as it moves through the platform. Times are from a representative incident; the products involved are the ones that handle each step.</p>
+          </div>
+          <ol className="m-0 p-0 list-none grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 border-t border-[#2A3247]">
+            {TIMELINE.map((s, i) => (
+              <li key={i} className="relative pt-5 pb-6 md:pr-6 border-b md:border-b-0 border-[#1E2638]">
+                <span className="absolute -top-[5px] left-0 w-[9px] h-[9px] rounded-full bg-[#0C1324] border-2 border-[#44D8F1]" aria-hidden="true" />
+                <div className="cs-mono text-[13px] text-white">{s.t}</div>
+                <div className="mt-1 text-[13px] text-[#44D8F1]">{s.who}</div>
+                <p className="m-0 mt-2 text-[14px] leading-relaxed text-[#C9D0DD]">{s.what}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── Principles ── */}
+      <section className={`${WRAP} py-16 md:py-24 grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 lg:gap-16`}>
+        <div>
+          <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em]">How we build security products</h2>
+          <p className="mt-4 mb-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[44ch]">Four rules we hold every release to, written by the people who would be on call if we got them wrong.</p>
+        </div>
+        <dl className="m-0 border-t border-[#0C1324]">
+          {PRINCIPLES.map((p) => (
+            <div key={p.t} className="grid grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-1 sm:gap-8 py-5 border-b border-[#DCE0E7]">
+              <dt className="text-[17px] font-semibold">{p.t}</dt>
+              <dd className="m-0 text-[15px] leading-relaxed text-[#3E4555]">{p.d}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* ── Services (from the live site) ── */}
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-28 lg:pt-36 flex flex-col lg:flex-row gap-12 lg:gap-16">
-        <Reveal className="lg:w-[360px] flex flex-col gap-4">
-          <h2 className="cs-display text-[36px] lg:text-[44px] leading-[1.05] font-semibold tracking-[-0.03em]">Services, alongside the platforms.</h2>
-          <p className="text-[16px] leading-relaxed text-on-surface-variant">Our consultants still take on hands-on security, development and training engagements. Many clients start here and move onto a platform.</p>
-        </Reveal>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
-          {SERVICE_GROUPS.map((g, gi) => (
-            <Reveal key={g.title} delay={gi * 80} className="flex flex-col">
-              <Link to={g.to} className="cs-hover-arrow flex items-center justify-between pb-3.5 border-b border-outline-variant">
-                <span className="cs-display text-[20px] font-semibold">{g.title}</span><span className="text-outline"><Arrow size={14} /></span>
-              </Link>
-              {g.items.map((it) => (
-                <Link key={it.to} to={it.to} className="cs-hover-arrow flex items-center justify-between py-3.5 border-b border-surface-container-high text-[15px] text-on-surface-variant hover:text-on-surface transition-colors">
-                  {it.name}<span className="text-outline"><Arrow size={14} /></span>
-                </Link>
-              ))}
-            </Reveal>
-          ))}
+      <section className="bg-white border-y border-[#E6E9EF]">
+        <div className={`${WRAP} py-16 md:py-24 grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 lg:gap-16`}>
+          <div>
+            <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em]">Services</h2>
+            <p className="mt-4 mb-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[44ch]">Our consultants still take on hands-on engagements: assessments, testing, secure development and training. Many clients start here and later move onto a platform.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {SERVICE_GROUPS.map((g) => (
+              <nav key={g.title} aria-label={g.title} className="flex flex-col">
+                <Link to={g.to} className="pb-3 mb-1 border-b border-[#0C1324] text-[16px] font-semibold hover:text-[#1D4ED8]">{g.title}</Link>
+                {g.items.map((it) => (
+                  <Link key={it.to} to={it.to} className="py-2.5 border-b border-[#E6E9EF] text-[15px] text-[#3E4555] hover:text-[#1D4ED8]">{it.name}</Link>
+                ))}
+              </nav>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── Origin (from the live site) ── */}
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-28 lg:pt-36">
-        <Reveal className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-highest">
-            <img
-              alt="Server room with blue ambient lighting"
-              className="w-full h-full object-cover grayscale opacity-80"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuChfg-CdjjDpS1V3Svxlir1JeTLMiHW3_hSB04KZupS0bfaHH6j2JbNo6XBqaGQHUBqVJXMxF6HZb_RRAbRntT0LSogZyyQdiDG22jTcr3wHD1Byq5cDcZxAJrwMZ4YQ9fNulESpaFM4210qwWz199Zee8_4IrykD95rJh82mqsl7n5tQICal_O0s_icHMHHvwgip69B-RuotebJYrQDXblW_QnPd7CIzsvYwiWAAXGWtSYSfjvhCNDjUjfNETILm6bM5kBWoMuNuY"
-              loading="lazy"
-            />
-            <img src="/brand/emblem.png" alt="" className="absolute right-6 bottom-6 w-16 h-16 object-contain opacity-90" />
+      {/* ── Who we are (from the live site) ── */}
+      <section className={`${WRAP} py-16 md:py-24 grid grid-cols-1 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] gap-10 lg:gap-16 items-center`}>
+        <figure className="m-0">
+          <img
+            alt="CyberSage server room"
+            className="w-full aspect-[4/3] object-cover grayscale rounded-[2px]"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuChfg-CdjjDpS1V3Svxlir1JeTLMiHW3_hSB04KZupS0bfaHH6j2JbNo6XBqaGQHUBqVJXMxF6HZb_RRAbRntT0LSogZyyQdiDG22jTcr3wHD1Byq5cDcZxAJrwMZ4YQ9fNulESpaFM4210qwWz199Zee8_4IrykD95rJh82mqsl7n5tQICal_O0s_icHMHHvwgip69B-RuotebJYrQDXblW_QnPd7CIzsvYwiWAAXGWtSYSfjvhCNDjUjfNETILm6bM5kBWoMuNuY"
+            loading="lazy"
+          />
+        </figure>
+        <div className="flex flex-col gap-5 max-w-[56ch]">
+          <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em]">Founded by people who work incidents</h2>
+          <p className="m-0 text-[16px] leading-relaxed text-[#3E4555]">CyberSage was started by security researchers, investigators and developers who spent years responding to breaches with tools that did not talk to each other. We set out to give organisations back control of their own security, without needing a twenty-person SOC to get it.</p>
+          <p className="m-0 text-[16px] leading-relaxed text-[#3E4555]">The same team still runs client engagements and teaches in Vault, which is how the products stay honest about what works.</p>
+          <div className="flex flex-wrap gap-x-6 gap-y-3 pt-1">
+            <Link to="/core-team" className="cs-btn cs-btn-secondary">Meet the core team</Link>
+            <Link to="/about" className="cs-link self-center text-[15px] font-medium">About CyberSage</Link>
           </div>
-          <div className="flex flex-col gap-6">
-            <h2 className="cs-display text-[36px] lg:text-[48px] leading-[1.02] font-semibold tracking-[-0.035em]">Built by practitioners, for the people who defend.</h2>
-            <p className="text-[18px] leading-relaxed text-on-surface-variant">Founded by a collective of security researchers and developers, CyberSage was born from a single mission: to restore digital autonomy to organisations operating in an era of unprecedented cyber fragility.</p>
-            <p className="text-[18px] leading-relaxed text-on-surface-variant">We don&rsquo;t just patch systems; we rebuild the philosophy of protection, with a relentless pursuit of technical quality and integrity.</p>
-            <div className="flex flex-wrap gap-2">
-              {['CEH', 'CHFI', 'MSc Cyber Security', 'Digital Forensics'].map((c) => (
-                <span key={c} className="cs-mono px-2.5 py-1.5 rounded bg-surface-container border border-surface-container-highest text-[12px]">{c}</span>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link to="/core-team" className="cs-press cs-btn-line inline-flex items-center min-h-[50px] px-5 rounded-md border border-outline-variant font-medium">Meet the core team</Link>
-              <Link to="/about" className="cs-press cs-hover-arrow inline-flex items-center gap-2 min-h-[50px] px-2 font-medium text-tertiary">About us <Arrow size={14} /></Link>
-            </div>
-          </div>
-        </Reveal>
+        </div>
       </section>
 
-      {/* ── Clients & partners (live data) ── */}
+      {/* ── Clients and partners (live data) ── */}
       {clients.length > 0 && (
-        <section className="pt-28 lg:pt-36">
-          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 mb-8">
-            <h2 className="cs-display text-[28px] font-semibold tracking-tight">Trusted by our clients and partners</h2>
-          </div>
-          <div className="cs-fade-x overflow-hidden">
-            <div className="cs-marquee flex gap-4 w-max px-4">
-              {[...clients, ...clients].map((client, idx) => (
-                <div key={idx} className="shrink-0 w-52 h-28 rounded-lg bg-surface-container-low border border-surface-container-high p-5 flex items-center justify-center" aria-hidden={idx >= clients.length}>
+        <section className="bg-white border-y border-[#E6E9EF]">
+          <div className={`${WRAP} py-14 md:py-16`}>
+            <h2 className="m-0 mb-8 text-[16px] font-semibold">Clients and partners</h2>
+            <ul className="m-0 p-0 list-none grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-l border-[#E6E9EF]">
+              {clients.map((client, idx) => (
+                <li key={idx} className="h-24 border-r border-b border-[#E6E9EF] flex items-center justify-center p-5">
                   {client.logo
-                    ? <img src={client.logo} alt={client.name} className="max-w-full max-h-full object-contain" loading="lazy" />
-                    : <p className="cs-display text-lg font-semibold text-center">{client.name}</p>}
-                </div>
+                    ? <img src={client.logo} alt={client.name} className="max-w-full max-h-full object-contain grayscale opacity-80" loading="lazy" />
+                    : <span className="text-[15px] font-semibold text-center">{client.name}</span>}
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
       )}
 
       {/* ── Testimonials (live data) ── */}
-      {testimonials.length > 0 && (
-        <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-28 lg:pt-36">
-          <h2 className="cs-display text-[36px] lg:text-[44px] leading-[1.05] font-semibold tracking-[-0.03em] mb-10">What our clients say</h2>
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-5">
-            {testimonials.map((t, idx) => (
-              <Reveal key={idx} delay={(idx % 3) * 80} className="break-inside-avoid mb-5">
-                <figure className="rounded-lg bg-surface-container-low border border-surface-container-high p-7 flex flex-col gap-6">
-                  {t.rating ? <div className="cs-mono text-[12px] text-secondary" aria-label={`${t.rating} out of 5`}>{'★'.repeat(t.rating)}<span className="text-outline-variant">{'★'.repeat(5 - t.rating)}</span></div> : null}
-                  <blockquote className="text-[17px] leading-relaxed text-on-surface">&ldquo;{t.content}&rdquo;</blockquote>
-                  <figcaption className="pt-5 border-t border-surface-container-high">
-                    <div className="font-semibold">{t.name}</div>
-                    <div className="text-[14px] text-outline">{t.role}{t.company && `, ${t.company}`}</div>
-                  </figcaption>
+      {featured && (
+        <section className={`${WRAP} py-16 md:py-24 grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] gap-12 lg:gap-16`}>
+          <figure className="m-0">
+            <blockquote className="m-0 text-[24px] md:text-[30px] leading-snug font-medium tracking-[-0.012em]">&ldquo;{featured.content}&rdquo;</blockquote>
+            <figcaption className="mt-6 text-[15px]"><span className="font-semibold">{featured.name}</span><span className="text-[#5F6676]">{featured.role ? `, ${featured.role}` : ''}{featured.company ? `, ${featured.company}` : ''}</span></figcaption>
+          </figure>
+          {moreQuotes.length > 0 && (
+            <div className="border-t border-[#0C1324]">
+              {moreQuotes.slice(0, 4).map((t, i) => (
+                <figure key={i} className="m-0 py-5 border-b border-[#DCE0E7]">
+                  <blockquote className="m-0 text-[15px] leading-relaxed text-[#3E4555]">&ldquo;{t.content}&rdquo;</blockquote>
+                  <figcaption className="mt-2 text-[13px]"><span className="font-semibold">{t.name}</span><span className="text-[#5F6676]">{t.company ? `, ${t.company}` : ''}</span></figcaption>
                 </figure>
-              </Reveal>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
       )}
 
-      {/* ── CTA ── */}
-      <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-16 pt-28 lg:pt-36 pb-24">
-        <Reveal className="relative overflow-hidden rounded-lg bg-surface-container-low border border-surface-container-high px-6 py-10 sm:px-14 sm:py-12 flex flex-col lg:flex-row gap-8 lg:items-center justify-between">
-          <img src="/brand/emblem.png" alt="" className="absolute right-[30%] -top-16 w-72 h-72 object-contain opacity-[0.05] pointer-events-none" />
-          <div className="relative flex flex-col gap-2.5">
-            <h2 className="cs-display text-[32px] lg:text-[40px] leading-[1.05] font-semibold tracking-[-0.03em]">See the ecosystem on your own data.</h2>
-            <p className="text-[17px] text-on-surface-variant">A 30-minute walkthrough of the platforms that matter to you.</p>
+      {/* ── Contact ── */}
+      <section className="bg-white border-t border-[#E6E9EF]">
+        <div className={`${WRAP} py-16 md:py-20 grid grid-cols-1 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] gap-8 md:gap-16 items-end`}>
+          <div>
+            <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em]">Talk to the people who build it</h2>
+            <p className="mt-4 mb-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[56ch]">A 30-minute call with an engineer, not a sales script. Tell us what you are protecting and we will show you the parts of the platform that matter for it.</p>
           </div>
-          <div className="relative flex flex-wrap gap-3">
-            <Link to="/contact" className="cs-press cs-btn-blue inline-flex items-center min-h-[54px] px-6 rounded-md bg-primary-container text-white font-semibold">Book a demo</Link>
-            <Link to="/contact" className="cs-press cs-btn-line inline-flex items-center min-h-[54px] px-5 rounded-md border border-outline-variant font-medium">Contact sales</Link>
+          <div className="flex flex-wrap gap-3 md:justify-end">
+            <Link to="/contact" className="cs-btn cs-btn-primary">Book a demo</Link>
+            <Link to="/security-services" className="cs-btn cs-btn-secondary">Browse services</Link>
           </div>
-        </Reveal>
+        </div>
       </section>
     </main>
   );
