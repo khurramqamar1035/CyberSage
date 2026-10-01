@@ -60,6 +60,9 @@ import AdminCompanies from './pages/admin/AdminCompanies';
 import AdminCompanyDetail from './pages/admin/AdminCompanyDetail';
 import AdminBlogs from './pages/admin/AdminBlogs';
 import AdminCertificates from './pages/admin/AdminCertificates';
+import AdminGallery from './pages/admin/AdminGallery';
+import AdminInternMessages from './pages/admin/AdminInternMessages';
+import GalleryPage from './pages/GalleryPage';
 import AdminFAQs from './pages/admin/AdminFAQs';
 import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminClients from './pages/admin/AdminClients';
@@ -124,6 +127,7 @@ function App() {
           <Route path="blog/:slug" element={<BlogDetailPage />} />
           <Route path="FAQ" element={<FAQPage />} />
           <Route path="about" element={<AboutPage />} />
+          <Route path="gallery" element={<GalleryPage />} />
           <Route path="verify" element={<VerifyPage />} />
           <Route path="verify/:code" element={<VerifyPage />} />
 
@@ -173,6 +177,8 @@ function App() {
           <Route path="clients" element={<AdminClients />} />
           <Route path="interns" element={<AdminInterns />} />
           <Route path="certificates" element={<AdminCertificates />} />
+          <Route path="gallery" element={<AdminGallery />} />
+          <Route path="intern-messages" element={<AdminInternMessages />} />
         </Route>
       </Routes>
 

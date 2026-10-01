@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
-import { Building2, LogOut, FileText, HelpCircle, MessageSquare, Users, GraduationCap, Menu, X, Award } from 'lucide-react';
+import { Building2, LogOut, FileText, HelpCircle, MessageSquare, Users, GraduationCap, Menu, X, Award, MessageSquareQuote, Image as ImageIcon } from 'lucide-react';
 
 const NAV_ITEMS = [
   { to: '/admin/companies',    icon: Building2,      label: 'Companies' },
@@ -10,6 +10,8 @@ const NAV_ITEMS = [
   { to: '/admin/clients',      icon: Users,          label: 'Clients' },
   { to: '/admin/interns',      icon: GraduationCap,  label: 'Intern Applications' },
   { to: '/admin/certificates', icon: Award,          label: 'Certificates' },
+  { to: '/admin/intern-messages', icon: MessageSquareQuote, label: 'Intern Testimonials' },
+  { to: '/admin/gallery',      icon: ImageIcon,      label: 'Gallery' },
 ];
 
 const AdminLayout = () => {

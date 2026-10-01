@@ -155,6 +155,7 @@ export const COMPANY_LINKS = [
   { name: 'About us', to: '/about', note: 'Who we are and how we work' },
   { name: 'Core team', to: '/core-team', note: 'The people behind CyberSage' },
   { name: 'Internships', to: '/training/internship', note: 'Join the next cohort' },
+  { name: 'Gallery', to: '/gallery', note: 'Our team, interns and events' },
   { name: 'Contact', to: '/contact', note: 'Sales, support and partnerships' },
 ];
 

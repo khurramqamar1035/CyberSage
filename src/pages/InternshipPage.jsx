@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PageHero, Guides } from '../components/site/ServiceTemplates';
+import InternVoices from '../components/site/InternVoices';
 
 const API_URL = process.env.REACT_APP_API_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 
@@ -269,6 +270,8 @@ export default function InternshipPage() {
           </div>
         </div>
       </section>
+
+      <InternVoices />
     </main>
   );
 }
