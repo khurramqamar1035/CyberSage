@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PRODUCTS, SERVICE_GROUPS, productBySlug } from '../data/ecosystem';
 import SignalField from '../components/site/SignalField';
-import PlatformTrace from '../components/site/PlatformTrace';
 import ProductArt from '../components/site/ProductArt';
 import { MagneticLink, Parallax, Reveal } from '../components/site/motion';
 
@@ -49,21 +48,18 @@ const PRINCIPLES = [
   { t: 'Practice should feel real', d: 'Vault simulations generate a new company and attack every session, so nobody can learn the answers by heart.' },
 ]
 
-/* Oversized product identifier that bleeds past the container edge */
-function Identifier({ n, name, tone = 'dark', outline = false }) {
+/* Chapter header: index and the product name set large in expanded type */
+function Identifier({ n, name, role, tone = 'dark', outline = false }) {
   const reduce = useReducedMotion();
-  // long names shrink so the whole word fits; short ones stay huge
-  const k = Math.min(1, 7 / name.length);
   const color = tone === 'dark' ? '#07090D' : '#ECEEF1';
   return (
-    <div className="relative overflow-hidden -mx-6 md:-mx-10 px-6 md:px-10" aria-hidden="true">
-      <span className="block cs-meta mb-3 md:mb-4" style={{ color: tone === 'dark' ? '#5B6575' : '#8B95A5' }}>{n} / 05</span>
-      <motion.div className="t-expanded font-[200] leading-[0.78] tracking-[-0.03em] whitespace-nowrap select-none"
-        style={{ fontSize: `min(${(15.5 * k).toFixed(2)}vw, ${Math.round(218 * k)}px)`, ...(outline ? { color: 'transparent', WebkitTextStroke: `1px ${color}` } : { color }) }}
-        initial={reduce ? false : { x: 40, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true, margin: '-15%' }} transition={{ duration: 1.1, ease: EASE }}>
+    <div className="flex items-end justify-between gap-6" aria-hidden="true">
+      <motion.div className="t-expanded font-[200] leading-[0.8] tracking-[-0.03em] whitespace-nowrap select-none text-[40px] sm:text-[64px] lg:text-[88px]"
+        style={outline ? { color: 'transparent', WebkitTextStroke: `1px ${color}` } : { color }}
+        initial={reduce ? false : { x: 24, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true, margin: '-10%' }} transition={{ duration: 0.9, ease: EASE }}>
         {name}
       </motion.div>
-      
+      <span className="cs-meta pb-1 text-right" style={{ color: tone === 'dark' ? '#5B6575' : '#8B95A5' }}>{n} / 05<br />{role}</span>
     </div>
   );
 }
@@ -71,30 +67,18 @@ function Identifier({ n, name, tone = 'dark', outline = false }) {
 function ChapterText({ slug, tone = 'dark' }) {
   const p = productBySlug(slug);
   const muted = tone === 'dark' ? 'text-[#3E4555]' : 'text-[#A9B8D0]';
-  const rule = tone === 'dark' ? 'border-[#07090D]' : 'border-[#ECEEF1]';
-  const line = tone === 'dark' ? 'border-[rgba(7,9,13,0.15)]' : 'border-[rgba(236,238,241,0.14)]';
   return (
-    <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
-      <div className="lg:col-span-5 flex flex-col gap-5">
-        {p.tagline && <p className={`m-0 cs-meta ${tone === 'dark' ? 'text-[#5B6575]' : 'text-[#8B95A5]'}`}>{p.tagline}</p>}
-        <h3 className="m-0 text-[28px] md:text-[34px] leading-[1.08] font-normal tracking-[-0.025em] max-w-[20ch]">{p.line}</h3>
-        <p className={`m-0 text-[16px] leading-relaxed ${muted} max-w-[48ch]`}>{p.desc}</p>
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-2">
-          <Link to={`/products/${p.slug}`} className="cs-row-link inline-flex items-center gap-3 w-fit text-[15px] font-medium">
-            <span className="cs-row-title transition-colors">Read about {p.name}</span>
-            <svg className="cs-btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M1 8h13M9 3l5 5-5 5" /></svg>
-          </Link>
-          {p.url && <a href={p.url} target="_blank" rel="noopener noreferrer" className="cs-link text-[15px]">{p.url.replace('https://', '').replace('www.', '')} ↗</a>}
-        </div>
+    <Reveal className="flex flex-col gap-4">
+      {p.tagline && <p className={`m-0 cs-meta ${tone === 'dark' ? 'text-[#5B6575]' : 'text-[#8B95A5]'}`}>{p.tagline}</p>}
+      <h3 className="m-0 text-[24px] md:text-[28px] leading-[1.1] font-normal tracking-[-0.022em]">{p.line}</h3>
+      <p className={`m-0 text-[15px] leading-relaxed ${muted}`}>{p.summary}</p>
+      <div className="flex flex-wrap items-center gap-x-7 gap-y-3 pt-1">
+        <Link to={`/products/${p.slug}`} className="cs-row-link inline-flex items-center gap-3 w-fit text-[15px] font-medium">
+          <span className="cs-row-title transition-colors">Read about {p.name}</span>
+          <svg className="cs-btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M1 8h13M9 3l5 5-5 5" /></svg>
+        </Link>
+        {p.url && <a href={p.url} target="_blank" rel="noopener noreferrer" className="cs-link text-[15px]">{p.url.replace('https://', '').replace('www.', '')} ↗</a>}
       </div>
-      <dl className={`lg:col-span-6 lg:col-start-7 m-0 border-t ${rule} self-start`}>
-        {p.caps.map((c) => (
-          <div key={c.t} className={`grid grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] gap-4 py-4 border-b ${line}`}>
-            <dt className="text-[15px] font-medium">{c.t}</dt>
-            <dd className={`m-0 text-[15px] leading-snug ${muted}`}>{c.d}</dd>
-          </div>
-        ))}
-      </dl>
     </Reveal>
   );
 }
@@ -139,18 +123,18 @@ const LandingPage = () => {
       {/* ═══ HERO: statement over the Signal Field ═══ */}
       <section className="relative s-black tx-grain overflow-hidden">
         <Guides dark />
-        <div className={`${WRAP} pt-16 md:pt-24`}>
-          <motion.h1 className="m-0 font-light text-[#ECEEF1] text-[44px] sm:text-[64px] lg:text-[88px] xl:text-[104px] leading-[0.98] tracking-[-0.035em] max-w-[16ch]"
+        <div className={`${WRAP} pt-14 md:pt-20`}>
+          <motion.h1 className="m-0 font-light text-[#ECEEF1] text-[40px] sm:text-[56px] lg:text-[72px] xl:text-[84px] leading-[0.98] tracking-[-0.035em] max-w-[16ch]"
             initial={reduce ? false : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease: EASE }}>
             Security infrastructure for organisations that cannot afford to guess.
           </motion.h1>
         </div>
-        <div className="relative mt-10 md:mt-14 tx-scan">
-          <SignalField lines={32} theme="dark" labels={HERO_LABELS} eventX={0.58} className="h-[300px] md:h-[440px]"
+        <div className="relative mt-8 md:mt-10 tx-scan">
+          <SignalField lines={32} theme="dark" labels={HERO_LABELS} eventX={0.58} className="h-[240px] md:h-[340px]"
             ariaLabel="The Signal Field: thirty-two stacked channels, one per layer of the platform, with a disturbance travelling down through them." />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#07090D] to-transparent" />
         </div>
-        <div className={`${WRAP} relative py-10 md:py-14 grid grid-cols-1 md:grid-cols-12 gap-8 items-end`}>
+        <div className={`${WRAP} relative py-8 md:py-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-end`}>
           <p className="md:col-span-6 m-0 text-[17px] leading-relaxed text-[#A9B8D0] max-w-[54ch]">
             CyberSage builds five products that work as one platform. Sentinel watches your estate and responds to threats. Brain connects what it sees and proposes decisions. Nexus, Sage Education and Vault give people a secure place to work, run an institution and practise real security.
           </p>
@@ -160,23 +144,23 @@ const LandingPage = () => {
       </section>
 
       {/* ═══ STATEMENT + chapter index ═══ */}
-      <section className="relative s-paper tx-dot overflow-hidden">
+      <section id="platform" className="relative s-paper tx-dot overflow-hidden scroll-mt-16">
         <Guides />
-        <div className={`${WRAP} relative py-20 md:py-32`}>
+        <div className={`${WRAP} relative py-16 md:py-24`}>
           <Reveal>
-            <p className="m-0 t-wide font-[250] text-[40px] sm:text-[60px] lg:text-[84px] leading-[1.0] tracking-[-0.035em] max-w-[18ch]">
-              Five products. One ecosystem.
+            <p className="m-0 t-wide font-[250] text-[36px] sm:text-[52px] lg:text-[64px] leading-[1.0] tracking-[-0.035em] max-w-[18ch]">
+              One ecosystem. Multiple capabilities.
             </p>
           </Reveal>
-          <div className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-10">
-            <p className="md:col-span-4 m-0 text-[16px] leading-relaxed text-[#3E4555]">The platform reads top to bottom: where people work, where institutions run, where skills are built, where threats are caught and where decisions are made. Scroll down the stack.</p>
+          <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-10">
+            <p className="md:col-span-4 m-0 text-[16px] leading-relaxed text-[#3E4555]">Workspace, institutions, skills, security operations and intelligence. Each product stands on its own and gets stronger next to the others.</p>
             <nav aria-label="Product chapters" className="md:col-span-7 md:col-start-6">
               <ol className="m-0 p-0 list-none border-t border-[#07090D]">
                 {PRODUCTS.map((p, i) => (
                   <li key={p.slug}>
-                    <a href={`#ch-${p.slug}`} className="cs-row-link grid grid-cols-[48px_minmax(0,1fr)_auto] md:grid-cols-[56px_minmax(0,1.1fr)_minmax(0,1fr)_auto] gap-4 items-baseline py-4 border-b border-[rgba(7,9,13,0.14)]">
+                    <a href={`#ch-${p.slug}`} className="cs-row-link grid grid-cols-[48px_minmax(0,1fr)_auto] md:grid-cols-[56px_minmax(0,1.1fr)_minmax(0,1fr)_auto] gap-4 items-baseline py-3 border-b border-[rgba(7,9,13,0.14)]">
                       <span className="cs-data text-[#5B6575]">0{i + 1}</span>
-                      <span className="cs-row-title text-[22px] md:text-[26px] font-normal tracking-[-0.02em] transition-colors">{p.name}</span>
+                      <span className="cs-row-title text-[20px] md:text-[22px] font-normal tracking-[-0.02em] transition-colors">{p.name}</span>
                       <span className="hidden md:block text-[14px] text-[#5B6575]">{p.role}</span>
                       <svg className="cs-btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" aria-hidden="true"><path d="M8 1v13M3 9l5 5 5-5" /></svg>
                     </a>
@@ -191,34 +175,24 @@ const LandingPage = () => {
       {CHAPTERS.map((c, i) => (
         <section key={c.slug} id={`ch-${c.slug}`} className={`relative overflow-hidden scroll-mt-16 ${c.surface}`}>
           <Guides dark={c.tone === 'light'} />
-          <div className={`${WRAP} relative pt-6 pb-20 md:pb-28`}>
-            <Identifier n={`0${i + 1}`} name={c.word} tone={c.tone} outline={c.outline} />
-            <Parallax className="relative mt-10 md:mt-14" distance={20}>
-              <div className={c.tone === 'light' ? 'shadow-[0_50px_100px_-50px_rgba(0,0,0,0.9)] ring-1 ring-white/5' : 'shadow-[0_50px_100px_-50px_rgba(7,9,13,0.45)] ring-1 ring-black/5'}>
-                <ProductArt slug={c.slug} />
-              </div>
-            </Parallax>
-            <div className="mt-14 md:mt-20"><ChapterText slug={c.slug} tone={c.tone} /></div>
+          <div className={`${WRAP} relative py-14 md:py-20`}>
+            <Identifier n={`0${i + 1}`} name={c.word} role={productBySlug(c.slug).role} tone={c.tone} outline={c.outline} />
+            <div className={`mt-8 md:mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center`}>
+              <Parallax className={`lg:col-span-8 ${i % 2 ? 'lg:order-2' : ''}`} distance={14}>
+                <div className={c.tone === 'light' ? 'shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)] ring-1 ring-white/5' : 'shadow-[0_40px_80px_-40px_rgba(7,9,13,0.4)] ring-1 ring-black/5'}>
+                  <ProductArt slug={c.slug} />
+                </div>
+              </Parallax>
+              <div className={`lg:col-span-4 ${i % 2 ? 'lg:order-1' : ''}`}><ChapterText slug={c.slug} tone={c.tone} /></div>
+            </div>
           </div>
         </section>
       ))}
 
-      {/* ═══ The stack, read top to bottom (scroll drives the trace) ═══ */}
-      <section id="platform" className="relative s-black overflow-hidden border-t border-[#151A24] scroll-mt-16">
-        <Guides dark />
-        <div className={`${WRAP} relative py-20 md:py-28`}>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-14">
-            <h2 className="md:col-span-6 m-0 t-wide font-[250] text-[40px] md:text-[60px] leading-[1] tracking-[-0.035em] text-[#ECEEF1]">One ecosystem. Multiple capabilities.</h2>
-            <p className="md:col-span-4 md:col-start-8 m-0 text-[15px] leading-relaxed text-[#A9B8D0] self-end">Workspace, institutions, skills, security operations and intelligence. Each product stands on its own and gets stronger next to the others.</p>
-          </div>
-          <PlatformTrace />
-        </div>
-      </section>
-
       {/* ═══ Research and principles ═══ */}
       <section className="relative s-off tx-dot overflow-hidden">
         <Guides />
-        <div className={`${WRAP} relative py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-14`}>
+        <div className={`${WRAP} relative py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-14`}>
           <div className={posts.length ? 'lg:col-span-5' : 'lg:col-span-12'}>
             <h2 className="m-0 t-wide font-[250] text-[36px] md:text-[48px] leading-[1.02] tracking-[-0.03em]">How we build.</h2>
             <dl className={`m-0 mt-10 border-t border-[#07090D] ${posts.length ? '' : 'lg:grid lg:grid-cols-2 lg:gap-x-12'}`}>
@@ -255,7 +229,7 @@ const LandingPage = () => {
       {/* ═══ Company ═══ */}
       <section className="relative s-paper overflow-hidden">
         <Guides />
-        <div className={`${WRAP} relative py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end`}>
+        <div className={`${WRAP} relative py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end`}>
           <Parallax className="lg:col-span-7 relative overflow-hidden" distance={30}>
             <div className="relative tx-grain">
               <img alt="A security engineering workspace at dusk" loading="lazy" className="w-full aspect-[16/10] object-cover saturate-[.55] contrast-[1.05] scale-110" src="/brand/photo/studio.webp" />
@@ -311,7 +285,7 @@ const LandingPage = () => {
       {/* ═══ Services (from the live site) ═══ */}
       <section className="relative bg-white overflow-hidden border-t border-[rgba(7,9,13,0.08)]">
         <Guides />
-        <div className={`${WRAP} relative py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-12`}>
+        <div className={`${WRAP} relative py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-12`}>
           <div className="lg:col-span-4">
             <h2 className="m-0 t-wide font-[250] text-[36px] md:text-[48px] leading-[1.02] tracking-[-0.03em]">Services.</h2>
             <p className="mt-5 mb-0 text-[16px] leading-relaxed text-[#3E4555] max-w-[40ch]">Our consultants still take on hands-on engagements: assessments, testing, secure development and training.</p>
@@ -335,11 +309,11 @@ const LandingPage = () => {
       {/* ═══ Contact ═══ */}
       <section className="relative s-black tx-grain overflow-hidden">
         <Guides dark />
-        <div className={`${WRAP} relative py-24 md:py-36`}>
+        <div className={`${WRAP} relative py-16 md:py-24`}>
           <Reveal>
-            <h2 className="m-0 t-expanded font-[200] text-[48px] sm:text-[80px] lg:text-[120px] leading-[0.92] tracking-[-0.04em] text-[#ECEEF1]">Talk to an engineer.</h2>
+            <h2 className="m-0 t-expanded font-[200] text-[44px] sm:text-[64px] lg:text-[88px] leading-[0.92] tracking-[-0.04em] text-[#ECEEF1]">Talk to an engineer.</h2>
           </Reveal>
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
             <p className="md:col-span-5 m-0 text-[16px] leading-relaxed text-[#A9B8D0]">Tell us what you are protecting and we will show you the parts of the platform that matter for it.</p>
             <div className="md:col-span-4 md:col-start-8 flex flex-wrap gap-3">
               <MagneticLink to="/contact" variant="primary">Book a demo</MagneticLink>
