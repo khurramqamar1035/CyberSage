@@ -90,7 +90,7 @@ export default function ChatBot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="w-11 h-11 md:w-14 md:h-14 bg-[#07090D] hover:bg-[#2563EB] text-white flex items-center justify-center shadow-[0_12px_30px_-10px_rgba(7,9,13,0.6)] ring-1 ring-white/10 transition-colors"
+          className="w-11 h-11 md:w-14 md:h-14 bg-k hover:bg-brand text-white flex items-center justify-center shadow-[0_12px_30px_-10px_rgba(7,9,13,0.6)] ring-1 ring-white/10 transition-colors"
           aria-label="Open chat"
         >
           <MessageCircle className="w-5 h-5 md:w-7 md:h-7" />
@@ -99,9 +99,9 @@ export default function ChatBot() {
 
       {/* Chat window */}
       {isOpen && (
-        <div className="w-[calc(100vw-24px)] sm:w-96 h-[540px] max-h-[calc(100dvh-24px)] md:max-h-[calc(100dvh-96px)] bg-[#0E1117] border border-[rgba(236,238,241,0.12)] rounded-[2px] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] flex flex-col overflow-hidden">
+        <div className="w-[calc(100vw-24px)] sm:w-96 h-[540px] max-h-[calc(100dvh-24px)] md:max-h-[calc(100dvh-96px)] bg-k2 border border-[rgba(236,238,241,0.12)] rounded-[2px] shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="px-4 py-3 bg-[#07090D] border-b border-[rgba(236,238,241,0.12)] flex items-center justify-between flex-shrink-0">
+          <div className="px-4 py-3 bg-k border-b border-[rgba(236,238,241,0.12)] flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2 text-white">
               <Bot size={18} />
               <span className="font-semibold text-sm">CyberSage AI</span>
@@ -118,7 +118,7 @@ export default function ChatBot() {
           {/* Welcome message */}
           {messages.length === 0 && (
             <div className="px-4 pt-4 pb-2 flex-shrink-0">
-              <div className="bg-[#151A23] border-l-2 border-[#2563EB] p-3 text-[#A9B8D0] text-sm leading-relaxed">
+              <div className="bg-panel-2 border-l-2 border-brand p-3 text-cold text-sm leading-relaxed">
                 👋 Hi! I'm CyberSage AI. Ask me anything about our cybersecurity, development, or training services.
               </div>
             </div>
@@ -134,8 +134,8 @@ export default function ChatBot() {
                 <div
                   className={`max-w-[78%] px-4 py-2.5 rounded-[2px] text-sm leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-[#2563EB] text-white'
-                      : 'bg-[#151A23] text-[#ECEEF1] border border-[rgba(236,238,241,0.1)]'
+                      ? 'bg-brand text-white'
+                      : 'bg-panel-2 text-off border border-[rgba(236,238,241,0.1)]'
                   }`}
                 >
                   {msg.content}
@@ -144,15 +144,15 @@ export default function ChatBot() {
             ))}
 
             {isLoading && (
-              <div className="flex items-center gap-2 text-[#A9B8D0] text-sm">
+              <div className="flex items-center gap-2 text-cold text-sm">
                 <Loader2 size={16} className="animate-spin" />
                 <span>Thinking...</span>
               </div>
             )}
 
             {chatLocked && (
-              <div className="text-center p-4 border border-[rgba(236,238,241,0.12)] bg-[#151A23]">
-                <p className="text-[#ECEEF1] text-sm mb-3 font-medium">
+              <div className="text-center p-4 border border-[rgba(236,238,241,0.12)] bg-panel-2">
+                <p className="text-off text-sm mb-3 font-medium">
                   🔒 Free AI limit reached
                 </p>
                 <p className="text-slate-400 text-xs mb-3">
@@ -160,7 +160,7 @@ export default function ChatBot() {
                 </p>
                 <button
                   onClick={() => setShowForm(true)}
-                  className="bg-[#2563EB] hover:bg-[#1D4ED8] px-4 py-2 rounded-[1px] text-white text-sm font-medium transition-colors"
+                  className="bg-brand hover:bg-brand-deep px-4 py-2 rounded-[1px] text-white text-sm font-medium transition-colors"
                 >
                   Contact Us
                 </button>
@@ -178,12 +178,12 @@ export default function ChatBot() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
               placeholder={chatLocked ? 'Chat limit reached' : 'Ask about cybersecurity...'}
-              className="flex-1 bg-[#151A23] text-white text-sm px-3 py-2.5 rounded-[1px] border border-[rgba(236,238,241,0.14)] focus:outline-none focus:border-[#2563EB] placeholder-slate-500 disabled:opacity-50"
+              className="flex-1 bg-panel-2 text-white text-sm px-3 py-2.5 rounded-[1px] border border-[rgba(236,238,241,0.14)] focus:outline-none focus:border-brand placeholder-slate-500 disabled:opacity-50"
             />
             <button
               disabled={chatLocked || isLoading || !inputValue.trim()}
               onClick={sendMessage}
-              className="bg-[#2563EB] hover:bg-[#1D4ED8] disabled:opacity-40 p-2.5 rounded-[1px] text-white transition-colors"
+              className="bg-brand hover:bg-brand-deep disabled:opacity-40 p-2.5 rounded-[1px] text-white transition-colors"
               aria-label="Send"
             >
               <Send size={16} />
@@ -195,7 +195,7 @@ export default function ChatBot() {
       {/* Contact form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#0E1117] border border-[rgba(236,238,241,0.12)] rounded-[2px] w-full max-w-md shadow-2xl">
+          <div className="bg-k2 border border-[rgba(236,238,241,0.12)] rounded-[2px] w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(236,238,241,0.12)]">
               <h2 className="text-white font-semibold">Contact CyberSage</h2>
               <button
@@ -212,13 +212,13 @@ export default function ChatBot() {
                   placeholder="First Name *"
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-[#151A23] text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-[#2563EB] placeholder-slate-500"
+                  className="w-full px-3 py-2.5 bg-panel-2 text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-brand placeholder-slate-500"
                 />
                 <input
                   placeholder="Last Name *"
                   value={formData.lastName}
                   onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  className="w-full px-3 py-2.5 bg-[#151A23] text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-[#2563EB] placeholder-slate-500"
+                  className="w-full px-3 py-2.5 bg-panel-2 text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-brand placeholder-slate-500"
                 />
               </div>
               <input
@@ -226,20 +226,20 @@ export default function ChatBot() {
                 placeholder="Email *"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-3 py-2.5 bg-[#151A23] text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-[#2563EB] placeholder-slate-500"
+                className="w-full px-3 py-2.5 bg-panel-2 text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-brand placeholder-slate-500"
               />
               <input
                 placeholder="Phone (optional)"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full px-3 py-2.5 bg-[#151A23] text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-[#2563EB] placeholder-slate-500"
+                className="w-full px-3 py-2.5 bg-panel-2 text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-brand placeholder-slate-500"
               />
               <textarea
                 placeholder="Your enquiry *"
                 rows={4}
                 value={formData.enquiry}
                 onChange={(e) => setFormData({ ...formData, enquiry: e.target.value })}
-                className="w-full px-3 py-2.5 bg-[#151A23] text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-[#2563EB] placeholder-slate-500 resize-none"
+                className="w-full px-3 py-2.5 bg-panel-2 text-white text-sm border border-[rgba(236,238,241,0.14)] rounded-[1px] focus:outline-none focus:border-brand placeholder-slate-500 resize-none"
               />
             </div>
 
@@ -253,7 +253,7 @@ export default function ChatBot() {
               <button
                 onClick={submitContactForm}
                 disabled={formSubmitting}
-                className="flex-1 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] disabled:opacity-50 text-white text-sm font-medium rounded-[1px] transition-colors flex items-center justify-center gap-2"
+                className="flex-1 py-2.5 bg-brand hover:bg-brand-deep disabled:opacity-50 text-white text-sm font-medium rounded-[1px] transition-colors flex items-center justify-center gap-2"
               >
                 {formSubmitting && <Loader2 size={14} className="animate-spin" />}
                 {formSubmitting ? 'Sending...' : 'Submit'}

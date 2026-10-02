@@ -93,19 +93,19 @@ const Onboarding = () => {
   return (
     <AuthShell wide word="SERVICES" title={`Welcome, ${userName}.`} intro="Choose the services you want to activate. You can change this later.">
       <h2 className="m-0 t-wide font-[250] text-[30px] leading-[1.05] tracking-[-0.03em]">Select services</h2>
-      <ul className="m-0 mt-8 p-0 list-none border-t border-[#07090D]">
+      <ul className="m-0 mt-8 p-0 list-none border-t border-k">
         {availableServices.map((service) => {
           const isSelected = selected.includes(service._id);
           return (
             <li key={service._id}>
               <button type="button" role="checkbox" aria-checked={isSelected} onClick={() => toggleService(service._id)}
                 className={`w-full grid grid-cols-[28px_minmax(0,1fr)] gap-4 items-start text-left py-5 px-1 border-b border-[rgba(7,9,13,0.14)] bg-transparent transition-colors ${isSelected ? 'bg-[#EEF3FE]' : 'hover:bg-white'}`}>
-                <span aria-hidden="true" className={`mt-0.5 w-5 h-5 border flex items-center justify-center ${isSelected ? 'bg-[#2563EB] border-[#2563EB]' : 'border-[rgba(7,9,13,0.35)] bg-white'}`}>
+                <span aria-hidden="true" className={`mt-0.5 w-5 h-5 border flex items-center justify-center ${isSelected ? 'bg-brand border-brand' : 'border-[rgba(7,9,13,0.35)] bg-white'}`}>
                   {isSelected && <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2.5 6.2l2.2 2.2 4.8-5" fill="none" stroke="#fff" strokeWidth="1.8" /></svg>}
                 </span>
                 <span>
                   <span className="block text-[17px] font-medium">{service.name}</span>
-                  {service.description && <span className="block mt-1 text-[14px] leading-relaxed text-[#3E4555]">{service.description}</span>}
+                  {service.description && <span className="block mt-1 text-[14px] leading-relaxed text-edge-strong">{service.description}</span>}
                 </span>
               </button>
             </li>
@@ -113,7 +113,7 @@ const Onboarding = () => {
         })}
       </ul>
       <div className="mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <p className="m-0 text-[15px] text-[#3E4555]"><span className="font-medium text-[#07090D]">{selected.length}</span> selected</p>
+        <p className="m-0 text-[15px] text-edge-strong"><span className="font-medium text-k">{selected.length}</span> selected</p>
         <button type="button" onClick={handleCreateAccount} disabled={selected.length === 0 || isLoading} className="cs-btn cs-btn-primary justify-center disabled:opacity-50 disabled:cursor-not-allowed">
           {isLoading ? 'Creating account…' : 'Create account'}
         </button>

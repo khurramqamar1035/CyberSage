@@ -179,9 +179,9 @@ const SuperAdminDashboard = () => {
   // --- LOGIN VIEW ---
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#06080A] flex flex-col justify-center items-center p-4 relative overflow-hidden">
+      <div className="min-h-screen bg-void flex flex-col justify-center items-center p-4 relative overflow-hidden">
         {/* Hacker background elements */}
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-900 via-[#06080A] to-[#06080A]"></div>
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-900 via-void to-void"></div>
         
         <div className="mb-8 flex flex-col items-center z-10">
           <ShieldAlert className="w-16 h-16 text-red-600 mb-4 animate-pulse" strokeWidth={1.5} />
@@ -189,7 +189,7 @@ const SuperAdminDashboard = () => {
           <p className="text-red-400/80 mt-2 text-sm uppercase tracking-widest font-semibold">Restricted Internal Zone</p>
         </div>
 
-        <div className="w-full max-w-md bg-[#0B0F19] border border-red-900/40 rounded-2xl p-8 shadow-[0_0_40px_rgba(220,38,38,0.1)] z-10 relative">
+        <div className="w-full max-w-md bg-base border border-red-900/40 rounded-2xl p-8 shadow-[0_0_40px_rgba(220,38,38,0.1)] z-10 relative">
           <form onSubmit={handleLogin} className="space-y-6">
             
             {authError && (
@@ -208,7 +208,7 @@ const SuperAdminDashboard = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="staff@cybersage.uk"
-                  className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-colors font-mono"
+                  className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-colors font-mono"
                 />
               </div>
             </div>
@@ -223,7 +223,7 @@ const SuperAdminDashboard = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="••••••••"
-                  className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-colors font-mono"
+                  className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-colors font-mono"
                 />
               </div>
             </div>
@@ -249,11 +249,11 @@ const SuperAdminDashboard = () => {
 
   // --- DASHBOARD VIEW ---
   return (
-    <div className="flex h-screen w-full bg-[#06080A] overflow-hidden text-slate-300">
+    <div className="flex h-screen w-full bg-void overflow-hidden text-slate-300">
       
       {/* Sidebar */}
-      <aside className="w-64 bg-[#0B0F19] border-r border-[#1C212E] flex flex-col h-full flex-shrink-0">
-        <div className="p-6 border-b border-[#1C212E]">
+      <aside className="w-64 bg-base border-r border-edge flex flex-col h-full flex-shrink-0">
+        <div className="p-6 border-b border-edge">
           <div className="flex items-center gap-3 mb-2">
             <ShieldAlert className="w-8 h-8 text-red-500" />
             <h2 className="text-xl font-bold text-white tracking-tight">
@@ -266,14 +266,14 @@ const SuperAdminDashboard = () => {
         <nav className="flex-1 py-6 px-3 space-y-2 overflow-y-auto">
           <button 
             onClick={() => setActiveTab('overview')}
-            className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'overview' ? 'bg-blue-600/20 text-blue-400' : 'text-slate-400 hover:text-slate-200 hover:bg-[#13192B]'}`}
+            className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'overview' ? 'bg-blue-600/20 text-blue-400' : 'text-slate-400 hover:text-slate-200 hover:bg-panel'}`}
           >
             <Activity className="w-5 h-5 mr-3" /> System Overview
           </button>
           
           <button 
             onClick={() => setActiveTab('clients')}
-            className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'clients' ? 'bg-blue-600/20 text-blue-400' : 'text-slate-400 hover:text-slate-200 hover:bg-[#13192B]'}`}
+            className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'clients' ? 'bg-blue-600/20 text-blue-400' : 'text-slate-400 hover:text-slate-200 hover:bg-panel'}`}
           >
             <Building2 className="w-5 h-5 mr-3" /> Client Database
           </button>
@@ -281,7 +281,7 @@ const SuperAdminDashboard = () => {
           {(adminRole === 'Super Admin' || adminRole === 'Finance' || adminRole === 'Operations') && (
             <button 
               onClick={() => setActiveTab('finance')}
-              className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'finance' ? 'bg-amber-500/20 text-amber-500' : 'text-slate-400 hover:text-slate-200 hover:bg-[#13192B]'}`}
+              className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'finance' ? 'bg-amber-500/20 text-amber-500' : 'text-slate-400 hover:text-slate-200 hover:bg-panel'}`}
             >
               <DollarSign className="w-5 h-5 mr-3" /> Financials & Ops
             </button>
@@ -290,14 +290,14 @@ const SuperAdminDashboard = () => {
           {adminRole === 'Super Admin' && (
             <button 
               onClick={() => setActiveTab('rbac')}
-              className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'rbac' ? 'bg-red-500/20 text-red-400' : 'text-slate-400 hover:text-slate-200 hover:bg-[#13192B]'}`}
+              className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'rbac' ? 'bg-red-500/20 text-red-400' : 'text-slate-400 hover:text-slate-200 hover:bg-panel'}`}
             >
               <ShieldCheck className="w-5 h-5 mr-3" /> Team Access (RBAC)
             </button>
           )}
         </nav>
 
-        <div className="p-4 border-t border-[#1C212E]">
+        <div className="p-4 border-t border-edge">
           <button
             onClick={handleLogout}
             disabled={isLoadingAuth}
@@ -322,21 +322,21 @@ const SuperAdminDashboard = () => {
 
             {/* Top Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-2xl flex flex-col justify-between h-32">
+              <div className="bg-panel border border-edge p-6 rounded-2xl flex flex-col justify-between h-32">
                 <div className="flex justify-between items-start">
                   <p className="text-sm font-medium text-slate-400">Total Revenue</p>
                   <DollarSign className="w-5 h-5 text-amber-500" />
                 </div>
                 <h3 className="text-3xl font-bold text-white">{totalRevenue}</h3>
               </div>
-              <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-2xl flex flex-col justify-between h-32">
+              <div className="bg-panel border border-edge p-6 rounded-2xl flex flex-col justify-between h-32">
                 <div className="flex justify-between items-start">
                   <p className="text-sm font-medium text-slate-400">Total Clients</p>
                   <Building2 className="w-5 h-5 text-blue-400" />
                 </div>
                 <h3 className="text-3xl font-bold text-white">{totalClients}</h3>
               </div>
-              <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden">
+              <div className="bg-panel border border-edge p-6 rounded-2xl flex flex-col justify-between h-32 relative overflow-hidden">
                 <div className="flex justify-between items-start z-10 relative">
                   <p className="text-sm font-medium text-slate-400">Dev Progress</p>
                   <Server className="w-5 h-5 text-emerald-400" />
@@ -346,7 +346,7 @@ const SuperAdminDashboard = () => {
               </div>
               
               {(adminRole === 'Super Admin' || adminRole === 'HR') && (
-                <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-2xl flex flex-col justify-between h-32">
+                <div className="bg-panel border border-edge p-6 rounded-2xl flex flex-col justify-between h-32">
                   <div className="flex justify-between items-start">
                     <p className="text-sm font-medium text-slate-400">Active Staff</p>
                     <Users className="w-5 h-5 text-purple-400" />
@@ -358,7 +358,7 @@ const SuperAdminDashboard = () => {
 
             {/* Details Row */}
             <div className={`grid grid-cols-1 ${adminRole === 'Super Admin' || adminRole === 'HR' ? 'lg:grid-cols-2' : ''} gap-6 mt-6`}>
-              <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-6 shadow-xl">
+              <div className="bg-base border border-edge rounded-2xl p-6 shadow-xl">
                  <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2"><PieChart className="w-5 h-5 text-blue-500"/> Work Breakdown</h3>
                  <div className="space-y-4">
                    <div>
@@ -383,11 +383,11 @@ const SuperAdminDashboard = () => {
               </div>
 
               {(adminRole === 'Super Admin' || adminRole === 'HR') && (
-                <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-6 shadow-xl">
+                <div className="bg-base border border-edge rounded-2xl p-6 shadow-xl">
                    <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2"><Users className="w-5 h-5 text-purple-500"/> Live Staff Attendance</h3>
                    <div className="space-y-3">
                      {staffList.filter(s => s.status === 'Online').map(staff => (
-                       <div key={staff.id} className="flex justify-between items-center p-3 bg-[#13192B] rounded-lg border border-[#1C212E]">
+                       <div key={staff.id} className="flex justify-between items-center p-3 bg-panel rounded-lg border border-edge">
                          <div className="flex items-center gap-3">
                            <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
                            <div>
@@ -417,9 +417,9 @@ const SuperAdminDashboard = () => {
               <p className="text-slate-400">View all existing firm clients, their services, and status.</p>
             </div>
 
-            <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl shadow-xl overflow-hidden">
+            <div className="bg-base border border-edge rounded-2xl shadow-xl overflow-hidden">
               <table className="w-full text-left text-sm">
-                <thead className="bg-[#13192B] border-b border-[#1C212E] text-xs text-slate-400 uppercase tracking-wider">
+                <thead className="bg-panel border-b border-edge text-xs text-slate-400 uppercase tracking-wider">
                   <tr>
                     <th className="px-6 py-4 font-medium">Client ID / Name</th>
                     <th className="px-6 py-4 font-medium">Subscribed Services</th>
@@ -427,11 +427,11 @@ const SuperAdminDashboard = () => {
                     <th className="px-6 py-4 font-medium text-right">Revenue</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1C212E]">
+                <tbody className="divide-y divide-edge">
                   {mockClients.map(client => (
                     <React.Fragment key={client.id}>
                       <tr 
-                        className={`hover:bg-[#13192B]/50 transition-colors cursor-pointer ${expandedClient === client.id ? 'bg-[#13192B]' : ''}`}
+                        className={`hover:bg-[#13192B]/50 transition-colors cursor-pointer ${expandedClient === client.id ? 'bg-panel' : ''}`}
                         onClick={() => setExpandedClient(expandedClient === client.id ? null : client.id)}
                       >
                         <td className="px-6 py-5">
@@ -457,7 +457,7 @@ const SuperAdminDashboard = () => {
                       </tr>
                       {/* Expanded Details Row */}
                       {expandedClient === client.id && (
-                        <tr className="bg-[#0B0F19] border-b border-[#1C212E]">
+                        <tr className="bg-base border-b border-edge">
                           <td colSpan="4" className="px-6 py-6 pb-8 border-l-4 border-blue-500">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in fade-in duration-300">
                               <div>
@@ -471,11 +471,11 @@ const SuperAdminDashboard = () => {
                                       <span className="text-slate-400">Overall Progress</span>
                                       <span className="text-white font-bold">{client.progress}%</span>
                                     </div>
-                                    <div className="w-full bg-[#1C212E] rounded-full h-2">
+                                    <div className="w-full bg-edge rounded-full h-2">
                                       <div className={`h-2 rounded-full ${client.progress === 100 ? 'bg-emerald-500' : 'bg-blue-500'}`} style={{ width: `${client.progress}%` }}></div>
                                     </div>
                                   </div>
-                                  <div className="bg-[#13192B] p-3 rounded-lg border border-[#2A3441] mt-4">
+                                  <div className="bg-panel p-3 rounded-lg border border-edge-soft mt-4">
                                     <p className="text-xs text-slate-500 uppercase font-bold mb-1">Current Initiative:</p>
                                     <p className="text-sm text-blue-400 font-mono">{client.nextAction}</p>
                                   </div>
@@ -487,7 +487,7 @@ const SuperAdminDashboard = () => {
                                     <ShieldCheck className="w-4 h-4" /> Send Automated Security Report
                                   </button>
                                 )}
-                                <button className="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white border border-[#2A3441] p-3 rounded-lg font-bold text-sm transition-all shadow-md">
+                                <button className="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white border border-edge-soft p-3 rounded-lg font-bold text-sm transition-all shadow-md">
                                   <Briefcase className="w-4 h-4" /> Open Dedicated Workspace
                                 </button>
                               </div>
@@ -512,7 +512,7 @@ const SuperAdminDashboard = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-[#0B0F19] border border-[#1C212E] p-8 rounded-2xl shadow-xl">
+              <div className="bg-base border border-edge p-8 rounded-2xl shadow-xl">
                  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2"><DollarSign className="w-6 h-6 text-amber-500"/> Revenue Pipeline</h3>
                  
                  <div className="space-y-6">
@@ -539,7 +539,7 @@ const SuperAdminDashboard = () => {
                  </div>
               </div>
 
-              <div className="bg-[#0B0F19] border border-[#1C212E] p-8 rounded-2xl shadow-xl">
+              <div className="bg-base border border-edge p-8 rounded-2xl shadow-xl">
                  <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2"><Activity className="w-6 h-6 text-blue-500"/> Operational SLA</h3>
                  
                  <div className="space-y-5">
@@ -582,8 +582,8 @@ const SuperAdminDashboard = () => {
               
               {/* Add User Form */}
               <div className="xl:col-span-1">
-                <Card className="bg-[#0B0F19] border-[#1C212E] shadow-xl sticky top-6">
-                  <CardHeader className="border-b border-[#1C212E] pb-4">
+                <Card className="bg-base border-edge shadow-xl sticky top-6">
+                  <CardHeader className="border-b border-edge pb-4">
                     <CardTitle className="text-white text-lg flex items-center gap-2">
                       <UserPlus className="w-5 h-5 text-blue-500" />
                       Provision New Access
@@ -598,7 +598,7 @@ const SuperAdminDashboard = () => {
                           type="text" 
                           value={newStaff.name}
                           onChange={(e) => setNewStaff({...newStaff, name: e.target.value})}
-                          className="w-full bg-[#13192B] border border-[#2A3441] text-white rounded p-3 text-sm focus:outline-none focus:border-blue-500" 
+                          className="w-full bg-panel border border-edge-soft text-white rounded p-3 text-sm focus:outline-none focus:border-blue-500" 
                           placeholder="Jane Doe"
                           required 
                         />
@@ -609,7 +609,7 @@ const SuperAdminDashboard = () => {
                           type="email" 
                           value={newStaff.email}
                           onChange={(e) => setNewStaff({...newStaff, email: e.target.value})}
-                          className="w-full bg-[#13192B] border border-[#2A3441] text-white rounded p-3 text-sm focus:outline-none focus:border-blue-500" 
+                          className="w-full bg-panel border border-edge-soft text-white rounded p-3 text-sm focus:outline-none focus:border-blue-500" 
                           placeholder="jane@cybersage.uk"
                           required 
                         />
@@ -619,7 +619,7 @@ const SuperAdminDashboard = () => {
                         <select 
                           value={newStaff.role}
                           onChange={(e) => setNewStaff({...newStaff, role: e.target.value})}
-                          className="w-full bg-[#13192B] border border-[#2A3441] text-white rounded p-3 text-sm focus:outline-none focus:border-blue-500"
+                          className="w-full bg-panel border border-edge-soft text-white rounded p-3 text-sm focus:outline-none focus:border-blue-500"
                         >
                           <option value="Operations">Operations (CRM, Projects)</option>
                           <option value="Development">Development (Code, Infrastructure)</option>
@@ -640,8 +640,8 @@ const SuperAdminDashboard = () => {
               </div>
 
               {/* Staff Table */}
-              <div className="xl:col-span-2 text-sm bg-[#0B0F19] border border-[#1C212E] rounded-2xl shadow-xl overflow-hidden self-start">
-                <div className="p-5 border-b border-[#1C212E] flex justify-between items-center bg-[#13192B]">
+              <div className="xl:col-span-2 text-sm bg-base border border-edge rounded-2xl shadow-xl overflow-hidden self-start">
+                <div className="p-5 border-b border-edge flex justify-between items-center bg-panel">
                   <h3 className="text-lg font-bold text-white flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-emerald-500" /> Identity Matrix
                   </h3>
@@ -649,7 +649,7 @@ const SuperAdminDashboard = () => {
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
-                    <thead className="bg-[#06080A] text-xs text-slate-500 uppercase tracking-wider border-b border-[#1C212E]">
+                    <thead className="bg-void text-xs text-slate-500 uppercase tracking-wider border-b border-edge">
                       <tr>
                         <th className="px-6 py-4 font-medium">Identity / Email</th>
                         <th className="px-6 py-4 font-medium">RBAC Scope</th>
@@ -657,7 +657,7 @@ const SuperAdminDashboard = () => {
                         <th className="px-6 py-4 font-medium text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#1C212E]">
+                    <tbody className="divide-y divide-edge">
                       {staffList.map((staff) => (
                         <tr key={staff.id} className="hover:bg-[#13192B]/50 transition-colors">
                           <td className="px-6 py-4">

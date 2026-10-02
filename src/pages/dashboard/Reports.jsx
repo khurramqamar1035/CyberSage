@@ -94,21 +94,21 @@ const Reports = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-xl flex justify-between items-center">
+        <div className="bg-panel border border-edge p-6 rounded-xl flex justify-between items-center">
           <div>
             <p className="text-sm font-medium text-slate-400 mb-1">Total Reports</p>
             <h3 className="text-4xl font-bold text-blue-500">{totalReports}</h3>
           </div>
           <FileText className="w-8 h-8 text-blue-500" />
         </div>
-        <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-xl flex justify-between items-center">
+        <div className="bg-panel border border-edge p-6 rounded-xl flex justify-between items-center">
           <div>
             <p className="text-sm font-medium text-slate-400 mb-1">Low Risk</p>
             <h3 className="text-4xl font-bold text-emerald-500">{lowRiskCount}</h3>
           </div>
           <CheckCircle className="w-8 h-8 text-emerald-500" />
         </div>
-        <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-xl flex justify-between items-center">
+        <div className="bg-panel border border-edge p-6 rounded-xl flex justify-between items-center">
           <div>
             <p className="text-sm font-medium text-slate-400 mb-1">Needs Attention</p>
             <h3 className="text-4xl font-bold text-amber-500">{needsAttentionCount}</h3>
@@ -119,7 +119,7 @@ const Reports = () => {
 
       {/* Reports List */}
       {reports.length === 0 ? (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-16 text-center">
+        <div className="bg-base border border-edge rounded-2xl p-16 text-center">
           <FileText className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <h3 className="text-lg font-bold text-slate-400 mb-2">No Reports Yet</h3>
           <p className="text-slate-600 text-sm">
@@ -131,7 +131,7 @@ const Reports = () => {
           {reports.map((report) => (
             <div
               key={report._id}
-              className="bg-[#0B0F19] border border-[#1C212E] rounded-xl overflow-hidden transition-all duration-300"
+              className="bg-base border border-edge rounded-xl overflow-hidden transition-all duration-300"
             >
               <div className="p-6 pb-2">
 
@@ -155,7 +155,7 @@ const Reports = () => {
                 </div>
 
                 {/* Executive Summary */}
-                <div className="bg-[#13192B] border border-[#1C212E] rounded-xl p-5 mb-5 mt-2">
+                <div className="bg-panel border border-edge rounded-xl p-5 mb-5 mt-2">
                   <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
                     Executive Summary
                   </h4>
@@ -196,7 +196,7 @@ const Reports = () => {
                 {report.details?.length > 0 && (
                   <button
                     onClick={() => toggleExpand(report._id)}
-                    className="w-full flex items-center justify-between py-4 text-sm font-medium text-slate-400 hover:text-blue-400 transition-colors border-t border-[#1C212E] mt-4"
+                    className="w-full flex items-center justify-between py-4 text-sm font-medium text-slate-400 hover:text-blue-400 transition-colors border-t border-edge mt-4"
                   >
                     <span>View Detailed Findings ({report.details.length})</span>
                     {expandedReport === report._id
@@ -209,7 +209,7 @@ const Reports = () => {
 
               {/* Expandable Details */}
               {expandedReport === report._id && (
-                <div className="px-6 pb-6 pt-0 bg-[#0B0F19]">
+                <div className="px-6 pb-6 pt-0 bg-base">
                   <h4 className="text-sm font-semibold text-slate-300 mb-3 mt-4">
                     Key Findings & Recommendations
                   </h4>

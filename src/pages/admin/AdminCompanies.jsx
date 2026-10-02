@@ -71,7 +71,7 @@ const AdminCompanies = () => {
           <p className="text-slate-400 mt-1">Manage all registered companies</p>
         </div>
         <div className="flex items-center gap-3">
-          <span className="bg-[#13192B] border border-[#2A3441] text-slate-400 text-sm px-4 py-2 rounded-lg">
+          <span className="bg-panel border border-edge-soft text-slate-400 text-sm px-4 py-2 rounded-lg">
             {companies.length} total
           </span>
         </div>
@@ -85,14 +85,14 @@ const AdminCompanies = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by company name or email..."
-          className="w-full bg-[#0B0F19] border border-[#1C212E] text-slate-200 rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-red-500 transition-colors"
+          className="w-full bg-base border border-edge text-slate-200 rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-red-500 transition-colors"
         />
       </div>
 
       {/* Companies Table */}
-      <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl overflow-hidden">
+      <div className="bg-base border border-edge rounded-2xl overflow-hidden">
         <table className="w-full text-left text-sm text-slate-400">
-          <thead className="border-b border-[#1C212E] text-xs text-slate-500">
+          <thead className="border-b border-edge text-xs text-slate-500">
             <tr>
               <th className="px-6 py-4 font-normal">Company</th>
               <th className="px-6 py-4 font-normal">Email</th>
@@ -104,9 +104,9 @@ const AdminCompanies = () => {
               <th className="px-6 py-4 font-normal text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#1C212E]">
+          <tbody className="divide-y divide-edge">
             {filtered.map((company) => (
-              <tr key={company._id} className="hover:bg-[#13192B] transition-colors">
+              <tr key={company._id} className="hover:bg-panel transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">

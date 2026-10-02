@@ -64,7 +64,6 @@ import AdminGallery from './pages/admin/AdminGallery';
 import AdminInternMessages from './pages/admin/AdminInternMessages';
 import GalleryPage from './pages/GalleryPage';
 import AdminFAQs from './pages/admin/AdminFAQs';
-import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminClients from './pages/admin/AdminClients';
 import AdminInterns from './pages/admin/AdminInterns';
 import SuperAdminDashboard from './pages/superadmin/SuperAdminDashboard';
@@ -173,7 +172,6 @@ function App() {
           <Route path="companies/:userId" element={<AdminCompanyDetail />} />
           <Route path="blogs" element={<AdminBlogs />} />
           <Route path="faqs" element={<AdminFAQs />} />
-          <Route path="testimonials" element={<AdminTestimonials />} />
           <Route path="clients" element={<AdminClients />} />
           <Route path="interns" element={<AdminInterns />} />
           <Route path="certificates" element={<AdminCertificates />} />

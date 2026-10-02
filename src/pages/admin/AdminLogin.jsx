@@ -38,14 +38,14 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#06080A] flex flex-col justify-center items-center p-4">
+    <div className="min-h-screen bg-void flex flex-col justify-center items-center p-4">
       <div className="mb-8 flex flex-col items-center">
         <img src="/logo.png" alt="CyberSage" className="w-14 h-14 object-contain mb-4" />
         <h1 className="text-3xl font-bold text-white tracking-tight">Admin Portal</h1>
         <p className="text-slate-400 mt-2 text-sm">CyberSage Administration</p>
       </div>
 
-      <div className="w-full max-w-md bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-8 shadow-2xl">
+      <div className="w-full max-w-md bg-base border border-edge rounded-2xl p-8 shadow-2xl">
         <form onSubmit={handleLogin} className="space-y-5">
           {error && (
             <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-lg text-center">
@@ -63,7 +63,7 @@ const AdminLogin = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="admin@cybersage.com"
-                className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors"
+                className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors"
               />
             </div>
           </div>
@@ -78,7 +78,7 @@ const AdminLogin = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors"
+                className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors"
               />
             </div>
           </div>

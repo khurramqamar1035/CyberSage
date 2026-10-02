@@ -24,7 +24,7 @@ export default function TrainingAcademy() {
   ) : (
     <div className="flex flex-col gap-2">
       <span className="cs-btn cs-btn-secondary w-fit opacity-60 cursor-not-allowed" aria-disabled="true">{link.closedLabel}</span>
-      <span className="text-[14px] text-[#5B6575]">{link.closedNote}</span>
+      <span className="text-[14px] text-dim">{link.closedNote}</span>
     </div>
   ));
 

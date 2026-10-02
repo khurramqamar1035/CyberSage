@@ -98,18 +98,18 @@ function Editor({ resetKey }) {
       {loading ? (
         <div className="flex items-center justify-center h-64"><Loader2 className="w-8 h-8 text-red-500 animate-spin" /></div>
       ) : sorted.length === 0 ? (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center text-slate-400">No photos yet. Use “Upload photos” to add some.</div>
+        <div className="bg-base border border-edge rounded-2xl p-12 text-center text-slate-400">No photos yet. Use “Upload photos” to add some.</div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
           {sorted.map((it) => (
-            <div key={it.id} className={`bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-3 ${it.published === false ? 'opacity-60' : ''}`}>
+            <div key={it.id} className={`bg-base border border-edge rounded-2xl p-3 ${it.published === false ? 'opacity-60' : ''}`}>
               <div className="aspect-[4/3] rounded-lg overflow-hidden bg-black/40 mb-3">
                 <img src={it.src} alt="" className="w-full h-full object-cover" loading="lazy" onError={(e) => { e.currentTarget.style.opacity = 0.15; }} />
               </div>
               <div className="flex items-center justify-between gap-2">
                 <label className="flex items-center gap-2 text-xs text-slate-400">Order
                   <input type="number" defaultValue={it.order || 0} onBlur={(e) => { const v = Number(e.target.value) || 0; if (v !== (it.order || 0)) update(it, { order: v }); }}
-                    className="w-16 bg-[#06080A] border border-[#1C212E] text-white text-xs rounded-lg px-2 py-1.5" />
+                    className="w-16 bg-void border border-edge text-white text-xs rounded-lg px-2 py-1.5" />
                 </label>
                 <div className="flex items-center gap-1">
                   <button onClick={() => update(it, { published: it.published === false })} className="p-2 text-slate-500 hover:text-slate-200 rounded-lg" title={it.published === false ? 'Show on site' : 'Hide from site'}>

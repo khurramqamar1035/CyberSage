@@ -37,16 +37,16 @@ const BlogDetailPage = () => {
   };
 
   const crumbs = (
-    <nav aria-label="Breadcrumb" className="cs-meta text-[#5B6575] flex flex-wrap items-center gap-2.5">
-      <Link to="/" className="hover:text-[#ECEEF1] transition-colors">CyberSage</Link><span aria-hidden="true">/</span>
-      <Link to="/blog" className="hover:text-[#ECEEF1] transition-colors">Blog</Link>
+    <nav aria-label="Breadcrumb" className="cs-meta text-dim flex flex-wrap items-center gap-2.5">
+      <Link to="/" className="hover:text-off transition-colors">CyberSage</Link><span aria-hidden="true">/</span>
+      <Link to="/blog" className="hover:text-off transition-colors">Blog</Link>
     </nav>
   );
 
   if (loading || !post) {
     return (
       <main className="cs-sans">
-        <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1] min-h-[60vh]">
+        <section className="relative s-black tx-grain overflow-hidden text-off min-h-[60vh]">
           <Guides dark />
           <div className={`${WRAP} relative pt-10 md:pt-14 pb-20`}>
             {crumbs}
@@ -57,7 +57,7 @@ const BlogDetailPage = () => {
             ) : (
               <div className="mt-12">
                 <h1 className="m-0 t-wide font-[250] text-[34px] md:text-[48px] leading-[1.05] tracking-[-0.035em]">Post not found.</h1>
-                <p className="m-0 mt-4 text-[16px] text-[#A9B8D0]">It may have been moved or removed.</p>
+                <p className="m-0 mt-4 text-[16px] text-cold">It may have been moved or removed.</p>
                 <Link to="/blog" className="cs-btn cs-btn-on-dark mt-8">Back to the blog</Link>
               </div>
             )}
@@ -68,15 +68,15 @@ const BlogDetailPage = () => {
   }
 
   return (
-    <main className="cs-sans text-[#07090D]">
-      <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">
+    <main className="cs-sans text-k">
+      <section className="relative s-black tx-grain overflow-hidden text-off">
         <Guides dark />
         <div className={`${WRAP} relative pt-10 md:pt-14 pb-14 md:pb-20`}>
           {crumbs}
           <div className="mt-12 max-w-[920px]">
-            {post.category && <div className="cs-meta text-[#A9B8D0]">{post.category}</div>}
+            {post.category && <div className="cs-meta text-cold">{post.category}</div>}
             <h1 className="m-0 mt-4 t-wide font-[250] text-[34px] sm:text-[46px] lg:text-[58px] leading-[1.04] tracking-[-0.035em]">{post.title}</h1>
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-[15px] text-[#A9B8D0]">
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-[15px] text-cold">
               {post.author && <span>By {post.author}</span>}
               {post.created_at && <time dateTime={post.created_at}>{formatDate(post.created_at)}</time>}
             </div>
@@ -88,7 +88,7 @@ const BlogDetailPage = () => {
         <Guides />
         <div className={`${WRAP} relative py-14 md:py-20`}>
           {post.featured_image && (
-            <div className="max-w-[1100px] aspect-[16/9] overflow-hidden bg-[#E6E9ED] -mt-2 mb-12 md:mb-16">
+            <div className="max-w-[1100px] aspect-[16/9] overflow-hidden bg-mist -mt-2 mb-12 md:mb-16">
               <img src={post.featured_image} alt="" className="w-full h-full object-cover" />
             </div>
           )}
@@ -97,8 +97,8 @@ const BlogDetailPage = () => {
           </div>
 
           {post.tags && post.tags.length > 0 && (
-            <div className="max-w-[68ch] mt-12 pt-6 border-t border-[#07090D] flex flex-wrap gap-x-5 gap-y-2">
-              {post.tags.map((tag, index) => <span key={index} className="cs-meta text-[#5B6575]">#{tag}</span>)}
+            <div className="max-w-[68ch] mt-12 pt-6 border-t border-k flex flex-wrap gap-x-5 gap-y-2">
+              {post.tags.map((tag, index) => <span key={index} className="cs-meta text-dim">#{tag}</span>)}
             </div>
           )}
 

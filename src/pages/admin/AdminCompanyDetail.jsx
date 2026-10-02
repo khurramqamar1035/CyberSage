@@ -10,8 +10,8 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 // ------------------ Reusable Modal ------------------
 const Modal = ({ title, onClose, children }) => (
   <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-    <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
-      <div className="flex justify-between items-center p-6 border-b border-[#1C212E]">
+    <div className="bg-base border border-edge rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div className="flex justify-between items-center p-6 border-b border-edge">
         <h3 className="text-lg font-bold text-white">{title}</h3>
         <button onClick={onClose} className="text-slate-500 hover:text-slate-300">
           <X className="w-5 h-5" />
@@ -113,7 +113,7 @@ const AdminCompanyDetail = () => {
                 type={field.type}
                 value={form[field.key]}
                 onChange={e => setForm({ ...form, [field.key]: Number(e.target.value) })}
-                className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-red-500 text-sm"
+                className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-red-500 text-sm"
               />
             </div>
           ))}
@@ -123,7 +123,7 @@ const AdminCompanyDetail = () => {
           <select
             value={form.threatLevel}
             onChange={e => setForm({ ...form, threatLevel: e.target.value })}
-            className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-red-500 text-sm"
+            className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-red-500 text-sm"
           >
             <option>Low</option>
             <option>Medium</option>
@@ -203,7 +203,7 @@ const AdminCompanyDetail = () => {
 
         <div className="space-y-3">
           {data?.userServices?.map((us) => (
-            <div key={us._id} className="bg-[#13192B] border border-[#2A3441] rounded-xl p-4">
+            <div key={us._id} className="bg-panel border border-edge-soft rounded-xl p-4">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="font-bold text-slate-200">{us.service?.name}</p>
@@ -246,7 +246,7 @@ const AdminCompanyDetail = () => {
                 <select
                   value={addForm.serviceId}
                   onChange={e => setAddForm({ ...addForm, serviceId: e.target.value })}
-                  className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+                  className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
                 >
                   {services.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
                 </select>
@@ -261,7 +261,7 @@ const AdminCompanyDetail = () => {
                   <select
                     value={addForm[field.key]}
                     onChange={e => setAddForm({ ...addForm, [field.key]: e.target.value })}
-                    className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+                    className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
                   >
                     {field.options.map(o => <option key={o}>{o}</option>)}
                   </select>
@@ -273,7 +273,7 @@ const AdminCompanyDetail = () => {
                   type="number"
                   value={addForm.price}
                   onChange={e => setAddForm({ ...addForm, price: e.target.value })}
-                  className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+                  className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
                 />
               </div>
               <div>
@@ -282,7 +282,7 @@ const AdminCompanyDetail = () => {
                   type="date"
                   value={addForm.deliveryDate}
                   onChange={e => setAddForm({ ...addForm, deliveryDate: e.target.value })}
-                  className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+                  className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
                 />
               </div>
               <button
@@ -361,7 +361,7 @@ const AdminCompanyDetail = () => {
 
         <div className="space-y-3">
           {data?.reports?.map((report) => (
-            <div key={report._id} className="bg-[#13192B] border border-[#2A3441] rounded-xl p-4">
+            <div key={report._id} className="bg-panel border border-edge-soft rounded-xl p-4">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="font-bold text-slate-200">{report.title}</p>
@@ -400,7 +400,7 @@ const AdminCompanyDetail = () => {
                 <select
                   value={form.serviceId}
                   onChange={e => setForm({ ...form, serviceId: e.target.value })}
-                  className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+                  className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
                 >
                   {data?.userServices?.map(us => (
                     <option key={us.service?._id} value={us.service?._id}>{us.service?.name}</option>
@@ -419,7 +419,7 @@ const AdminCompanyDetail = () => {
                     placeholder={field.placeholder}
                     value={form[field.key]}
                     onChange={e => setForm({ ...form, [field.key]: e.target.value })}
-                    className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+                    className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
                   />
                 </div>
               ))}
@@ -428,7 +428,7 @@ const AdminCompanyDetail = () => {
                 <select
                   value={form.riskLevel}
                   onChange={e => setForm({ ...form, riskLevel: e.target.value })}
-                  className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+                  className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
                 >
                   <option>Low</option><option>Medium</option><option>High</option>
                 </select>
@@ -439,7 +439,7 @@ const AdminCompanyDetail = () => {
                   value={form.executiveSummary}
                   onChange={e => setForm({ ...form, executiveSummary: e.target.value })}
                   rows={3}
-                  className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500 resize-none"
+                  className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500 resize-none"
                 />
               </div>
               <div>
@@ -449,7 +449,7 @@ const AdminCompanyDetail = () => {
                   onChange={e => setForm({ ...form, details: e.target.value })}
                   rows={4}
                   placeholder="Finding 1&#10;Finding 2&#10;Finding 3"
-                  className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500 resize-none"
+                  className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500 resize-none"
                 />
               </div>
               <button
@@ -507,7 +507,7 @@ const AdminCompanyDetail = () => {
         <h3 className="text-slate-300 font-medium">Billing & Payments</h3>
         <div className="space-y-3">
           {data?.userServices?.map((us) => (
-            <div key={us._id} className="bg-[#13192B] border border-[#2A3441] rounded-xl p-4">
+            <div key={us._id} className="bg-panel border border-edge-soft rounded-xl p-4">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="font-bold text-slate-200">{us.service?.name}</p>
@@ -578,7 +578,7 @@ const AdminCompanyDetail = () => {
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate('/admin/companies')}
-          className="p-2 text-slate-400 hover:text-slate-200 hover:bg-[#13192B] rounded-lg transition-colors"
+          className="p-2 text-slate-400 hover:text-slate-200 hover:bg-panel rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
@@ -601,7 +601,7 @@ const AdminCompanyDetail = () => {
           { label: 'Services', value: data.userServices?.length || 0, color: 'text-purple-400' },
           { label: 'Reports', value: data.reports?.length || 0, color: 'text-pink-400' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-[#0B0F19] border border-[#1C212E] rounded-xl p-4 text-center">
+          <div key={stat.label} className="bg-base border border-edge rounded-xl p-4 text-center">
             <p className="text-xs text-slate-500 mb-1">{stat.label}</p>
             <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
           </div>
@@ -609,7 +609,7 @@ const AdminCompanyDetail = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-[#0B0F19] border border-[#1C212E] p-1 rounded-xl">
+      <div className="flex gap-1 bg-base border border-edge p-1 rounded-xl">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -627,7 +627,7 @@ const AdminCompanyDetail = () => {
       </div>
 
       {/* Tab Content */}
-      <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-6">
+      <div className="bg-base border border-edge rounded-2xl p-6">
         {activeTab === 'overview' && <StatsTab />}
         {activeTab === 'services' && <ServicesTab />}
         {activeTab === 'reports' && <ReportsTab />}
@@ -662,7 +662,7 @@ const EditServiceModal = ({ us, onSave, onClose, saving }) => {
             <select
               value={form[field.key]}
               onChange={e => setForm({ ...form, [field.key]: e.target.value })}
-              className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+              className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
             >
               {field.options.map(o => <option key={o}>{o}</option>)}
             </select>
@@ -674,7 +674,7 @@ const EditServiceModal = ({ us, onSave, onClose, saving }) => {
             type="number"
             value={form.price}
             onChange={e => setForm({ ...form, price: e.target.value })}
-            className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+            className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
           />
         </div>
         <div>
@@ -683,7 +683,7 @@ const EditServiceModal = ({ us, onSave, onClose, saving }) => {
             type="date"
             value={form.deliveryDate}
             onChange={e => setForm({ ...form, deliveryDate: e.target.value })}
-            className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+            className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
           />
         </div>
         <button
@@ -723,7 +723,7 @@ const EditReportModal = ({ report, userServices, onSave, onClose, saving }) => {
               type={field.type}
               value={form[field.key]}
               onChange={e => setForm({ ...form, [field.key]: e.target.value })}
-              className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+              className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
             />
           </div>
         ))}
@@ -732,7 +732,7 @@ const EditReportModal = ({ report, userServices, onSave, onClose, saving }) => {
           <select
             value={form.riskLevel}
             onChange={e => setForm({ ...form, riskLevel: e.target.value })}
-            className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+            className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500"
           >
             <option>Low</option><option>Medium</option><option>High</option>
           </select>
@@ -743,7 +743,7 @@ const EditReportModal = ({ report, userServices, onSave, onClose, saving }) => {
             value={form.executiveSummary}
             onChange={e => setForm({ ...form, executiveSummary: e.target.value })}
             rows={3}
-            className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500 resize-none"
+            className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500 resize-none"
           />
         </div>
         <div>
@@ -752,7 +752,7 @@ const EditReportModal = ({ report, userServices, onSave, onClose, saving }) => {
             value={form.details}
             onChange={e => setForm({ ...form, details: e.target.value })}
             rows={4}
-            className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500 resize-none"
+            className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-500 resize-none"
           />
         </div>
         <button

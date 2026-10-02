@@ -31,7 +31,7 @@ const Settings = () => {
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                 activeTab === tab.id
                   ? 'bg-blue-600/20 text-blue-400 shadow-[inset_4px_0_0_0_rgba(59,130,246,1)]'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-[#13192B]'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-panel'
               }`}
             >
               <tab.icon className="w-5 h-5 flex-shrink-0" strokeWidth={activeTab === tab.id ? 2 : 1.5} />
@@ -41,12 +41,12 @@ const Settings = () => {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-8">
+        <div className="flex-1 bg-base border border-edge rounded-2xl p-8">
           
           {activeTab === 'profile' && (
             <div className="max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
               <h2 className="text-xl font-bold text-slate-100 mb-6">Profile Information</h2>
-              <p className="text-sm text-slate-400 mb-8 border-b border-[#1C212E] pb-6">
+              <p className="text-sm text-slate-400 mb-8 border-b border-edge pb-6">
                 Update your company details and primary administrative contact information.
               </p>
               
@@ -57,7 +57,7 @@ const Settings = () => {
                     <input 
                       type="text" 
                       defaultValue="TechCorp Solutions"
-                      className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                      className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                     />
                   </div>
 
@@ -66,7 +66,7 @@ const Settings = () => {
                     <input 
                       type="email" 
                       defaultValue="admin@techcorp.com"
-                      className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                      className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                     />
                   </div>
                 </div>
@@ -76,13 +76,13 @@ const Settings = () => {
                   <input 
                     type="url" 
                     defaultValue="https://techcorp.com"
-                    className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                    className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                   />
                 </div>
                 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-300">Primary Industry</label>
-                  <select className="w-full bg-[#13192B] border border-[#2A3441] text-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors appearance-none">
+                  <select className="w-full bg-panel border border-edge-soft text-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors appearance-none">
                     <option>Technology & Software</option>
                     <option>Finance</option>
                     <option>Healthcare</option>
@@ -90,7 +90,7 @@ const Settings = () => {
                   </select>
                 </div>
 
-                <div className="pt-6 mt-6 border-t border-[#1C212E]">
+                <div className="pt-6 mt-6 border-t border-edge">
                   <button 
                     type="button"
                     className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-colors shadow-lg"
@@ -104,7 +104,7 @@ const Settings = () => {
 
           {activeTab !== 'profile' && (
             <div className="flex flex-col items-center justify-center p-12 text-center animate-in fade-in duration-500">
-              <div className="w-16 h-16 bg-[#13192B] rounded-full flex items-center justify-center mb-4 border border-[#2A3441]">
+              <div className="w-16 h-16 bg-panel rounded-full flex items-center justify-center mb-4 border border-edge-soft">
                 <Shield className="w-8 h-8 text-slate-500" />
               </div>
               <h3 className="text-lg font-bold text-slate-200 mb-2">Under Construction</h3>

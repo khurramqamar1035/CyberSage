@@ -5,19 +5,48 @@
    Colour: deep black, charcoal, cool off-white; steel/slate secondaries;
    CyberSage blue as the single accent. Red only for detections.
    ───────────────────────────────────────────────────────────── */
+/* ── CyberSage colour tokens ───────────────────────────────────────────
+   Single source of truth. Tailwind maps semantic class names onto these
+   in tailwind.config.js, so bg-panel / border-edge / text-cold all read
+   from here. Change a colour once and it moves everywhere.
+   ──────────────────────────────────────────────────────────────────── */
 :root {
-  --k: #07090D;        /* deep black */
-  --k2: #0E1117;       /* charcoal */
-  --navy: #0B1220;     /* very dark navy */
+  /* Surfaces, deepest to lightest */
+  --void: #06080A;
+  --k: #07090D;
+  --base: #0B0F19;
+  --navy: #0B1220;
+  --k2: #0E1117;
+  --panel: #13192B;
+  --panel-2: #151A23;
+  --panel-3: #171C26;
+  --surface-deep: #0c1324;
+
+  /* Lines and borders */
+  --edge: #1C212E;
+  --edge-soft: #2A3441;
+  --edge-strong: #3E4555;
+
+  /* Text, dim to bright */
   --slate: #5B6575;
+  --slate-2: #5F6676;
   --steel: #8B95A5;
-  --cold: #A9B8D0;     /* cold blue */
+  --cold: #A9B8D0;
   --fog: #D5DAE1;
-  --off: #ECEEF1;      /* off-white */
+  --fog-2: #DCE0E7;
+  --mist: #E6E9ED;
+  --off: #ECEEF1;
   --paper: #F5F6F7;
-  --blue: #2563EB;     /* CyberSage blue */
+
+  /* Brand and state */
+  --blue: #2563EB;
   --blue-ink: #1D4ED8;
+  --periwinkle: #b4c5ff;
+  --amber: #ffb95f;
   --alert: #E5484D;
+  --danger: #C93C40;
+
+  /* Motion */
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
 }
 

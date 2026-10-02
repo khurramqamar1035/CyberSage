@@ -197,7 +197,7 @@ const AdminBlogs = () => {
           <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
         </div>
       ) : blogs.length === 0 ? (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
+        <div className="bg-base border border-edge rounded-2xl p-12 text-center">
           <FileText className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-slate-400 text-lg font-medium">No blog posts yet</p>
           <p className="text-slate-600 text-sm mt-1">Create your first post to get started.</p>
@@ -209,10 +209,10 @@ const AdminBlogs = () => {
           </button>
         </div>
       ) : (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl overflow-hidden">
+        <div className="bg-base border border-edge rounded-2xl overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[#1C212E]">
+              <tr className="border-b border-edge">
                 <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Title</th>
                 <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Author</th>
                 <th className="text-left px-6 py-4 text-slate-400 text-sm font-medium">Category</th>
@@ -221,9 +221,9 @@ const AdminBlogs = () => {
                 <th className="text-right px-6 py-4 text-slate-400 text-sm font-medium">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1C212E]">
+            <tbody className="divide-y divide-edge">
               {blogs.map((blog) => (
-                <tr key={blog.id || blog._id} className="hover:bg-[#13192B] transition-colors group">
+                <tr key={blog.id || blog._id} className="hover:bg-panel transition-colors group">
                   <td className="px-6 py-4">
                     <div>
                       <p className="text-white text-sm font-medium line-clamp-1">{blog.title}</p>
@@ -285,9 +285,9 @@ const AdminBlogs = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+          <div className="bg-base border border-edge rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
             {/* Modal header */}
-            <div className="flex items-center justify-between p-6 border-b border-[#1C212E]">
+            <div className="flex items-center justify-between p-6 border-b border-edge">
               <h2 className="text-white font-bold text-lg">
                 {editingBlog ? 'Edit Blog Post' : 'Create Blog Post'}
               </h2>
@@ -317,7 +317,7 @@ const AdminBlogs = () => {
                   value={form.title}
                   onChange={handleTitleChange}
                   placeholder="Blog post title"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                 />
               </div>
 
@@ -331,7 +331,7 @@ const AdminBlogs = () => {
                   value={form.slug}
                   onChange={handleChange}
                   placeholder="url-friendly-slug"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 font-mono"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 font-mono"
                 />
               </div>
 
@@ -346,7 +346,7 @@ const AdminBlogs = () => {
                     value={form.author}
                     onChange={handleChange}
                     placeholder="Author name"
-                    className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                    className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                   />
                 </div>
                 <div>
@@ -358,7 +358,7 @@ const AdminBlogs = () => {
                       name="category"
                       value={form.category}
                       onChange={handleChange}
-                      className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 appearance-none"
+                      className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 appearance-none"
                     >
                       <option value="" disabled>Select category</option>
                       {CATEGORIES.map((c) => (
@@ -381,7 +381,7 @@ const AdminBlogs = () => {
                   onChange={handleChange}
                   placeholder="Short summary of the post..."
                   rows={2}
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 resize-none"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 resize-none"
                 />
               </div>
 
@@ -396,7 +396,7 @@ const AdminBlogs = () => {
                   onChange={handleChange}
                   placeholder="Full blog post content..."
                   rows={8}
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 resize-y"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 resize-y"
                 />
               </div>
 
@@ -410,7 +410,7 @@ const AdminBlogs = () => {
                   value={form.tags}
                   onChange={handleChange}
                   placeholder="cybersecurity, AI, training"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                 />
               </div>
 
@@ -433,7 +433,7 @@ const AdminBlogs = () => {
             </div>
 
             {/* Modal footer */}
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#1C212E]">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-edge">
               <button
                 onClick={() => setShowModal(false)}
                 className="px-4 py-2 text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors"

@@ -22,17 +22,17 @@ function Card({ m, onOpen, hidden }) {
   return (
     <figure className="m-0 w-[300px] sm:w-[380px] shrink-0 bg-white border border-[rgba(7,9,13,0.12)] p-6 flex flex-col justify-between gap-6" aria-hidden={hidden || undefined}>
       <div>
-        <svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true" className="text-[#2563EB]"><path d="M0 20V12C0 5.4 3.4 1.3 10.2 0l1.1 2.6C7.6 3.8 5.8 6.1 5.6 9.4H11V20H0zm15 0V12c0-6.6 3.4-10.7 10.2-12l1.1 2.6c-3.7 1.2-5.5 3.5-5.7 6.8H26V20H15z" fill="currentColor" /></svg>
+        <svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true" className="text-brand"><path d="M0 20V12C0 5.4 3.4 1.3 10.2 0l1.1 2.6C7.6 3.8 5.8 6.1 5.6 9.4H11V20H0zm15 0V12c0-6.6 3.4-10.7 10.2-12l1.1 2.6c-3.7 1.2-5.5 3.5-5.7 6.8H26V20H15z" fill="currentColor" /></svg>
         <blockquote className="m-0 mt-4 text-[15.5px] leading-relaxed text-[#1F2430] whitespace-pre-line line-clamp-6">{m.message}</blockquote>
         {long && <button type="button" tabIndex={hidden ? -1 : 0} onClick={() => onOpen(m)} className="mt-3 bg-transparent cs-link text-[14px]">Read more</button>}
       </div>
       <figcaption className="flex items-center gap-3 pt-4 border-t border-[rgba(7,9,13,0.1)]">
         {m.photo
-          ? <img src={m.photo} alt="" loading="lazy" className="w-10 h-10 object-cover shrink-0 bg-[#E6E9ED]" />
-          : <span aria-hidden="true" className="w-10 h-10 shrink-0 flex items-center justify-center bg-[#07090D] text-white text-[13px] font-medium">{initials(m.name)}</span>}
+          ? <img src={m.photo} alt="" loading="lazy" className="w-10 h-10 object-cover shrink-0 bg-mist" />
+          : <span aria-hidden="true" className="w-10 h-10 shrink-0 flex items-center justify-center bg-k text-white text-[13px] font-medium">{initials(m.name)}</span>}
         <span className="min-w-0">
           <span className="block text-[15px] font-medium truncate">{m.linkedin && !hidden ? <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="cs-link">{m.name}</a> : m.name}</span>
-          {subline(m) && <span className="block text-[13px] text-[#5B6575] truncate">{subline(m)}</span>}
+          {subline(m) && <span className="block text-[13px] text-dim truncate">{subline(m)}</span>}
         </span>
       </figcaption>
     </figure>
@@ -52,7 +52,7 @@ function Reader({ m, onClose }) {
         <div className="mt-8 pt-5 border-t border-[rgba(7,9,13,0.12)] flex items-end justify-between gap-4">
           <div>
             <div className="text-[16px] font-medium">{m.name}</div>
-            {subline(m) && <div className="text-[14px] text-[#5B6575]">{subline(m)}</div>}
+            {subline(m) && <div className="text-[14px] text-dim">{subline(m)}</div>}
           </div>
           <button type="button" onClick={onClose} className="cs-btn cs-btn-secondary" autoFocus>Close</button>
         </div>

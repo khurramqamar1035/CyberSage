@@ -183,7 +183,7 @@ const AdminFAQs = () => {
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all capitalize ${
                 filterCategory === cat
                   ? 'bg-red-500/10 text-red-400 border border-red-500/20'
-                  : 'bg-[#0B0F19] text-slate-400 border border-[#1C212E] hover:text-slate-200'
+                  : 'bg-base text-slate-400 border border-edge hover:text-slate-200'
               }`}
             >
               {cat === 'all' ? 'All' : cat}
@@ -198,7 +198,7 @@ const AdminFAQs = () => {
           <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
+        <div className="bg-base border border-edge rounded-2xl p-12 text-center">
           <HelpCircle className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-slate-400 text-lg font-medium">
             {faqs.length === 0 ? 'No FAQs yet' : 'No FAQs in this category'}
@@ -220,7 +220,7 @@ const AdminFAQs = () => {
           {filtered.map((faq) => (
             <div
               key={faq.id || faq._id}
-              className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-5 hover:border-slate-700 transition-colors group"
+              className="bg-base border border-edge rounded-2xl p-5 hover:border-slate-700 transition-colors group"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
@@ -263,9 +263,9 @@ const AdminFAQs = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl">
+          <div className="bg-base border border-edge rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl">
             {/* Modal header */}
-            <div className="flex items-center justify-between p-6 border-b border-[#1C212E]">
+            <div className="flex items-center justify-between p-6 border-b border-edge">
               <h2 className="text-white font-bold text-lg">
                 {editingFAQ ? 'Edit FAQ' : 'Create FAQ'}
               </h2>
@@ -295,7 +295,7 @@ const AdminFAQs = () => {
                   value={form.question}
                   onChange={handleChange}
                   placeholder="What is...?"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                 />
               </div>
 
@@ -310,7 +310,7 @@ const AdminFAQs = () => {
                   onChange={handleChange}
                   placeholder="Detailed answer..."
                   rows={5}
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 resize-y"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600 resize-y"
                 />
               </div>
 
@@ -325,7 +325,7 @@ const AdminFAQs = () => {
                       name="category"
                       value={form.category}
                       onChange={handleChange}
-                      className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 appearance-none"
+                      className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 appearance-none"
                     >
                       <option value="" disabled>Select category</option>
                       {FAQ_CATEGORIES.map((c) => (
@@ -345,14 +345,14 @@ const AdminFAQs = () => {
                     min="0"
                     value={form.order}
                     onChange={handleChange}
-                    className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50"
+                    className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50"
                   />
                 </div>
               </div>
             </div>
 
             {/* Modal footer */}
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#1C212E]">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-edge">
               <button
                 onClick={() => setShowModal(false)}
                 className="px-4 py-2 text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors"

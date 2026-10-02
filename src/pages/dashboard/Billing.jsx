@@ -37,13 +37,13 @@ const PaymentForm = ({ clientSecret, serviceName, amount, onSuccess, onCancel })
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-8 w-full max-w-md shadow-2xl">
+      <div className="bg-base border border-edge rounded-2xl p-8 w-full max-w-md shadow-2xl">
         <h3 className="text-xl font-bold text-white mb-1">Complete Payment</h3>
         <p className="text-slate-400 text-sm mb-2">{serviceName}</p>
         <p className="text-2xl font-bold text-blue-400 mb-6">£{amount}</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="bg-[#13192B] border border-[#2A3441] rounded-xl p-4">
+          <div className="bg-panel border border-edge-soft rounded-xl p-4">
             <PaymentElement />
           </div>
 
@@ -58,7 +58,7 @@ const PaymentForm = ({ clientSecret, serviceName, amount, onSuccess, onCancel })
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 h-11 border border-[#2A3441] text-slate-400 hover:text-slate-200 font-medium rounded-lg transition-all"
+              className="flex-1 h-11 border border-edge-soft text-slate-400 hover:text-slate-200 font-medium rounded-lg transition-all"
             >
               Cancel
             </button>
@@ -179,12 +179,12 @@ const Billing = () => {
 
       {/* Unpaid Services */}
       {unpaid.length > 0 && (
-        <div className="bg-[#0B0F19] border border-amber-500/20 rounded-2xl p-6 shadow-xl">
+        <div className="bg-base border border-amber-500/20 rounded-2xl p-6 shadow-xl">
           <h2 className="text-xl font-bold text-slate-100 mb-2">Pending Payments</h2>
           <p className="text-slate-500 text-sm mb-6">Complete payment to activate these services</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {unpaid.map((us) => (
-              <div key={us._id} className="bg-[#13192B] border border-amber-500/20 rounded-xl p-5">
+              <div key={us._id} className="bg-panel border border-amber-500/20 rounded-xl p-5">
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <h3 className="font-bold text-slate-200">{us.service?.name}</h3>
@@ -220,7 +220,7 @@ const Billing = () => {
       )}
 
       {/* Invoice History */}
-      <div className="bg-[#13192B] border border-[#1C212E] rounded-xl p-6">
+      <div className="bg-panel border border-edge rounded-xl p-6">
         <div className="mb-6">
           <h2 className="text-xl font-bold text-slate-100 mb-1">Invoice History</h2>
           <p className="text-sm text-slate-400">Your past payments and invoices</p>
@@ -234,7 +234,7 @@ const Billing = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-slate-400">
-              <thead className="border-b border-[#1C212E] text-xs text-slate-500">
+              <thead className="border-b border-edge text-xs text-slate-500">
                 <tr>
                   <th className="pb-4 font-normal">Service</th>
                   <th className="pb-4 font-normal">Type</th>
@@ -244,7 +244,7 @@ const Billing = () => {
                   <th className="pb-4 text-right font-normal">Invoice</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1C212E]">
+              <tbody className="divide-y divide-edge">
                 {paid.map((us) => (
                   <tr key={us._id} className="hover:bg-[#1C253C]/50 transition-colors">
                     <td className="py-5 whitespace-nowrap">
@@ -303,7 +303,7 @@ const Billing = () => {
               theme: 'night',
               variables: {
                 colorPrimary: '#3b82f6',
-                colorBackground: '#13192B',
+                colorBackground: 'var(--panel)',
                 colorText: '#e2e8f0',
                 colorDanger: '#ef4444',
                 borderRadius: '8px',

@@ -43,7 +43,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 bg-[#0B0F19] border-r border-[#1C212E] flex flex-col h-full text-slate-300">
+    <aside className="w-64 bg-base border-r border-edge flex flex-col h-full text-slate-300">
       <div className="p-6">
         <div className="flex items-center gap-3">
           <Shield className="w-8 h-8 text-blue-500" strokeWidth={1.5} />

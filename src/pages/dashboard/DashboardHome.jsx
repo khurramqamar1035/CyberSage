@@ -84,7 +84,7 @@ const DashboardHome = () => {
           <p className="text-slate-400 mt-1">Here's your security overview</p>
         </div>
 
-        <div className="flex items-center gap-2 bg-[#1A2234] px-4 py-2 border border-[#2A3441] rounded-full">
+        <div className="flex items-center gap-2 bg-[#1A2234] px-4 py-2 border border-edge-soft rounded-full">
           <div className={`w-2.5 h-2.5 rounded-full ${dotColor[threatLevel]}`}></div>
           <p className="text-sm font-medium text-slate-300">
             Threat Report Level: <span className={`font-bold ${threatColor[threatLevel]}`}>{threatLevel} Risk</span>
@@ -93,7 +93,7 @@ const DashboardHome = () => {
       </div>
 
       {/* Security Score */}
-      <div className="bg-[#0B0F19] border border-[#1C212E] p-8 rounded-2xl flex flex-col md:flex-row items-center gap-10">
+      <div className="bg-base border border-edge p-8 rounded-2xl flex flex-col md:flex-row items-center gap-10">
         <div className="relative w-40 h-40 flex-shrink-0">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-slate-800" />
@@ -113,7 +113,7 @@ const DashboardHome = () => {
           <p className="text-sm text-slate-400 mt-1 mb-6">Your organization's overall security posture based on recent assessments</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-[#13192B] p-4 rounded-xl border border-[#1C212E]">
+            <div className="bg-panel p-4 rounded-xl border border-edge">
               <div className="flex items-center gap-2 mb-2">
                 <Shield className="w-4 h-4 text-emerald-400" />
                 <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">Resolved</span>
@@ -123,7 +123,7 @@ const DashboardHome = () => {
               </p>
             </div>
 
-            <div className="bg-[#13192B] p-4 rounded-xl border border-[#1C212E]">
+            <div className="bg-panel p-4 rounded-xl border border-edge">
               <div className="flex items-center gap-2 mb-2">
                 <Activity className="w-4 h-4 text-amber-500" />
                 <span className="text-xs font-semibold uppercase tracking-wider text-amber-500">Found</span>
@@ -133,7 +133,7 @@ const DashboardHome = () => {
               </p>
             </div>
 
-            <div className="bg-[#13192B] p-4 rounded-xl border border-[#1C212E]">
+            <div className="bg-panel p-4 rounded-xl border border-edge">
               <div className="flex items-center gap-2 mb-2">
                 <Shield className="w-4 h-4 text-blue-500" />
                 <span className="text-xs font-semibold uppercase tracking-wider text-blue-500">Blocked</span>
@@ -150,7 +150,7 @@ const DashboardHome = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         {/* Active Services */}
-        <div className="bg-[#0B0F19] border border-[#1C212E] p-6 rounded-2xl flex flex-col justify-between h-48">
+        <div className="bg-base border border-edge p-6 rounded-2xl flex flex-col justify-between h-48">
           <div className="flex justify-between items-start">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Active Services</span>
             <Activity className="w-5 h-5 text-blue-500" />
@@ -172,7 +172,7 @@ const DashboardHome = () => {
         </div>
 
         {/* Latest Report */}
-        <div className="bg-[#0B0F19] border border-[#1C212E] p-6 rounded-2xl flex flex-col justify-between h-48">
+        <div className="bg-base border border-edge p-6 rounded-2xl flex flex-col justify-between h-48">
           <div className="flex justify-between items-start mb-2">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Latest Report</span>
             <FileType className="w-5 h-5 text-emerald-500" />
@@ -198,7 +198,7 @@ const DashboardHome = () => {
         </div>
 
         {/* Next Delivery */}
-        <div className="bg-[#0B0F19] border border-[#1C212E] p-6 rounded-2xl flex flex-col justify-between h-48">
+        <div className="bg-base border border-edge p-6 rounded-2xl flex flex-col justify-between h-48">
           <div className="flex justify-between items-start mb-2">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Next Delivery</span>
             <CalendarClock className="w-5 h-5 text-amber-500" />

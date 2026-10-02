@@ -172,7 +172,7 @@ const AdminClients = () => {
           <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
         </div>
       ) : clients.length === 0 ? (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
+        <div className="bg-base border border-edge rounded-2xl p-12 text-center">
           <Building2 className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-slate-400 text-lg font-medium">No clients yet</p>
           <p className="text-slate-600 text-sm mt-1">Add your first client to get started.</p>
@@ -188,11 +188,11 @@ const AdminClients = () => {
           {clients.map((client) => (
             <div
               key={client.id || client._id}
-              className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-6 hover:border-[#2C3245] transition-colors group"
+              className="bg-base border border-edge rounded-2xl p-6 hover:border-[#2C3245] transition-colors group"
             >
               {/* Logo and Featured Badge */}
               <div className="relative mb-4">
-                <div className="w-full h-40 bg-[#06080A] border border-[#1C212E] rounded-xl flex items-center justify-center overflow-hidden">
+                <div className="w-full h-40 bg-void border border-edge rounded-xl flex items-center justify-center overflow-hidden">
                   {client.logo ? (
                     <img
                       src={client.logo}
@@ -237,7 +237,7 @@ const AdminClients = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex items-center justify-between pt-4 border-t border-[#1C212E]">
+              <div className="flex items-center justify-between pt-4 border-t border-edge">
                 <span className="text-slate-500 text-xs">
                   Order: <span className="text-slate-300 font-medium">{client.order}</span>
                 </span>
@@ -271,9 +271,9 @@ const AdminClients = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-          <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+          <div className="bg-base border border-edge rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
             {/* Modal header */}
-            <div className="flex items-center justify-between p-6 border-b border-[#1C212E]">
+            <div className="flex items-center justify-between p-6 border-b border-edge">
               <h2 className="text-white font-bold text-lg">
                 {editingClient ? 'Edit Client' : 'Create Client'}
               </h2>
@@ -303,7 +303,7 @@ const AdminClients = () => {
                   value={form.name}
                   onChange={handleChange}
                   placeholder="Client company name"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                 />
               </div>
 
@@ -317,7 +317,7 @@ const AdminClients = () => {
                   value={form.logo}
                   onChange={handleChange}
                   placeholder="https://example.com/logo.png"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                 />
               </div>
 
@@ -331,7 +331,7 @@ const AdminClients = () => {
                   value={form.website}
                   onChange={handleChange}
                   placeholder="https://example.com"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                 />
               </div>
 
@@ -345,7 +345,7 @@ const AdminClients = () => {
                   value={form.industry}
                   onChange={handleChange}
                   placeholder="e.g. Technology, Finance, Healthcare"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                 />
               </div>
 
@@ -360,7 +360,7 @@ const AdminClients = () => {
                   value={form.order}
                   onChange={handleChange}
                   placeholder="0"
-                  className="w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
+                  className="w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600"
                 />
               </div>
 
@@ -383,7 +383,7 @@ const AdminClients = () => {
             </div>
 
             {/* Modal footer */}
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#1C212E]">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-edge">
               <button
                 onClick={() => setShowModal(false)}
                 className="px-4 py-2 text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors"

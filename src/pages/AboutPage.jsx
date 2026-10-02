@@ -58,14 +58,14 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <main className="cs-sans text-[#07090D]">
+    <main className="cs-sans text-k">
       {/* ── Who we are ── */}
-      <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">
+      <section className="relative s-black tx-grain overflow-hidden text-off">
         <Guides dark />
         <div className={`${WRAP} relative pt-12 md:pt-16 pb-16 md:pb-24`}>
-          <nav aria-label="Breadcrumb" className="cs-meta text-[#5B6575] flex items-center gap-2.5">
-            <Link to="/" className="hover:text-[#ECEEF1] transition-colors">CyberSage</Link><span aria-hidden="true">/</span>
-            <span aria-current="page" className="text-[#ECEEF1]">About</span>
+          <nav aria-label="Breadcrumb" className="cs-meta text-dim flex items-center gap-2.5">
+            <Link to="/" className="hover:text-off transition-colors">CyberSage</Link><span aria-hidden="true">/</span>
+            <span aria-current="page" className="text-off">About</span>
           </nav>
 
           <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
@@ -74,7 +74,7 @@ export default function AboutPage() {
                 initial={reduce ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: EASE }}>
                 Intelligence. Simulation. Resilience.
               </motion.h1>
-              <motion.p className="mt-7 mb-0 text-[17px] md:text-[18px] leading-relaxed text-[#A9B8D0] max-w-[56ch]"
+              <motion.p className="mt-7 mb-0 text-[17px] md:text-[18px] leading-relaxed text-cold max-w-[56ch]"
                 initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.15, ease: EASE }}>
                 CyberSage is a cybersecurity technology company. We build five products that work as one platform, for organisations, institutions and the people who defend them. Alongside the products, our consultants take on hands-on security, development and training engagements.
               </motion.p>
@@ -99,7 +99,7 @@ export default function AboutPage() {
               { n: cohort ? cohort.best : '—', l: 'Best Performer awards' },
             ].map((f, i) => (
               <div key={f.l} className={`flex flex-col-reverse justify-end pt-6 pb-2 pr-4 border-[rgba(236,238,241,0.18)] ${i % 2 === 1 ? 'border-l pl-6' : ''} ${i === 2 ? 'md:border-l md:pl-6' : ''}`}>
-                <dt className="mt-3 cs-meta text-[#8B95A5]">{f.l}</dt>
+                <dt className="mt-3 cs-meta text-steel">{f.l}</dt>
                 <dd className="m-0 t-expanded font-[200] text-[48px] md:text-[64px] leading-none tracking-[-0.04em]">{f.n}</dd>
               </div>
             ))}
@@ -113,26 +113,26 @@ export default function AboutPage() {
         <div className={`${WRAP} relative py-16 md:py-24`}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
             <Reveal className="lg:col-span-7">
-              <div className="cs-meta text-[#5B6575]">What we build</div>
+              <div className="cs-meta text-dim">What we build</div>
               <h2 className="m-0 mt-4 t-wide font-[250] text-[34px] sm:text-[46px] lg:text-[58px] leading-[1.0] tracking-[-0.035em] max-w-[16ch]">One ecosystem. Multiple capabilities.</h2>
             </Reveal>
             <Reveal className="lg:col-span-4 lg:col-start-9" delay={0.1}>
-              <p className="m-0 text-[16px] leading-relaxed text-[#3E4555]">From the workspace people use every day to the intelligence that watches over it, each product does one job and hands its signals to the next.</p>
+              <p className="m-0 text-[16px] leading-relaxed text-edge-strong">From the workspace people use every day to the intelligence that watches over it, each product does one job and hands its signals to the next.</p>
             </Reveal>
           </div>
 
-          <ol className="m-0 mt-12 md:mt-16 p-0 list-none border-t border-[#07090D]">
+          <ol className="m-0 mt-12 md:mt-16 p-0 list-none border-t border-k">
             {PRODUCTS.map((p, i) => (
               <li key={p.slug}>
                 <Reveal delay={i * 0.05}>
                   <Link to={`/products/${p.slug}`} className="cs-row-link group relative grid grid-cols-[auto_1fr_auto] md:grid-cols-[56px_180px_minmax(0,1fr)_minmax(0,1.2fr)_auto] gap-x-5 md:gap-x-8 gap-y-1 items-center py-6 md:py-7 border-b border-[rgba(7,9,13,0.14)] overflow-hidden">
                     <span aria-hidden="true" className="absolute inset-y-0 left-0 w-[3px] origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-300" style={{ background: p.key }} />
-                    <span className="cs-meta text-[#5B6575] pl-3">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="cs-meta text-dim pl-3">{String(i + 1).padStart(2, '0')}</span>
                     <span className="hidden md:block cs-meta" style={{ color: p.key }}>{p.role}</span>
                     <span className="cs-row-title t-wide font-[300] text-[26px] md:text-[34px] leading-[1.05] tracking-[-0.03em] transition-colors">{p.name}</span>
-                    <span className="hidden md:block text-[15px] text-[#3E4555] leading-snug">{p.line}</span>
+                    <span className="hidden md:block text-[15px] text-edge-strong leading-snug">{p.line}</span>
                     <Arrow />
-                    <span className="md:hidden col-start-2 col-span-2 text-[14px] text-[#3E4555]"><span className="cs-meta mr-2" style={{ color: p.key }}>{p.role}</span>{p.line}</span>
+                    <span className="md:hidden col-start-2 col-span-2 text-[14px] text-edge-strong"><span className="cs-meta mr-2" style={{ color: p.key }}>{p.role}</span>{p.line}</span>
                   </Link>
                 </Reveal>
               </li>
@@ -146,7 +146,7 @@ export default function AboutPage() {
         <Guides dark />
         <div className={`${WRAP} relative py-16 md:py-24`}>
           <Reveal>
-            <div className="cs-meta text-[#8B95A5]">How we work</div>
+            <div className="cs-meta text-steel">How we work</div>
             <h2 className="m-0 mt-4 t-wide font-[250] text-[34px] sm:text-[46px] lg:text-[58px] leading-[1.0] tracking-[-0.035em] max-w-[18ch]">Principles we build by.</h2>
           </Reveal>
           <ul className="m-0 mt-12 p-0 list-none grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[rgba(236,238,241,0.14)] border border-[rgba(236,238,241,0.14)]">
@@ -154,8 +154,8 @@ export default function AboutPage() {
               <li key={pr.t} className="bg-[#0B1424] p-6 md:p-7 min-h-[220px] transition-colors hover:bg-[#0F1B30]">
                 <Reveal delay={i * 0.06}>
                   <span className="cs-meta text-[#5B8BF0]">{String(i + 1).padStart(2, '0')}</span>
-                  <h3 className="m-0 mt-5 text-[20px] font-medium tracking-[-0.01em] text-[#ECEEF1]">{pr.t}</h3>
-                  <p className="m-0 mt-3 text-[15px] leading-relaxed text-[#A9B8D0]">{pr.d}</p>
+                  <h3 className="m-0 mt-5 text-[20px] font-medium tracking-[-0.01em] text-off">{pr.t}</h3>
+                  <p className="m-0 mt-3 text-[15px] leading-relaxed text-cold">{pr.d}</p>
                 </Reveal>
               </li>
             ))}
@@ -167,20 +167,20 @@ export default function AboutPage() {
       <section className="relative s-off overflow-hidden">
         <div className={`${WRAP} relative py-16 md:py-24`}>
           <Reveal>
-            <div className="cs-meta text-[#5B6575]">What we do for clients</div>
+            <div className="cs-meta text-dim">What we do for clients</div>
             <h2 className="m-0 mt-4 t-wide font-[250] text-[34px] sm:text-[46px] lg:text-[58px] leading-[1.0] tracking-[-0.035em] max-w-[18ch]">Hands-on services, delivered by our own team.</h2>
           </Reveal>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
             {SERVICE_GROUPS.map((g, gi) => (
               <Reveal key={g.title} delay={gi * 0.08}>
-                <Link to={g.to} className="cs-row-link flex items-center justify-between gap-4 border-t-2 border-[#07090D] pt-5">
+                <Link to={g.to} className="cs-row-link flex items-center justify-between gap-4 border-t-2 border-k pt-5">
                   <span className="cs-row-title text-[22px] font-medium tracking-[-0.01em] transition-colors">{g.title}</span>
                   <Arrow />
                 </Link>
                 <ul className="m-0 mt-4 p-0 list-none">
                   {g.items.map((it) => (
                     <li key={it.to} className="border-b border-[rgba(7,9,13,0.1)]">
-                      <Link to={it.to} className="flex items-center justify-between py-3 text-[15px] text-[#3E4555] hover:text-[#2563EB] transition-colors">
+                      <Link to={it.to} className="flex items-center justify-between py-3 text-[15px] text-edge-strong hover:text-brand transition-colors">
                         {it.name}<span aria-hidden="true" className="text-[#9AA3B2]">→</span>
                       </Link>
                     </li>
@@ -194,13 +194,13 @@ export default function AboutPage() {
 
       {/* ── Internship programme (counted from issued certificates) ── */}
       {cohort && (
-        <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">
+        <section className="relative s-black tx-grain overflow-hidden text-off">
           <Guides dark />
           <div className={`${WRAP} relative py-16 md:py-24 grid grid-cols-1 lg:grid-cols-12 gap-10 items-end`}>
             <Reveal className="lg:col-span-7">
-              <div className="cs-meta text-[#8B95A5]">Training the next defenders</div>
+              <div className="cs-meta text-steel">Training the next defenders</div>
               <h2 className="m-0 mt-4 t-wide font-[250] text-[34px] sm:text-[46px] lg:text-[58px] leading-[1.0] tracking-[-0.035em] max-w-[16ch]">Our internship programme.</h2>
-              <p className="mt-6 mb-0 text-[17px] leading-relaxed text-[#A9B8D0] max-w-[56ch]">
+              <p className="mt-6 mb-0 text-[17px] leading-relaxed text-cold max-w-[56ch]">
                 Our latest cohort ran from {fmtDate(cohort.from)} to {fmtDate(cohort.to)}. {cohort.completed} {cohort.completed === 1 ? 'intern' : 'interns'} completed the programme
                 {cohort.best > 0 ? `, and ${cohort.best === 1 ? 'one received' : `${cohort.best} received`} the Best Performer award` : ''}. Every certificate we issue carries an ID that anyone can check.
               </p>
@@ -220,14 +220,14 @@ export default function AboutPage() {
       {photos.length > 0 && (
         <section className="relative s-paper overflow-hidden">
           <div className={`${WRAP} relative py-16 md:py-20`}>
-            <Link to="/gallery" className="cs-row-link flex items-center justify-between gap-6 border-t border-[#07090D] pt-6">
+            <Link to="/gallery" className="cs-row-link flex items-center justify-between gap-6 border-t border-k pt-6">
               <span className="cs-row-title t-wide font-[250] text-[28px] md:text-[40px] leading-[1.05] tracking-[-0.03em] transition-colors">Gallery</span>
               <Arrow size={22} />
             </Link>
             <ul className="m-0 mt-8 p-0 list-none grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
               {photos.map((ph) => (
                 <li key={ph.id}>
-                  <Link to="/gallery" className="block overflow-hidden bg-[#E6E9ED] aspect-[4/3] group">
+                  <Link to="/gallery" className="block overflow-hidden bg-mist aspect-[4/3] group">
                     <img src={ph.src} alt="" loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
                   </Link>
                 </li>
@@ -240,10 +240,10 @@ export default function AboutPage() {
       {/* ── Team: photos live on the Core team page only ── */}
       <section className="s-paper border-y border-[rgba(7,9,13,0.08)]">
         <div className={`${WRAP} py-14 md:py-16`}>
-          <Link to="/core-team" className="cs-row-link flex items-center justify-between gap-6 border-t border-[#07090D] pt-6">
+          <Link to="/core-team" className="cs-row-link flex items-center justify-between gap-6 border-t border-k pt-6">
             <span>
               <span className="cs-row-title block t-wide font-[250] text-[28px] md:text-[40px] leading-[1.05] tracking-[-0.03em] transition-colors">Meet the core team</span>
-              <span className="block mt-2 text-[16px] text-[#3E4555]">The people who build CyberSage and deliver its services.</span>
+              <span className="block mt-2 text-[16px] text-edge-strong">The people who build CyberSage and deliver its services.</span>
             </span>
             <Arrow size={22} />
           </Link>
@@ -254,11 +254,11 @@ export default function AboutPage() {
       {offices.length > 0 && (
         <section className={`${WRAP} py-16 md:py-24 grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 lg:gap-16`}>
           <h2 className="m-0 text-[28px] md:text-[34px] leading-tight font-medium tracking-[-0.018em]">Offices</h2>
-          <ul className="m-0 p-0 list-none border-t border-[#07090D]">
+          <ul className="m-0 p-0 list-none border-t border-k">
             {offices.map((o, i) => (
-              <li key={o._id || i} className="grid grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-1 sm:gap-8 py-5 border-b border-[#DCE0E7]">
-                <div><div className="text-[17px] font-semibold">{o.city}, {o.country}</div><div className="text-[13px] text-[#5F6676]">{o.type}</div></div>
-                <div className="text-[15px] text-[#3E4555]">{o.address}</div>
+              <li key={o._id || i} className="grid grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-1 sm:gap-8 py-5 border-b border-fog-2">
+                <div><div className="text-[17px] font-semibold">{o.city}, {o.country}</div><div className="text-[13px] text-dim-2">{o.type}</div></div>
+                <div className="text-[15px] text-edge-strong">{o.address}</div>
               </li>
             ))}
           </ul>
@@ -266,11 +266,11 @@ export default function AboutPage() {
       )}
 
       {/* ── Work with us ── */}
-      <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">
+      <section className="relative s-black tx-grain overflow-hidden text-off">
         <div className={`${WRAP} py-20 md:py-28 grid grid-cols-1 md:grid-cols-12 gap-8 items-end`}>
           <h2 className="md:col-span-7 m-0 t-expanded font-[200] text-[44px] sm:text-[64px] lg:text-[88px] leading-[0.92] tracking-[-0.04em]">Work with us.</h2>
           <div className="md:col-span-4 md:col-start-9 flex flex-col gap-5">
-            <p className="m-0 text-[16px] leading-relaxed text-[#A9B8D0]">Book a demo, ask about an engagement, or apply for the next internship cohort.</p>
+            <p className="m-0 text-[16px] leading-relaxed text-cold">Book a demo, ask about an engagement, or apply for the next internship cohort.</p>
             <div className="flex flex-wrap gap-3">
               <Link to="/contact" className="cs-btn cs-btn-on-dark">Contact us</Link>
               <Link to="/training/internship" className="cs-btn cs-btn-ghost-dark">Internships</Link>

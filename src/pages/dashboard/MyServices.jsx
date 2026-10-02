@@ -131,7 +131,7 @@ const MyServices = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-xl flex justify-between items-center">
+        <div className="bg-panel border border-edge p-6 rounded-xl flex justify-between items-center">
           <div>
             <p className="text-sm font-medium text-slate-400 mb-1">Total Services</p>
             <h3 className="text-4xl font-bold text-slate-100">{paidServices.length}</h3>
@@ -140,7 +140,7 @@ const MyServices = () => {
             <ClipboardList className="w-8 h-8 text-slate-400" />
           </div>
         </div>
-        <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-xl flex justify-between items-center">
+        <div className="bg-panel border border-edge p-6 rounded-xl flex justify-between items-center">
           <div>
             <p className="text-sm font-medium text-slate-400 mb-1">In Progress</p>
             <h3 className="text-4xl font-bold text-amber-500">{inProgressCount}</h3>
@@ -149,7 +149,7 @@ const MyServices = () => {
             <Zap className="w-8 h-8 text-amber-500" />
           </div>
         </div>
-        <div className="bg-[#13192B] border border-[#1C212E] p-6 rounded-xl flex justify-between items-center">
+        <div className="bg-panel border border-edge p-6 rounded-xl flex justify-between items-center">
           <div>
             <p className="text-sm font-medium text-slate-400 mb-1">Completed</p>
             <h3 className="text-4xl font-bold text-emerald-500">{completedCount}</h3>
@@ -161,11 +161,11 @@ const MyServices = () => {
       </div>
 
       {/* ✅ Active (Paid) Services Table */}
-      <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl overflow-hidden p-6 pb-0 shadow-xl">
+      <div className="bg-base border border-edge rounded-2xl overflow-hidden p-6 pb-0 shadow-xl">
         <h2 className="text-xl font-bold text-slate-100 mb-6">Active Services</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-slate-400">
-            <thead className="border-b border-[#1C212E] text-xs text-slate-500">
+            <thead className="border-b border-edge text-xs text-slate-500">
               <tr>
                 <th className="px-2 py-4 font-normal">Service</th>
                 <th className="px-6 py-4 font-normal">Status</th>
@@ -174,9 +174,9 @@ const MyServices = () => {
                 <th className="px-6 py-4 font-normal text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1C212E]">
+            <tbody className="divide-y divide-edge">
               {paidServices.length > 0 ? paidServices.map((service) => (
-                <tr key={service._id} className="hover:bg-[#13192B] transition-colors">
+                <tr key={service._id} className="hover:bg-panel transition-colors">
                   <td className="px-2 py-5">
                     <div className="flex flex-col">
                       <span className="font-bold text-slate-200">{service.name}</span>
@@ -213,12 +213,12 @@ const MyServices = () => {
 
       {/* ✅ Unpaid — Price Set → Pay Bill */}
       {unpaidWithPrice.length > 0 && (
-        <div className="bg-[#0B0F19] border border-amber-500/20 rounded-2xl p-6 shadow-xl">
+        <div className="bg-base border border-amber-500/20 rounded-2xl p-6 shadow-xl">
           <h2 className="text-xl font-bold text-slate-100 mb-2">Pending Payment</h2>
           <p className="text-slate-500 text-sm mb-6">Complete your payment to activate these services</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {unpaidWithPrice.map((service) => (
-              <div key={service._id} className="bg-[#13192B] border border-amber-500/20 rounded-xl p-5">
+              <div key={service._id} className="bg-panel border border-amber-500/20 rounded-xl p-5">
                 <div className="flex items-start gap-4 mb-4">
                   <div className="p-3 rounded-xl bg-amber-500/10 text-amber-400 flex-shrink-0">
                     <Zap className="w-6 h-6" />
@@ -255,12 +255,12 @@ const MyServices = () => {
 
       {/* ✅ Unpaid — No Price Set → Request Price */}
       {unpaidNoPrice.length > 0 && (
-        <div className="bg-[#0B0F19] border border-blue-500/20 rounded-2xl p-6 shadow-xl">
+        <div className="bg-base border border-blue-500/20 rounded-2xl p-6 shadow-xl">
           <h2 className="text-xl font-bold text-slate-100 mb-2">Awaiting Pricing</h2>
           <p className="text-slate-500 text-sm mb-6">These services are pending pricing from our team</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {unpaidNoPrice.map((service) => (
-              <div key={service._id} className="bg-[#13192B] border border-blue-500/10 rounded-xl p-5">
+              <div key={service._id} className="bg-panel border border-blue-500/10 rounded-xl p-5">
                 <div className="flex items-start gap-4 mb-4">
                   <div className="p-3 rounded-xl bg-blue-500/10 text-blue-400 flex-shrink-0">
                     <ClipboardList className="w-6 h-6" />
@@ -300,7 +300,7 @@ const MyServices = () => {
 
       {/* ✅ Locked Services */}
       {lockedServices.length > 0 && (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-6 shadow-xl">
+        <div className="bg-base border border-edge rounded-2xl p-6 shadow-xl">
           <h2 className="text-xl font-bold text-slate-100 mb-2">More Services</h2>
           <p className="text-slate-500 text-sm mb-6">Click on a service to request it</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -308,7 +308,7 @@ const MyServices = () => {
               <div
                 key={service._id}
                 onClick={() => { setPopup(service); setRequestSuccess(false); }}
-                className="relative p-6 rounded-2xl border border-[#2A3441] bg-[#13192B] opacity-70 hover:opacity-90 cursor-pointer transition-all hover:border-blue-500/30 group"
+                className="relative p-6 rounded-2xl border border-edge-soft bg-panel opacity-70 hover:opacity-90 cursor-pointer transition-all hover:border-blue-500/30 group"
               >
                 <div className="absolute top-4 right-4">
                   <div className="p-2 rounded-full bg-slate-800 border border-slate-700">
@@ -333,7 +333,7 @@ const MyServices = () => {
       {/* Request Service Popup */}
       {popup && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-8 w-full max-w-md shadow-2xl">
+          <div className="bg-base border border-edge rounded-2xl p-8 w-full max-w-md shadow-2xl">
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h3 className="text-xl font-bold text-white">Request Service</h3>
@@ -358,7 +358,7 @@ const MyServices = () => {
               </div>
             ) : (
               <>
-                <div className="bg-[#13192B] border border-[#2A3441] rounded-xl p-4 mb-6">
+                <div className="bg-panel border border-edge-soft rounded-xl p-4 mb-6">
                   <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Requested Service</p>
                   <p className="text-white font-bold text-lg">{popup.name}</p>
                   <p className="text-slate-400 text-sm mt-1">{popup.description}</p>
@@ -369,7 +369,7 @@ const MyServices = () => {
                 <div className="flex gap-3">
                   <button
                     onClick={() => setPopup(null)}
-                    className="flex-1 h-11 border border-[#2A3441] text-slate-400 hover:text-slate-200 hover:border-slate-500 font-medium rounded-lg transition-all"
+                    className="flex-1 h-11 border border-edge-soft text-slate-400 hover:text-slate-200 hover:border-slate-500 font-medium rounded-lg transition-all"
                   >
                     Cancel
                   </button>

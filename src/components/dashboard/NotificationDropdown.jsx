@@ -81,10 +81,10 @@ const NotificationDropdown = ({ isOpen, onClose }) => {
   return (
     <>
       <div className="fixed inset-0 z-40" onClick={onClose}></div>
-      <div className="absolute top-16 right-4 w-[450px] bg-[#0A0D14] border border-[#1C212E] rounded-xl shadow-2xl z-50 flex flex-col max-h-[80vh] overflow-hidden">
+      <div className="absolute top-16 right-4 w-[450px] bg-[#0A0D14] border border-edge rounded-xl shadow-2xl z-50 flex flex-col max-h-[80vh] overflow-hidden">
         
         {/* Header */}
-        <div className="p-5 border-b border-[#1C212E]">
+        <div className="p-5 border-b border-edge">
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-red-500/10 rounded-lg border border-red-500/20">

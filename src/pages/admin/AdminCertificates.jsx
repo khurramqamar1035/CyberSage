@@ -21,7 +21,7 @@ const templateFields = (type) => {
 
 const emptyForm = () => ({ code: '', name: '', type: 'completion', ...templateFields('completion'), from: '', to: '' });
 const idOf = (c) => c.hash;
-const input = 'w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500/60 placeholder-slate-600';
+const input = 'w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500/60 placeholder-slate-600';
 const label = 'block text-slate-400 text-sm font-medium mb-1.5';
 
 export default function AdminCertificates() {
@@ -175,18 +175,18 @@ function Editor({ resetKey }) {
       {isLoading ? (
         <div className="flex items-center justify-center h-64"><Loader2 className="w-8 h-8 text-red-500 animate-spin" /></div>
       ) : loadError ? (
-        <div className="bg-[#0B0F19] border border-amber-500/30 rounded-2xl p-8 text-amber-300 text-sm">{loadError}</div>
+        <div className="bg-base border border-amber-500/30 rounded-2xl p-8 text-amber-300 text-sm">{loadError}</div>
       ) : filtered.length === 0 ? (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
+        <div className="bg-base border border-edge rounded-2xl p-12 text-center">
           <Award className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-slate-400 text-lg font-medium">{certs.length === 0 ? 'No certificates issued yet' : 'No matches'}</p>
           {certs.length === 0 && <button onClick={openCreate} className="mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium">Issue the first certificate</button>}
         </div>
       ) : (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl overflow-x-auto">
+        <div className="bg-base border border-edge rounded-2xl overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-slate-500 border-b border-[#1C212E]">
+              <tr className="text-left text-slate-500 border-b border-edge">
                 <th className="px-5 py-3 font-medium">Certificate ID</th>
                 <th className="px-5 py-3 font-medium">Name</th>
                 <th className="px-5 py-3 font-medium">Type</th>
@@ -196,7 +196,7 @@ function Editor({ resetKey }) {
             </thead>
             <tbody>
               {filtered.map((c) => (
-                <tr key={idOf(c)} className="border-b border-[#1C212E] last:border-0 hover:bg-white/[0.02]">
+                <tr key={idOf(c)} className="border-b border-edge last:border-0 hover:bg-white/[0.02]">
                   <td className="px-5 py-3 font-mono text-slate-200 whitespace-nowrap">{c.hint}</td>
                   <td className="px-5 py-3 text-white">{c.name}</td>
                   <td className="px-5 py-3 text-slate-400">{(CERT_TEMPLATES[c.type] || {}).label || c.type}</td>
@@ -218,8 +218,8 @@ function Editor({ resetKey }) {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/70 overflow-y-auto">
-          <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl w-full max-w-6xl my-6 shadow-2xl">
-            <div className="flex items-center justify-between p-6 border-b border-[#1C212E]">
+          <div className="bg-base border border-edge rounded-2xl w-full max-w-6xl my-6 shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-edge">
               <h2 className="text-white font-bold text-lg">{editing ? 'Edit certificate' : 'Issue certificate'}</h2>
               <button onClick={() => setShowModal(false)} className="p-2 text-slate-500 hover:text-slate-200"><X className="w-5 h-5" /></button>
             </div>
@@ -240,7 +240,7 @@ function Editor({ resetKey }) {
                   <div className="flex gap-2">
                     <input name="code" value={form.code} onChange={handleChange} disabled={!!editing} placeholder="CS-INT-2026-XXXXXX" className={`${input} font-mono disabled:opacity-60`} />
                     {!editing && (
-                      <button type="button" onClick={() => setForm((p) => ({ ...p, code: randomCode(p.type) }))} title="Generate a new ID" className="px-3 rounded-xl border border-[#1C212E] text-slate-400 hover:text-white">
+                      <button type="button" onClick={() => setForm((p) => ({ ...p, code: randomCode(p.type) }))} title="Generate a new ID" className="px-3 rounded-xl border border-edge text-slate-400 hover:text-white">
                         <RefreshCw className="w-4 h-4" />
                       </button>
                     )}
@@ -281,13 +281,13 @@ function Editor({ resetKey }) {
 
               <div>
                 <div className="text-slate-500 text-xs font-medium mb-2">Preview (as shown on cybersage.uk/verify)</div>
-                <div className="rounded-lg overflow-hidden border border-[#1C212E] bg-white">
+                <div className="rounded-lg overflow-hidden border border-edge bg-white">
                   <Certificate cert={form} />
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#1C212E]">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-edge">
               <button onClick={() => setShowModal(false)} className="px-4 py-2 text-slate-400 hover:text-slate-200 text-sm font-medium">Cancel</button>
               <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-5 py-2 bg-red-500 hover:bg-red-600 disabled:opacity-50 text-white rounded-xl text-sm font-medium">
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}

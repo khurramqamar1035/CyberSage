@@ -6,7 +6,7 @@ import { contentApi, SAVED_NOTE } from './contentApi';
 
 // Generic admin list + create/edit/delete screen for repo-stored content
 // (public/content/<collection>.json), saved through the /api/content Vercel function.
-const input = 'w-full bg-[#06080A] border border-[#1C212E] text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600';
+const input = 'w-full bg-void border border-edge text-white text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-red-500/50 placeholder-slate-600';
 const idOf = (x) => x.id;
 
 function Field({ f, value, onChange }) {
@@ -24,7 +24,7 @@ function Field({ f, value, onChange }) {
     return (
       <div className="space-y-2">
         <input value={value} onChange={(e) => set(e.target.value)} placeholder={f.placeholder || 'https://…'} className={input} />
-        {value && <img src={value} alt="" className="max-h-48 rounded-lg border border-[#1C212E] object-contain bg-black/30" onError={(e) => { e.currentTarget.style.opacity = 0.2; }} />}
+        {value && <img src={value} alt="" className="max-h-48 rounded-lg border border-edge object-contain bg-black/30" onError={(e) => { e.currentTarget.style.opacity = 0.2; }} />}
       </div>
     );
   }
@@ -135,9 +135,9 @@ function Editor({ title, icon: Icon, collection, fields, empty, renderItem, grid
       {isLoading ? (
         <div className="flex items-center justify-center h-64"><Loader2 className="w-8 h-8 text-red-500 animate-spin" /></div>
       ) : loadError ? (
-        <div className="bg-[#0B0F19] border border-amber-500/30 rounded-2xl p-8 text-amber-300 text-sm">{loadError}</div>
+        <div className="bg-base border border-amber-500/30 rounded-2xl p-8 text-amber-300 text-sm">{loadError}</div>
       ) : items.length === 0 ? (
-        <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
+        <div className="bg-base border border-edge rounded-2xl p-12 text-center">
           <Icon className="w-12 h-12 text-slate-600 mx-auto mb-4" />
           <p className="text-slate-400 text-lg font-medium">{empty}</p>
           <button onClick={openCreate} className="mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium">Add the first one</button>
@@ -145,7 +145,7 @@ function Editor({ title, icon: Icon, collection, fields, empty, renderItem, grid
       ) : (
         <div className={grid ? 'grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4' : 'space-y-3'}>
           {items.map((it) => (
-            <div key={idOf(it)} className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-4 hover:border-slate-700 transition-colors">
+            <div key={idOf(it)} className="bg-base border border-edge rounded-2xl p-4 hover:border-slate-700 transition-colors">
               {renderItem(it, <Actions it={it} />)}
             </div>
           ))}
@@ -154,8 +154,8 @@ function Editor({ title, icon: Icon, collection, fields, empty, renderItem, grid
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/70 overflow-y-auto">
-          <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl w-full max-w-xl my-6 shadow-2xl">
-            <div className="flex items-center justify-between p-6 border-b border-[#1C212E]">
+          <div className="bg-base border border-edge rounded-2xl w-full max-w-xl my-6 shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-edge">
               <h2 className="text-white font-bold text-lg">{editing ? 'Edit' : 'Add'}</h2>
               <button onClick={() => setShowModal(false)} className="p-2 text-slate-500 hover:text-slate-200"><X className="w-5 h-5" /></button>
             </div>
@@ -170,7 +170,7 @@ function Editor({ title, icon: Icon, collection, fields, empty, renderItem, grid
                 </div>
               ))}
             </div>
-            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-[#1C212E]">
+            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-edge">
               <button onClick={() => setShowModal(false)} className="px-4 py-2 text-slate-400 hover:text-slate-200 text-sm font-medium">Cancel</button>
               <button onClick={save} disabled={saving} className="flex items-center gap-2 px-5 py-2 bg-red-500 hover:bg-red-600 disabled:opacity-50 text-white rounded-xl text-sm font-medium">
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}{editing ? 'Save changes' : 'Add'}

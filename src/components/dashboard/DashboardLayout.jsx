@@ -12,7 +12,7 @@ const DashboardLayout = () => {
       <Sidebar />
 
       {/* Main Content Area - Flexible, takes up remaining space */}
-      <main className="flex-1 flex flex-col h-full overflow-y-auto w-full relative bg-[#06080A]">
+      <main className="flex-1 flex flex-col h-full overflow-y-auto w-full relative bg-void">
         
         {/* Top Header Placeholder for Notifications */}
         <div className="w-full h-16 flex justify-end items-center px-8 flex-shrink-0">

@@ -72,7 +72,7 @@ export function MagneticLink({ to, href, variant = 'primary', arrow = true, chil
 // Section marker: a rule that draws itself, with index and name in system type.
 export function SectionMarker({ index, total = 6, label, dark = false, className = '' }) {
   const reduce = useReducedMotion();
-  const tone = dark ? 'text-[#8D96AA]' : 'text-[#5F6676]';
+  const tone = dark ? 'text-[#8D96AA]' : 'text-dim-2';
   const line = dark ? 'bg-[#2A3247]' : 'bg-[#C5CBD6]';
   return (
     <motion.div className={`flex items-center gap-4 ${className}`} initial={reduce ? false : 'hidden'} whileInView="show" viewport={{ once: true }}>

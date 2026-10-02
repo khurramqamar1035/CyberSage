@@ -66,7 +66,7 @@ const Login = () => {
       footer={<>Don't have an account? <Link to="/signup" className="cs-link font-medium">Request access</Link></>}>
       <h2 className="m-0 t-wide font-[250] text-[30px] leading-[1.05] tracking-[-0.03em]">Sign in</h2>
       <form onSubmit={handleLogin} className="mt-8 flex flex-col gap-5">
-        {error && <p role="alert" className="m-0 text-[14px] text-[#C93C40] border-l-2 border-[#C93C40] pl-3">{error}</p>}
+        {error && <p role="alert" className="m-0 text-[14px] text-danger border-l-2 border-danger pl-3">{error}</p>}
         <div>
           <label htmlFor="li-email" className={LABEL}>Email address</label>
           <input id="li-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" className={FIELD} />

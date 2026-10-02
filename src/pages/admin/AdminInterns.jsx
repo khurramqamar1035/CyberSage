@@ -262,7 +262,7 @@ const AdminInterns = () => {
           <button
             onClick={fetchInterns}
             disabled={isLoading}
-            className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-[#13192B] rounded-xl text-sm transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-panel rounded-xl text-sm transition-all disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
@@ -279,7 +279,7 @@ const AdminInterns = () => {
       )}
 
       {/* ── Tabs: Applications | Waitlist ── */}
-      <div className="flex items-center gap-1 border-b border-[#1C212E]">
+      <div className="flex items-center gap-1 border-b border-edge">
         <button
           onClick={() => setActiveTab('applications')}
           className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-all border-b-2 -mb-px ${
@@ -290,7 +290,7 @@ const AdminInterns = () => {
         >
           <GraduationCap className="w-4 h-4" />
           Applications
-          <span className="bg-[#1C212E] text-slate-400 text-xs px-1.5 py-0.5 rounded">
+          <span className="bg-edge text-slate-400 text-xs px-1.5 py-0.5 rounded">
             {interns.length}
           </span>
         </button>
@@ -326,7 +326,7 @@ const AdminInterns = () => {
                     ? s === 'all'
                       ? 'bg-red-500/10 text-red-400 border-red-500/30'
                       : STATUS_STYLES[s] + ' border'
-                    : 'text-slate-500 border-transparent hover:border-[#1C212E] hover:text-slate-300'
+                    : 'text-slate-500 border-transparent hover:border-edge hover:text-slate-300'
                 }`}
               >
                 {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -342,7 +342,7 @@ const AdminInterns = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name, email, university or degree…"
-              className="w-full bg-[#0B0F19] border border-[#1C212E] text-white text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-red-500/40 placeholder-slate-600"
+              className="w-full bg-base border border-edge text-white text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-red-500/40 placeholder-slate-600"
             />
             {search && (
               <button
@@ -360,7 +360,7 @@ const AdminInterns = () => {
               <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
             </div>
           ) : filtered.length === 0 ? (
-            <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
+            <div className="bg-base border border-edge rounded-2xl p-12 text-center">
               <GraduationCap className="w-12 h-12 text-slate-600 mx-auto mb-4" />
               <p className="text-slate-400 text-lg font-medium">No applications found</p>
               <p className="text-slate-600 text-sm mt-1">
@@ -368,11 +368,11 @@ const AdminInterns = () => {
               </p>
             </div>
           ) : (
-            <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl overflow-hidden">
+            <div className="bg-base border border-edge rounded-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#1C212E] text-slate-500 text-xs uppercase tracking-wider">
+                    <tr className="border-b border-edge text-slate-500 text-xs uppercase tracking-wider">
                       <th className="text-left px-6 py-4 font-medium">Applicant</th>
                       <th className="text-left px-6 py-4 font-medium hidden md:table-cell">Degree / University</th>
                       <th className="text-left px-6 py-4 font-medium hidden lg:table-cell">Year</th>
@@ -381,7 +381,7 @@ const AdminInterns = () => {
                       <th className="text-right px-6 py-4 font-medium">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1C212E]">
+                  <tbody className="divide-y divide-edge">
                     {filtered.map((intern) => (
                       <tr key={intern.id || intern._id} className="hover:bg-[#0d1220] transition-colors">
                         <td className="px-6 py-4">
@@ -425,7 +425,7 @@ const AdminInterns = () => {
                                   }`}
                                 >
                                   {STATUS_OPTIONS.map((s) => (
-                                    <option key={s} value={s} className="bg-[#0B0F19] text-white">
+                                    <option key={s} value={s} className="bg-base text-white">
                                       {s.charAt(0).toUpperCase() + s.slice(1)}
                                     </option>
                                   ))}
@@ -461,7 +461,7 @@ const AdminInterns = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="px-6 py-3 border-t border-[#1C212E] text-xs text-slate-500">
+              <div className="px-6 py-3 border-t border-edge text-xs text-slate-500">
                 Showing {filtered.length} of {interns.length} application{interns.length !== 1 ? 's' : ''}
               </div>
             </div>
@@ -479,7 +479,7 @@ const AdminInterns = () => {
             <button
               onClick={fetchWaitlist}
               disabled={waitlistLoading}
-              className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-[#13192B] rounded-xl text-sm transition-all disabled:opacity-50"
+              className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-slate-200 hover:bg-panel rounded-xl text-sm transition-all disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${waitlistLoading ? 'animate-spin' : ''}`} />
               Refresh
@@ -491,7 +491,7 @@ const AdminInterns = () => {
               <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
             </div>
           ) : waitlist.length === 0 ? (
-            <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl p-12 text-center">
+            <div className="bg-base border border-edge rounded-2xl p-12 text-center">
               <Users className="w-12 h-12 text-slate-600 mx-auto mb-4" />
               <p className="text-slate-400 text-lg font-medium">No waitlist entries yet</p>
               <p className="text-slate-600 text-sm mt-1">
@@ -499,18 +499,18 @@ const AdminInterns = () => {
               </p>
             </div>
           ) : (
-            <div className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl overflow-hidden">
+            <div className="bg-base border border-edge rounded-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#1C212E] text-slate-500 text-xs uppercase tracking-wider">
+                    <tr className="border-b border-edge text-slate-500 text-xs uppercase tracking-wider">
                       <th className="text-left px-6 py-4 font-medium">#</th>
                       <th className="text-left px-6 py-4 font-medium">Email Address</th>
                       <th className="text-left px-6 py-4 font-medium hidden md:table-cell">Signed Up</th>
                       <th className="text-right px-6 py-4 font-medium">Remove</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1C212E]">
+                  <tbody className="divide-y divide-edge">
                     {waitlist.map((entry, idx) => (
                       <tr key={entry._id} className="hover:bg-[#0d1220] transition-colors">
                         <td className="px-6 py-4 text-slate-600 text-xs">{idx + 1}</td>
@@ -545,7 +545,7 @@ const AdminInterns = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="px-6 py-3 border-t border-[#1C212E] text-xs text-slate-500">
+              <div className="px-6 py-3 border-t border-edge text-xs text-slate-500">
                 {waitlist.length} email{waitlist.length !== 1 ? 's' : ''} on the waitlist
               </div>
             </div>
@@ -560,17 +560,17 @@ const AdminInterns = () => {
           onClick={() => setSelectedIntern(null)}
         >
           <div
-            className="bg-[#0B0F19] border border-[#1C212E] rounded-2xl w-full max-w-lg shadow-2xl"
+            className="bg-base border border-edge rounded-2xl w-full max-w-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-6 border-b border-[#1C212E]">
+            <div className="flex items-center justify-between p-6 border-b border-edge">
               <div>
                 <h2 className="text-white font-bold text-lg">{selectedIntern.name}</h2>
                 <p className="text-slate-500 text-sm mt-0.5">Application Details</p>
               </div>
               <button
                 onClick={() => setSelectedIntern(null)}
-                className="p-2 text-slate-500 hover:text-slate-200 transition-colors rounded-lg hover:bg-[#1C212E]"
+                className="p-2 text-slate-500 hover:text-slate-200 transition-colors rounded-lg hover:bg-edge"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -594,7 +594,7 @@ const AdminInterns = () => {
                   { label: 'Applied On',          value: fmtDate(selectedIntern.applied_at), icon: Calendar },
                   { label: 'Status Last Updated', value: selectedIntern.statusUpdatedAt ? fmtDate(selectedIntern.statusUpdatedAt) : 'Not yet updated', icon: null },
                 ].map(({ label, value, icon: Icon }) => (
-                  <div key={label} className="bg-[#06080A] border border-[#1C212E] rounded-xl px-4 py-3">
+                  <div key={label} className="bg-void border border-edge rounded-xl px-4 py-3">
                     <p className="text-slate-500 text-xs mb-1">{label}</p>
                     <div className="flex items-center gap-2">
                       {Icon && <Icon className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />}
@@ -605,7 +605,7 @@ const AdminInterns = () => {
               </div>
 
               {selectedIntern.skills?.length > 0 && (
-                <div className="bg-[#06080A] border border-[#1C212E] rounded-xl px-4 py-3">
+                <div className="bg-void border border-edge rounded-xl px-4 py-3">
                   <p className="text-slate-500 text-xs mb-2">Skills</p>
                   <div className="flex flex-wrap gap-2">
                     {selectedIntern.skills.map((skill, i) => (
@@ -628,7 +628,7 @@ const AdminInterns = () => {
                       className={`px-3 py-2 rounded-xl text-xs font-medium capitalize border transition-all disabled:opacity-40 ${
                         selectedIntern.status === s
                           ? STATUS_STYLES[s] + ' cursor-default'
-                          : 'text-slate-400 border-[#1C212E] hover:border-slate-500 hover:text-slate-200'
+                          : 'text-slate-400 border-edge hover:border-slate-500 hover:text-slate-200'
                       }`}
                     >
                       {updatingId === selectedIntern.id && selectedIntern.status !== s ? (
@@ -642,7 +642,7 @@ const AdminInterns = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between px-6 py-4 border-t border-[#1C212E]">
+            <div className="flex items-center justify-between px-6 py-4 border-t border-edge">
               <button
                 onClick={() => handleDelete(selectedIntern)}
                 disabled={deletingId === selectedIntern.id}

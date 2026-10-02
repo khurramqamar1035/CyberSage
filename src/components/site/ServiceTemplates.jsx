@@ -26,14 +26,14 @@ const H2 = ({ children, className = '' }) => <h2 className={`m-0 t-wide font-[25
 export function PageHero({ crumbs, word, title, intro, children }) {
   const reduce = useReducedMotion();
   return (
-    <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">
+    <section className="relative s-black tx-grain overflow-hidden text-off">
       <Guides dark />
       <div className={`${WRAP} relative pt-10 md:pt-14 pb-14 md:pb-20`}>
-        <nav aria-label="Breadcrumb" className="cs-meta text-[#5B6575] flex flex-wrap items-center gap-2.5">
+        <nav aria-label="Breadcrumb" className="cs-meta text-dim flex flex-wrap items-center gap-2.5">
           {crumbs.map((c, i) => (
             <React.Fragment key={c.label}>
               {i > 0 && <span aria-hidden="true">/</span>}
-              {c.to ? <Link to={c.to} className="hover:text-[#ECEEF1] transition-colors">{c.label}</Link> : <span aria-current="page" className="text-[#ECEEF1]">{c.label}</span>}
+              {c.to ? <Link to={c.to} className="hover:text-off transition-colors">{c.label}</Link> : <span aria-current="page" className="text-off">{c.label}</span>}
             </React.Fragment>
           ))}
         </nav>
@@ -46,7 +46,7 @@ export function PageHero({ crumbs, word, title, intro, children }) {
         <div className="mt-10 md:mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-end">
           <h1 className="lg:col-span-7 m-0 t-wide font-[250] text-[32px] sm:text-[44px] lg:text-[54px] leading-[1.04] tracking-[-0.035em] max-w-[20ch]">{title}</h1>
           <div className="lg:col-span-4 lg:col-start-9 flex flex-col gap-6">
-            {intro && <p className="m-0 text-[16px] leading-relaxed text-[#A9B8D0]">{intro}</p>}
+            {intro && <p className="m-0 text-[16px] leading-relaxed text-cold">{intro}</p>}
             {children}
           </div>
         </div>
@@ -58,12 +58,12 @@ export function PageHero({ crumbs, word, title, intro, children }) {
 /* Black closing band */
 export function ClosingCTA({ title, text, links }) {
   return (
-    <section className="relative s-black tx-grain overflow-hidden text-[#ECEEF1]">
+    <section className="relative s-black tx-grain overflow-hidden text-off">
       <Guides dark />
       <div className={`${WRAP} relative py-16 md:py-24 grid grid-cols-1 md:grid-cols-12 gap-8 items-end`}>
         <h2 className="md:col-span-7 m-0 t-expanded font-[200] text-[36px] sm:text-[52px] lg:text-[68px] leading-[0.95] tracking-[-0.04em]">{title}</h2>
         <div className="md:col-span-4 md:col-start-9 flex flex-col gap-5">
-          {text && <p className="m-0 text-[16px] leading-relaxed text-[#A9B8D0]">{text}</p>}
+          {text && <p className="m-0 text-[16px] leading-relaxed text-cold">{text}</p>}
           <div className="flex flex-wrap gap-3">
             {links.map((l, i) => <MagneticLink key={l.label} to={l.to} variant={i === 0 ? 'primary' : 'ghost-dark'} arrow={i === 0}>{l.label}</MagneticLink>)}
           </div>
@@ -76,15 +76,15 @@ export function ClosingCTA({ title, text, links }) {
 /* Ruled, numbered rows */
 function Rows({ items, numbered = true }) {
   return (
-    <dl className="m-0 border-t border-[#07090D]">
+    <dl className="m-0 border-t border-k">
       {items.map((it, i) => (
         <div key={it.t} className={`grid ${numbered ? 'grid-cols-[40px_minmax(0,1fr)] sm:grid-cols-[48px_minmax(0,2fr)_minmax(0,3fr)]' : 'grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'} gap-x-4 gap-y-1 sm:gap-8 py-5 border-b border-[rgba(7,9,13,0.14)]`}>
-          {numbered && <span className="cs-data text-[#5B6575] pt-1">{String(i + 1).padStart(2, '0')}</span>}
+          {numbered && <span className="cs-data text-dim pt-1">{String(i + 1).padStart(2, '0')}</span>}
           <dt className="text-[18px] font-medium tracking-[-0.01em]">{it.t}</dt>
           {(it.d || (it.tags && it.tags.length > 0)) && (
-            <dd className={`m-0 ${numbered ? 'col-start-2 sm:col-start-auto' : ''} text-[15px] leading-relaxed text-[#3E4555]`}>
+            <dd className={`m-0 ${numbered ? 'col-start-2 sm:col-start-auto' : ''} text-[15px] leading-relaxed text-edge-strong`}>
               {it.d}
-              {it.tags && it.tags.length > 0 && <span className="block mt-2 cs-meta text-[#5B6575]">{it.tags.join(' · ')}</span>}
+              {it.tags && it.tags.length > 0 && <span className="block mt-2 cs-meta text-dim">{it.tags.join(' · ')}</span>}
             </dd>
           )}
         </div>
@@ -119,19 +119,19 @@ export function ServiceHub({ hub, services, renderSectionLink }) {
         <Guides />
         <div className={`${WRAP} relative py-16 md:py-20`}>
           <H2>{hub.group === 'training' ? 'Courses.' : 'Services.'}</H2>
-          <ul className="m-0 mt-10 p-0 list-none border-t border-[#07090D]">
+          <ul className="m-0 mt-10 p-0 list-none border-t border-k">
             {indexItems.map((it, i) => (
               <li key={it.to}>
                 <Link to={it.to} className="cs-row-link grid grid-cols-[40px_minmax(0,1fr)_auto] md:grid-cols-[56px_minmax(0,1.1fr)_minmax(0,1.6fr)_150px_auto] gap-x-4 md:gap-x-8 gap-y-2 py-6 border-b border-[rgba(7,9,13,0.14)] items-baseline">
-                  <span className="cs-data text-[#5B6575]">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="cs-data text-dim">{String(i + 1).padStart(2, '0')}</span>
                   <span className="cs-row-title text-[22px] md:text-[26px] font-normal tracking-[-0.02em] transition-colors">{it.t}</span>
-                  <span className="hidden md:block text-[15px] leading-relaxed text-[#3E4555]">{it.d}</span>
+                  <span className="hidden md:block text-[15px] leading-relaxed text-edge-strong">{it.d}</span>
                   <span className="hidden md:block text-right">
                     {it.price && <span className="block text-[18px] font-medium">{it.price}</span>}
-                    {it.meta && <span className="block cs-meta text-[#5B6575] mt-1">{it.meta}</span>}
+                    {it.meta && <span className="block cs-meta text-dim mt-1">{it.meta}</span>}
                   </span>
                   <Arrow />
-                  <span className="md:hidden col-start-2 col-span-2 text-[15px] leading-relaxed text-[#3E4555]">{it.d}{it.price && <span className="block mt-2 text-[#07090D] font-medium">{it.price}{it.meta ? ` · ${it.meta}` : ''}</span>}</span>
+                  <span className="md:hidden col-start-2 col-span-2 text-[15px] leading-relaxed text-edge-strong">{it.d}{it.price && <span className="block mt-2 text-k font-medium">{it.price}{it.meta ? ` · ${it.meta}` : ''}</span>}</span>
                 </Link>
               </li>
             ))}
@@ -145,7 +145,7 @@ export function ServiceHub({ hub, services, renderSectionLink }) {
           <div className={`${WRAP} relative py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12`}>
             <Reveal className="lg:col-span-4 flex flex-col gap-5">
               <H2>{s.title}</H2>
-              {s.text && <p className="m-0 text-[16px] leading-relaxed text-[#3E4555]">{s.text}</p>}
+              {s.text && <p className="m-0 text-[16px] leading-relaxed text-edge-strong">{s.text}</p>}
               {s.link && renderSectionLink && renderSectionLink(s.link)}
             </Reveal>
             {s.items.length > 0 && <div className="lg:col-span-7 lg:col-start-6"><Rows items={s.items} /></div>}
@@ -154,13 +154,13 @@ export function ServiceHub({ hub, services, renderSectionLink }) {
       ))}
 
       {hub.spotlight && (
-        <section className="relative s-navy tx-grain overflow-hidden text-[#ECEEF1]">
+        <section className="relative s-navy tx-grain overflow-hidden text-off">
           <Guides dark />
           <div className={`${WRAP} relative py-14 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-8 items-end`}>
             <div className="md:col-span-7">
-              <div className="cs-meta text-[#8B95A5]">{hub.spotlight.label}</div>
+              <div className="cs-meta text-steel">{hub.spotlight.label}</div>
               <h2 className="m-0 mt-3 t-wide font-[250] text-[28px] md:text-[40px] leading-[1.05] tracking-[-0.03em]">{hub.spotlight.title}</h2>
-              <p className="m-0 mt-4 text-[16px] leading-relaxed text-[#A9B8D0] max-w-[56ch]">{hub.spotlight.text}</p>
+              <p className="m-0 mt-4 text-[16px] leading-relaxed text-cold max-w-[56ch]">{hub.spotlight.text}</p>
             </div>
             <div className="md:col-span-4 md:col-start-9 flex flex-wrap gap-3">
               <MagneticLink to="/products/sentinel" variant="on-dark">About Sage Sentinel</MagneticLink>
@@ -194,12 +194,12 @@ export function ServiceDetail({ service, siblings = [] }) {
       </PageHero>
 
       {service.facts && service.facts.length > 0 && (
-        <section className="relative s-char overflow-hidden text-[#ECEEF1]">
+        <section className="relative s-char overflow-hidden text-off">
           <div className={`${WRAP} relative`}>
             <dl className={`m-0 grid grid-cols-2 ${service.facts.length > 2 ? 'md:grid-cols-4' : 'md:grid-cols-2'} border-l border-[rgba(236,238,241,0.12)]`}>
               {service.facts.map((f) => (
                 <div key={f.label} className="py-6 md:py-8 px-5 border-r border-b md:border-b-0 border-[rgba(236,238,241,0.12)]">
-                  <dt className="cs-meta text-[#8B95A5]">{f.label}</dt>
+                  <dt className="cs-meta text-steel">{f.label}</dt>
                   <dd className="m-0 mt-2 t-condensed text-[26px] md:text-[34px] leading-none font-light">{f.value}</dd>
                 </div>
               ))}
@@ -223,12 +223,12 @@ export function ServiceDetail({ service, siblings = [] }) {
           <Guides />
           <div className={`${WRAP} relative py-16 md:py-20`}>
             <H2>{isCourse ? 'Course outline.' : 'How it works.'}</H2>
-            <ol className={`m-0 mt-10 p-0 list-none grid grid-cols-1 sm:grid-cols-2 ${service.process.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} border-t border-[#07090D]`}>
+            <ol className={`m-0 mt-10 p-0 list-none grid grid-cols-1 sm:grid-cols-2 ${service.process.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} border-t border-k`}>
               {service.process.map((p, i) => (
                 <li key={p.t} className="pt-5 pb-6 pr-6 border-b sm:border-b-0 border-[rgba(7,9,13,0.14)]">
-                  <div className="t-condensed text-[40px] leading-none font-light text-[#5B6575] tabular-nums">{String(i + 1).padStart(2, '0')}</div>
+                  <div className="t-condensed text-[40px] leading-none font-light text-dim tabular-nums">{String(i + 1).padStart(2, '0')}</div>
                   <div className="mt-4 text-[18px] font-medium tracking-[-0.01em]">{p.t}</div>
-                  {p.d && <p className="m-0 mt-2 text-[15px] leading-relaxed text-[#3E4555]">{p.d}</p>}
+                  {p.d && <p className="m-0 mt-2 text-[15px] leading-relaxed text-edge-strong">{p.d}</p>}
                 </li>
               ))}
             </ol>
@@ -242,7 +242,7 @@ export function ServiceDetail({ service, siblings = [] }) {
           <div className={`${WRAP} relative py-16 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12`}>
             <Reveal className="lg:col-span-4 flex flex-col gap-4">
               <H2>{x.title}</H2>
-              {x.text && <p className="m-0 text-[16px] leading-relaxed text-[#3E4555]">{x.text}</p>}
+              {x.text && <p className="m-0 text-[16px] leading-relaxed text-edge-strong">{x.text}</p>}
             </Reveal>
             {x.items && x.items.length > 0 && <div className="lg:col-span-7 lg:col-start-6"><Rows items={x.items} numbered={x.items.some((it) => it.d)} /></div>}
           </div>
@@ -254,14 +254,14 @@ export function ServiceDetail({ service, siblings = [] }) {
           <Guides />
           <div className={`${WRAP} relative py-16 md:py-20`}>
             <h2 className="m-0 t-wide font-[250] text-[26px] md:text-[34px] leading-[1.05] tracking-[-0.03em]">{isCourse ? 'Other courses.' : `More ${g.label.toLowerCase()}.`}</h2>
-            <ul className="m-0 mt-8 p-0 list-none border-t border-[#07090D]">
+            <ul className="m-0 mt-8 p-0 list-none border-t border-k">
               {others.map((o) => {
                 const p = priceOf(o);
                 return (
                   <li key={o.slug}>
                     <Link to={o.path} className="cs-row-link grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_140px_auto] gap-x-6 gap-y-1 py-5 border-b border-[rgba(7,9,13,0.14)] items-baseline">
                       <span className="cs-row-title text-[19px] font-normal tracking-[-0.015em] transition-colors">{o.name}</span>
-                      <span className="hidden md:block text-[15px] text-[#3E4555]">{o.cardSummary || o.summary}</span>
+                      <span className="hidden md:block text-[15px] text-edge-strong">{o.cardSummary || o.summary}</span>
                       <span className="hidden md:block text-right text-[15px] font-medium">{p ? p.value : ''}</span>
                       <Arrow />
                     </Link>

@@ -7,7 +7,7 @@ import SmoothScroll from './site/SmoothScroll';
 export default function PublicLayout() {
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F5F6F7] text-[#07090D] cs-sans selection:bg-[#2563EB] selection:text-white">
+    <div className="min-h-screen flex flex-col bg-paper text-k cs-sans selection:bg-brand selection:text-white">
       <SmoothScroll />
       <SiteNav />
       <div className="relative flex-grow flex flex-col pt-16">

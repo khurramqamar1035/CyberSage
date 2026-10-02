@@ -47,8 +47,8 @@ const VerifyEmail = () => {
     <AuthShell word="VERIFY" title="Email verification" intro="Confirming the link we sent to your inbox.">
       <div role="status" aria-live="polite">
         <h2 className="m-0 t-wide font-[250] text-[30px] leading-[1.05] tracking-[-0.03em]">{heading}</h2>
-        <p className="m-0 mt-4 text-[16px] leading-relaxed text-[#3E4555]">{status === 'loading' ? 'Please wait a moment.' : message}</p>
-        {status === 'success' && <p className="m-0 mt-3 text-[14px] text-[#5B6575]">Taking you to sign in shortly.</p>}
+        <p className="m-0 mt-4 text-[16px] leading-relaxed text-edge-strong">{status === 'loading' ? 'Please wait a moment.' : message}</p>
+        {status === 'success' && <p className="m-0 mt-3 text-[14px] text-dim">Taking you to sign in shortly.</p>}
         {status === 'error' && (
           <button type="button" onClick={() => navigate('/signup')} className="cs-btn cs-btn-primary mt-8">Back to sign up</button>
         )}

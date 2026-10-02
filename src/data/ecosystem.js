@@ -95,7 +95,7 @@ export const PRODUCTS = [
     slug: 'brain',
     name: 'Sage Brain',
     role: 'Intelligence',
-    key: '#2563EB',
+    key: 'var(--blue)',
     line: 'The private intelligence and decision layer behind CyberSage.',
     summary: 'Analyses security data, understands context, connects signals and supports decisions.',
     desc: 'Sage Brain is CyberSage’s private intelligence layer. It analyses complex security data, understands your organisation’s context, connects signals across every product and supports decisions, with a person approving what matters.',
