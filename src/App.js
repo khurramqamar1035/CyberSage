@@ -76,15 +76,33 @@ import ChatBot from './components/ChatBot';
  * already does. This exists so the UI does not render an authenticated shell
  * for a token that is missing, malformed or expired.
  */
+// JWT payloads are base64URL, which atob() does not accept directly:
+// '-' and '_' must become '+' and '/', and the padding has to be restored.
+const decodeSegment = (segment) => {
+  let b64 = segment.replace(/-/g, '+').replace(/_/g, '/');
+  while (b64.length % 4) b64 += '=';
+  return JSON.parse(atob(b64));
+};
+
 const readToken = (key) => {
   const raw = localStorage.getItem(key);
   if (!raw) return null;
+  const parts = raw.split('.');
+  if (parts.length !== 3) return null;   // not a JWT at all
   try {
-    const payload = JSON.parse(atob(raw.split('.')[1]));
+    const payload = decodeSegment(parts[1]);
     if (!payload?.exp || payload.exp * 1000 <= Date.now()) return null;
     return payload;
   } catch {
-    return null;        // not a JWT at all
+    return null;
+  }
+};
+
+const readJson = (key) => {
+  try {
+    return JSON.parse(localStorage.getItem(key) || '{}') || {};
+  } catch {
+    return {};
   }
 };
 
@@ -95,7 +113,7 @@ const clearAndGo = (keys, to) => {
 
 const AdminRoute = ({ children }) => {
   const payload = readToken('adminToken');
-  const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+  const adminUser = readJson('adminUser');
   if (!payload || adminUser.role !== 'admin') {
     return clearAndGo(['adminToken', 'adminUser'], '/admin');
   }
