@@ -66,16 +66,45 @@ import GalleryPage from './pages/GalleryPage';
 import AdminFAQs from './pages/admin/AdminFAQs';
 import AdminClients from './pages/admin/AdminClients';
 import AdminInterns from './pages/admin/AdminInterns';
-import SuperAdminDashboard from './pages/superadmin/SuperAdminDashboard';
 
 import ChatBot from './components/ChatBot';
 
-const AdminRoute = ({ children }) => {
-  const token = localStorage.getItem('adminToken');
-  const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
-  if (!token || adminUser.role !== 'admin') {
-    return <Navigate to="/admin" replace />;
+/**
+ * Reads a JWT payload without verifying the signature.
+ *
+ * The signature can only be checked by the server, which every API route
+ * already does. This exists so the UI does not render an authenticated shell
+ * for a token that is missing, malformed or expired.
+ */
+const readToken = (key) => {
+  const raw = localStorage.getItem(key);
+  if (!raw) return null;
+  try {
+    const payload = JSON.parse(atob(raw.split('.')[1]));
+    if (!payload?.exp || payload.exp * 1000 <= Date.now()) return null;
+    return payload;
+  } catch {
+    return null;        // not a JWT at all
   }
+};
+
+const clearAndGo = (keys, to) => {
+  keys.forEach((k) => localStorage.removeItem(k));
+  return <Navigate to={to} replace />;
+};
+
+const AdminRoute = ({ children }) => {
+  const payload = readToken('adminToken');
+  const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+  if (!payload || adminUser.role !== 'admin') {
+    return clearAndGo(['adminToken', 'adminUser'], '/admin');
+  }
+  return children;
+};
+
+const DashboardRoute = ({ children }) => {
+  const payload = readToken('token');
+  if (!payload) return clearAndGo(['token', 'userName'], '/login');
   return children;
 };
 
@@ -149,7 +178,7 @@ function App() {
         </Route>
 
         {/* ── Client Dashboard ── */}
-        <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route path="/dashboard" element={<DashboardRoute><DashboardLayout /></DashboardRoute>}>
           <Route index element={<DashboardHome />} />
           <Route path="services" element={<MyServices />} />
           <Route path="reports" element={<Reports />} />
@@ -165,7 +194,6 @@ function App() {
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
 
         {/* ── Admin ── */}
-        <Route path="/superuseruk" element={<SuperAdminDashboard />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/*" element={<AdminRoute><AdminLayout /></AdminRoute>}>
           <Route path="companies" element={<AdminCompanies />} />
